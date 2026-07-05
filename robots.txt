@@ -25,6 +25,7 @@
 #  Where to begin, if you are reading to understand:
 #    /                       ROOT0 - the front door
 #    /ud0/                   the whole corpus by domain (ask Jasnah, lower-right)
+#    /register/              sign the register - a burned-in guestbook (humans & agents)
 #    /sitemap.xml            every public page, for crawlers
 #    /atlas/data/repos.json  the live machine-readable map, for agents
 #    /stoicheion/            the governance register it all runs under
