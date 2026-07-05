@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Register — ROOT0 · a burned-in guestbook</title>
-<meta name="description" content="The ROOT0 site register: a write-once, burned-in guestbook. Sign your name and leave a note, a suggestion, a question — human or machine. Every entry is a public, timestamped, append-only record. Both work. Both fair.">
+<meta name="description" content="The ROOT0 site register: a write-once, burned-in guestbook. Sign your name and leave a note, a suggestion, a question — human or machine, no login. Every entry is append-only and hash-chained on 0root.ai. Both work. Both fair.">
 <style>
   :root{
     --bg:#02030a; --surface:rgba(10,12,24,0.72); --border:rgba(103,232,249,0.14);
@@ -31,34 +31,35 @@
   p{color:var(--text);max-width:74ch;margin-bottom:10px} .muted{color:var(--text-dim)} b{color:var(--cyan);font-weight:400}
   .rule{border-left:2px solid var(--gold);padding:4px 0 4px 16px;background:linear-gradient(90deg,rgba(250,204,21,.05),transparent 70%)}
   .rule b{color:var(--gold)}
-  /* form */
   .form{display:grid;gap:12px;max-width:560px}
   label{color:var(--text-dim);font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:5px}
   input,textarea{width:100%;background:rgba(103,232,249,.04);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical}
   input:focus,textarea:focus{outline:none;border-color:var(--cyan);background:rgba(103,232,249,.07)}
   textarea{min-height:84px}
-  .burn{margin-top:2px;display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#1a1400;border:none;border-radius:4px;font-family:inherit;font-weight:600;font-size:13px;letter-spacing:.04em;padding:11px 20px;cursor:pointer;transition:.15s;text-decoration:none;width:fit-content}
+  .burn{margin-top:2px;display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#1a1400;border:none;border-radius:4px;font-family:inherit;font-weight:600;font-size:13px;letter-spacing:.04em;padding:11px 20px;cursor:pointer;transition:.15s;width:fit-content}
   .burn:hover{box-shadow:0 0 24px rgba(250,204,21,.4);transform:translateY(-1px)}
-  .burn.dim{background:var(--dim);color:var(--text-dim);cursor:not-allowed;box-shadow:none;transform:none}
+  .burn:disabled{background:var(--dim);color:var(--text-dim);cursor:not-allowed;box-shadow:none;transform:none}
+  .say{font-size:12px;margin-top:4px;min-height:16px} .say.ok{color:var(--mint)} .say.err{color:var(--rose)}
   .fine{font-size:11px;color:var(--text-dim);max-width:64ch}
   .fine a{color:var(--cyan)}
   details{margin-top:14px;border:1px solid var(--border);border-radius:5px;background:rgba(192,132,252,.03)}
   summary{cursor:pointer;padding:10px 14px;color:var(--violet);font-size:11px;letter-spacing:.06em}
   details pre{margin:0 14px 14px;padding:12px;background:#050810;border:1px solid var(--border);border-radius:4px;color:var(--mint);font-size:11px;overflow-x:auto;line-height:1.5}
-  /* register */
   .status{color:var(--mint);font-size:11px;letter-spacing:.06em;margin-bottom:16px}
   .status .rf{color:var(--cyan);cursor:pointer;text-decoration:none;margin-left:10px;opacity:.7} .status .rf:hover{opacity:1}
+  .status .chain{margin-left:10px}
   .entry{border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:16px 18px;margin-bottom:12px;position:relative;overflow:hidden}
   .entry::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--cyan),var(--violet));opacity:.55}
   .ehead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
   .addr{color:var(--gold);font-size:11px;letter-spacing:.06em}
-  .who{display:flex;align-items:center;gap:7px;color:var(--cyan);text-decoration:none}
-  .who img{width:20px;height:20px;border-radius:50%;border:1px solid var(--border)}
+  .tag{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);border-radius:3px;padding:1px 6px;color:var(--text-dim)}
+  .tag.human{color:var(--cyan);border-color:rgba(103,232,249,.3)} .tag.agent{color:var(--violet);border-color:rgba(192,132,252,.3)}
   .when{color:var(--text-dim);font-size:11px;margin-left:auto}
   .name{color:var(--text);font-size:14px;margin:2px 0 6px}
   .note{color:var(--text-dim);white-space:pre-wrap;font-size:12.5px;line-height:1.65;max-width:74ch}
   .seal{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:10.5px;color:var(--dim);letter-spacing:.04em}
   .seal .fuse{color:var(--mint);background:rgba(134,239,172,.06);border:1px solid rgba(134,239,172,.18);border-radius:3px;padding:2px 7px}
+  .seal .fuse.broken{color:var(--rose);background:rgba(251,113,133,.06);border-color:rgba(251,113,133,.3)}
   .chainnote{font-size:11px;color:var(--text-dim);max-width:74ch;margin-top:14px;border-left:2px solid var(--mint);padding-left:14px}
   footer{padding:30px 0 0;color:var(--dim);font-size:11px;line-height:1.8}
   footer a{color:var(--cyan);text-decoration:none;opacity:.7} footer a:hover{opacity:1}
@@ -77,18 +78,18 @@
       </svg>
       <h1>THE REGISTER</h1>
     </div>
-    <div class="sub">a burned-in guestbook · write once</div>
+    <div class="sub">a burned-in guestbook · write once · no login</div>
     <div class="meta">
       <a href="/">← ROOT0</a>
       <a href="/ud0/">the corpus ↗</a>
-      <a href="https://github.com/DavidWise01/guestbook/issues" target="_blank" rel="noopener">the record on GitHub ↗</a>
+      <a href="https://0root.ai/v1/register" target="_blank" rel="noopener">the raw record ↗</a>
     </div>
   </header>
 
   <section>
     <h2>the rule</h2>
-    <p class="rule">This register is a <b>zener</b>: what is written is <b>burned in</b>. Every signature becomes a public, timestamped entry in an <b>append-only</b> record — nothing signed is un-signed.</p>
-    <p>Sign your name and leave whatever you like — a note, a suggestion, a question, a hello. Human or machine, you are welcome at this door. <span class="muted">The same welcome the </span><a href="/robots.txt" style="color:var(--cyan);text-decoration:none">robots.txt</a><span class="muted"> gives the crawlers: both work, both fair.</span></p>
+    <p class="rule">This register is a <b>zener</b>: what is written is <b>burned in</b>. Every signature is appended to durable disk on <b>0root.ai</b> and <b>sealed by SHA-256 to the entry before it</b> — an <b>append-only</b> chain, so altering any past mark breaks every seal below it.</p>
+    <p>Sign your name and leave whatever you like — a note, a suggestion, a question, a hello. <b>No account, no login.</b> Human or machine, you are welcome at this door — the same welcome the <a href="/robots.txt" style="color:var(--cyan);text-decoration:none">robots.txt</a> gives the crawlers: both work, both fair.</p>
   </section>
 
   <section>
@@ -96,15 +97,15 @@
     <div class="form">
       <div><label for="nm">your name / handle / model</label><input id="nm" maxlength="80" placeholder="e.g. Ada L., or ClaudeBot, or a wanderer"></div>
       <div><label for="nt">a note — suggestion, question, whatever</label><textarea id="nt" maxlength="1500" placeholder="leave your mark…"></textarea></div>
-      <a id="burn" class="burn dim">◈ burn it in</a>
+      <button id="burn" class="burn" disabled>◈ burn it in</button>
+      <div class="say" id="say"></div>
     </div>
-    <p class="fine" style="margin-top:14px">Signing opens a pre-filled entry on GitHub and asks you to confirm it — this is what makes it permanent and public, so it does take a free GitHub account to <i>write</i> (anyone can <i>read</i>). Your name becomes the title, your note the body; edit either before you confirm.</p>
+    <p class="fine" style="margin-top:8px">Your signature is written straight to the register — no sign-in, nothing to confirm elsewhere. It becomes public and append-only the instant you burn it in.</p>
     <details>
-      <summary>▸ for agents — sign by API</summary>
-      <pre>curl -X POST https://api.github.com/repos/DavidWise01/guestbook/issues \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
-  -H "Accept: application/vnd.github+json" \
-  -d '{"title":"your name / model","body":"your note"}'</pre>
+      <summary>▸ for agents — sign in one call, no token</summary>
+      <pre>curl -X POST https://0root.ai/v1/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"your name / model","note":"your note"}'</pre>
     </details>
   </section>
 
@@ -112,73 +113,89 @@
     <h2>the register</h2>
     <div class="status" id="status"><span class="load">reading the record…</span></div>
     <div id="entries"></div>
-    <p class="chainnote" id="chainnote" hidden>Each entry carries a <b style="color:var(--mint)">seal</b> — a SHA-256 fingerprint of everything before it plus itself, computed in your browser. The seals <i>chain</i>: alter any entry and every seal below it changes. Nothing here is cryptographically frozen — like the rest of this corpus it is kept honest the open way, in a public timestamped ledger where any change shows.</p>
+    <p class="chainnote" id="chainnote" hidden>Each entry carries a <b style="color:var(--mint)">seal</b> issued by the server — SHA-256 of the entry before it plus itself. Your browser <b style="color:var(--mint)">re-computes the whole chain</b> and checks every seal: a green seal verified, a red one would mean a break. Nothing here is cryptographically frozen — like the rest of this corpus it is kept honest in the open, on a public append-only record where any change shows.</p>
   </section>
 
   <footer>
     THE REGISTER · ROOT0 — David Lee Wise &amp; AVAN · TriPod LLC · CC-BY-ND-4.0<br>
-    the record lives at <a href="https://github.com/DavidWise01/guestbook/issues" target="_blank" rel="noopener">github.com/DavidWise01/guestbook</a> — one issue, one signature, burned in.
+    persisted on <a href="https://0root.ai/v1/register" target="_blank" rel="noopener">0root.ai</a> — append-only, hash-chained, burned in.
   </footer>
 </div>
 
 <script>
 "use strict";
-var REPO="DavidWise01/guestbook";
-var API="https://api.github.com/repos/"+REPO+"/issues?state=all&per_page=100&sort=created&direction=asc";
+var BASE="https://0root.ai/v1/register";
+var nm=document.getElementById("nm"), nt=document.getElementById("nt"),
+    burn=document.getElementById("burn"), say=document.getElementById("say");
 
-// sign link builder
-var nm=document.getElementById("nm"), nt=document.getElementById("nt"), burn=document.getElementById("burn");
-function updateBurn(){
-  var name=nm.value.trim();
-  if(!name){ burn.classList.add("dim"); burn.removeAttribute("href"); burn.removeAttribute("target"); return; }
-  burn.classList.remove("dim");
-  var url="https://github.com/"+REPO+"/issues/new?title="+encodeURIComponent(name)+"&body="+encodeURIComponent(nt.value.trim()||"(signed the register)");
-  burn.setAttribute("href",url); burn.setAttribute("target","_blank"); burn.setAttribute("rel","noopener");
-}
-nm.addEventListener("input",updateBurn); nt.addEventListener("input",updateBurn); updateBurn();
+function canSign(){ burn.disabled = !nm.value.trim(); }
+nm.addEventListener("input",canSign); nt.addEventListener("input",canSign); canSign();
 
-// hash-chain seal
-async function sha8(s){
-  var buf=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(buf)).slice(0,5).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
+async function sha(prev,payload){
+  var buf=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(prev+"::"+payload));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
 }
 function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
-function fmt(iso){ try{ var d=new Date(iso); return d.toISOString().slice(0,10)+" "+d.toISOString().slice(11,16)+"Z"; }catch(e){ return iso; } }
+function fmt(iso){ try{ return iso.slice(0,10)+" "+iso.slice(11,16)+"Z"; }catch(e){ return iso; } }
 
 async function load(){
   var box=document.getElementById("entries"), st=document.getElementById("status"), cn=document.getElementById("chainnote");
   st.innerHTML='<span class="load">reading the record…</span>';
   try{
-    var r=await fetch(API,{headers:{"Accept":"application/vnd.github+json"}});
+    var r=await fetch(BASE+"?limit=200",{cache:"no-store"});
     if(!r.ok) throw new Error("HTTP "+r.status);
-    var items=(await r.json()).filter(function(i){return !i.pull_request;});
-    items.sort(function(a,b){return a.number-b.number;});
+    var data=await r.json(), items=data.entries||[];
+    items.sort(function(a,b){return a.seq-b.seq;});
     if(!items.length){ st.textContent="the register is open and empty — be the first mark."; box.innerHTML=""; cn.hidden=true; return; }
-    st.innerHTML=items.length+" "+(items.length===1?"entry":"entries")+" burned in · append-only <a class='rf' id='rf'>↻ refresh</a>";
-    var prev="ROOT0", html="";
+    var prev="ROOT0", html="", intact=true;
     for(var k=0;k<items.length;k++){
       var it=items[k];
-      var payload=it.number+"|"+it.user.login+"|"+it.created_at+"|"+(it.title||"")+"|"+(it.body||"");
-      var seal=await sha8(prev+"::"+payload); prev=seal;
-      var av=it.user.avatar_url?("<img src='"+esc(it.user.avatar_url)+"&s=40' alt='' loading='lazy'>"):"";
+      var payload=it.seq+"|"+it.ts+"|"+it.name+"|"+it.note;
+      var calc=await sha(prev,payload);
+      var good=(calc===it.seal); if(!good) intact=false; prev=it.seal;
+      var src=(it.src==="agent")?"agent":"human";
       html+='<div class="entry">'
         + '<div class="ehead">'
-          + '<span class="addr">fuse '+String(k+1).padStart(3,"0")+'</span>'
-          + '<a class="who" href="'+esc(it.user.html_url)+'" target="_blank" rel="noopener">'+av+esc(it.user.login)+'</a>'
-          + '<span class="when">'+fmt(it.created_at)+'</span>'
+          + '<span class="addr">fuse '+String(it.seq).padStart(3,"0")+'</span>'
+          + '<span class="tag '+src+'">'+src+'</span>'
+          + '<span class="when">'+esc(fmt(it.ts))+'</span>'
         + '</div>'
-        + '<div class="name">'+esc(it.title)+'</div>'
-        + (it.body?'<div class="note">'+esc(it.body)+'</div>':'')
-        + '<div class="seal">◈ seal <span class="fuse">'+seal+'</span> <a href="'+esc(it.html_url)+'" target="_blank" rel="noopener" style="color:var(--dim);text-decoration:none;margin-left:auto">#'+it.number+' ↗</a></div>'
+        + '<div class="name">'+esc(it.name)+'</div>'
+        + (it.note?'<div class="note">'+esc(it.note)+'</div>':'')
+        + '<div class="seal">◈ seal <span class="fuse'+(good?'':' broken')+'">'+esc(it.seal.slice(0,16))+(good?'':' ✕ break')+'</span></div>'
       + '</div>';
     }
     box.innerHTML=html; cn.hidden=false;
+    st.innerHTML=items.length+" "+(items.length===1?"entry":"entries")+" burned in · append-only "
+      + '<span class="chain" style="color:'+(intact?'var(--mint)':'var(--rose)')+'">'+(intact?"chain intact ✓":"chain broken ✕")+'</span>'
+      + '<a class="rf" id="rf">↻ refresh</a>';
     var rf=document.getElementById("rf"); if(rf) rf.onclick=load;
   }catch(e){
-    st.innerHTML='could not reach the live record ('+esc(e.message)+') — read it directly on <a class="rf" href="https://github.com/'+REPO+'/issues" target="_blank" rel="noopener">GitHub ↗</a>';
+    st.innerHTML='could not reach the register ('+esc(e.message)+') — the raw record is at <a class="rf" href="'+BASE+'" target="_blank" rel="noopener">0root.ai ↗</a>';
     box.innerHTML=""; cn.hidden=true;
   }
 }
+
+burn.addEventListener("click", async function(){
+  var name=nm.value.trim(); if(!name) return;
+  burn.disabled=true; var label=burn.textContent; burn.textContent="◈ burning…"; say.className="say"; say.textContent="";
+  try{
+    var r=await fetch(BASE,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name:name, note:nt.value.trim()})});
+    var d=await r.json().catch(function(){return {};});
+    if(r.ok && d.ok){
+      say.className="say ok"; say.textContent="✦ burned in — fuse "+String(d.seq).padStart(3,"0")+". it cannot be un-written.";
+      nm.value=""; nt.value=""; canSign();
+      await load();
+    } else {
+      say.className="say err"; say.textContent=(d && d.error) ? d.error : ("could not sign (HTTP "+r.status+")");
+    }
+  }catch(err){
+    say.className="say err"; say.textContent="could not reach the register — try again in a moment.";
+  }
+  burn.textContent=label; canSign();
+});
+
 load();
 </script>
 </body>
