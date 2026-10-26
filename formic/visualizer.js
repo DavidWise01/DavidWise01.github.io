@@ -1,62 +1,89 @@
-// FORMIC Three.js visualization v2.0. Read-only: no GitHub mutations or network scanning.
+// FORMIC 3D cabinet arcade v2.2 — public metadata, one display agent per repository.
 const THREE_URL='https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js';
-export async function mountFormic3D(host,{mode='arcade',dataUrl='./arcade.json'}={}){
-  const status=document.createElement('div');status.className='formic3d-status';status.textContent='Loading Three.js display…';host.append(status);
-  let THREE;
-  try{THREE=await import(THREE_URL)}catch(e){status.textContent='Three.js unavailable; 2D monitoring remains active.';return}
-  if(!host.isConnected)return;
-  const scene=new THREE.Scene();scene.background=new THREE.Color(0x070e1b);scene.fog=new THREE.FogExp2(0x070e1b,.014);
-  const rect=()=>({w:Math.max(320,host.clientWidth),h:Math.max(260,host.clientHeight)});
-  let {w,h}=rect(),renderer;
-  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'})}catch(e){status.textContent='WebGL unavailable; monitoring remains active.';return}
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(w,h);host.prepend(renderer.domElement);
-  const camera=new THREE.PerspectiveCamera(52,w/h,.1,600);camera.position.set(0,30,74);
-  const ambient=new THREE.AmbientLight(0xb5e3ff,1.0);scene.add(ambient);
-  const point=new THREE.PointLight(0x52efc9,100,100);point.position.set(0,15,10);scene.add(point);
-  const grid=new THREE.GridHelper(120,30,0x295c72,0x152e44);grid.position.y=-12;scene.add(grid);
-  const coreGroup=new THREE.Group();scene.add(coreGroup);
-  const core=new THREE.Mesh(new THREE.IcosahedronGeometry(8,2),new THREE.MeshStandardMaterial({color:0x43dcbf,emissive:0x167a79,emissiveIntensity:.6,wireframe:true}));
-  coreGroup.add(core);
-  const ring=new THREE.Mesh(new THREE.TorusGeometry(14,.27,10,90),new THREE.MeshStandardMaterial({color:0x8a8aff,emissive:0x3b2a99,emissiveIntensity:.7}));
-  ring.rotation.x=1;coreGroup.add(ring);
-  const supports=[];let cabinets=[];let agentsByCabinet=new Map();
-  const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
-  const boxGeo=new THREE.BoxGeometry(1.9,2.9,1.4),colors={ACTIVE:0x4ce4bc,REST:0x607f98,REVIEW:0xffba6b,RECOVERY:0xb39bff};
-  function populate(rows){
-    supports.forEach(o=>{scene.remove(o);o.material.dispose()});supports.length=0;
-    cabinets=rows.slice(0,1200);
-    const n=cabinets.length;
-    cabinets.forEach((r,i)=>{
-      // A bounded multi-ring arcade: no reliance on speculative physical topology.
-      const ringN=Math.floor(i/90),slot=i%90,angle=2*Math.PI*slot/90+ringN*.1;
-      const radius=21+ringN*5.3,y=((i%9)-4)*.3-6+Math.floor(i/360)*3;
-      const mat=new THREE.MeshStandardMaterial({color:colors[r.state]||0x4ce4bc,emissive:colors[r.state]||0x4ce4bc,emissiveIntensity:.18,metalness:.3,roughness:.4});
-      const mesh=new THREE.Mesh(boxGeo,mat);mesh.position.set(Math.cos(angle)*radius,y,Math.sin(angle)*radius);
-      mesh.rotation.y=-angle;mesh.userData={name:r.name,state:r.state,url:r.url,agent:agentsByCabinet.get(r.name)};scene.add(mesh);supports.push(mesh);
-      const dot=new THREE.Mesh(new THREE.SphereGeometry(.48,7,6),new THREE.MeshBasicMaterial({color:0xe6f7ff}));dot.position.set(mesh.position.x,mesh.position.y+2.2,mesh.position.z);dot.userData=mesh.userData;scene.add(dot);supports.push(dot);
-    });
-    status.textContent=(n?n+' visible repository cabinets':'27 FORMIC sentinels')+' · Three.js · visualization only';
-  }
-  async function load(){try{
-    const r=await fetch(dataUrl+(dataUrl.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});
-    if(!r.ok)throw Error('HTTP '+r.status);
-    const obj=await r.json();if(!obj.complete||!Array.isArray(obj.cabinets))throw Error('incomplete');
-    agentsByCabinet=new Map((obj.agents||[]).map(a=>[a.cabinet,a]));populate(obj.cabinets);
-  }catch(e){status.textContent='Live cabinet inventory unavailable — showing simulated hive.';
-    const fallback=Array.from({length:27},(_,i)=>({name:'FORMIC '+(i+1),state:'ACTIVE'}));populate(fallback);
-    status.textContent='27 simulated sentinels · no published arcade inventory';}}
-  let dragging=false,lastX=0,rotation=0,zoom=74;
-  renderer.domElement.addEventListener('click',e=>{const bounds=renderer.domElement.getBoundingClientRect();pointer.set(((e.clientX-bounds.left)/bounds.width)*2-1,-((e.clientY-bounds.top)/bounds.height)*2+1);raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(supports,false);if(!hits.length)return;const info=hits[0].object.userData;const agent=info.agent;status.textContent=agent?info.name+' · agent '+agent.id+' · '+agent.state+' · '+agent.decision+' · observations '+agent.observation_count:info.name+' · simulated cabinet';host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:info.name,agent:agent||null}}));});
-  renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
-  renderer.domElement.addEventListener('pointerup',()=>dragging=false);
-  renderer.domElement.addEventListener('pointermove',e=>{if(dragging){rotation+=(e.clientX-lastX)*.006;lastX=e.clientX}});
-  renderer.domElement.addEventListener('wheel',e=>{zoom=Math.max(34,Math.min(135,zoom+Math.sign(e.deltaY)*5));e.preventDefault()},{passive:false});
-  let alive=true,raf=0;const clock=new THREE.Clock();
-  const observer=new ResizeObserver(()=>{const d=rect();if(d.w!==w||d.h!==h){w=d.w;h=d.h;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix()}});observer.observe(host);
-  const media=window.matchMedia('(prefers-reduced-motion: reduce)');
-  function frame(){if(!alive)return;raf=requestAnimationFrame(frame);const t=clock.getElapsedTime();core.rotation.y=t*.12;ring.rotation.z=t*.1;
-    coreGroup.rotation.y=rotation+(media.matches?0:t*.035);camera.position.z+=(zoom-camera.position.z)*.04;
-    renderer.render(scene,camera)}
-  await load();frame();
-  return {refresh:load,destroy(){alive=false;cancelAnimationFrame(raf);observer.disconnect();supports.forEach(x=>x.material.dispose());boxGeo.dispose();renderer.dispose();renderer.domElement.remove()}};
+export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
+ const label=document.createElement('div');label.style.cssText='position:absolute;left:12px;top:10px;z-index:2;background:#07131ddd;color:#d5fcf4;padding:7px 11px;border:1px solid #3c7980;border-radius:8px;font:12px system-ui;pointer-events:none;max-width:95%';label.textContent='FORMIC · loading repository cabinets';host.append(label);
+ let T;try{T=await import(THREE_URL)}catch(e){label.textContent='Three.js unavailable. 2D cabinet list remains accessible.';return}
+ const scene=new T.Scene();scene.background=new T.Color(0x07101d);
+ const camera=new T.PerspectiveCamera(48,1,.1,450);camera.position.set(0,19,46);camera.lookAt(0,2,0);
+ let renderer;try{renderer=new T.WebGLRenderer({antialias:true,powerPreference:'low-power'})}catch(e){label.textContent='WebGL unavailable. 2D cabinet list remains accessible.';return}
+ renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));host.prepend(renderer.domElement);
+ scene.add(new T.HemisphereLight(0xc6f5ff,0x18334c,2));
+ const light=new T.DirectionalLight(0xffffff,2.2);light.position.set(-12,28,24);scene.add(light);
+ const floor=new T.GridHelper(100,25,0x2b6375,0x153447);floor.position.y=-2;scene.add(floor);
+ const core=new T.Mesh(new T.IcosahedronGeometry(3.5,1),new T.MeshStandardMaterial({color:0x3cf0c6,emissive:0x126b6b,wireframe:true}));
+ core.position.set(0,5,-17);scene.add(core);
+ const ring=new T.Mesh(new T.TorusGeometry(5,.11,8,72),new T.MeshBasicMaterial({color:0xa48fff}));ring.position.copy(core.position);scene.add(ring);
+ const shells=[],materials=[],textures=[];const ray=new T.Raycaster(),mouse=new T.Vector2();
+ const shellGeo=new T.BoxGeometry(3.3,5.3,2.35),frontGeo=new T.PlaneGeometry(2.9,3.55);
+ const stateColors={ACTIVE:'#37ebc3',REST:'#93a5bc',REVIEW:'#ffc76a',RECOVERY:'#b99dff'};
+ const escapeName=s=>String(s||'repository').slice(0,32);
+ function thumbnail(row){
+  // Procedural per-repository art: clearly identifies a repo, not a screenshot.
+  const c=document.createElement('canvas');c.width=384;c.height=464;
+  const x=c.getContext('2d'),name=escapeName(row.name),state=row.state||'ACTIVE',accent=stateColors[state]||'#37ebc3';
+  const hue=Array.from(name).reduce((a,ch)=>a+ch.charCodeAt(0),0)%360;
+  const grad=x.createLinearGradient(0,0,384,464);grad.addColorStop(0,'hsl('+hue+',43%,19%)');grad.addColorStop(1,'#060b18');x.fillStyle=grad;x.fillRect(0,0,384,464);
+  x.strokeStyle=accent;x.lineWidth=7;x.strokeRect(12,12,360,440);
+  x.fillStyle=accent;x.font='bold 16px monospace';x.fillText('GITHUB · '+state,27,42);
+  // An individual geometric glyph derived from the repository name.
+  x.save();x.translate(192,182);x.rotate(hue*Math.PI/180);x.strokeStyle=accent;x.lineWidth=5;
+  for(let i=0;i<5;i++){x.rotate(Math.PI/5);x.strokeRect(-54,-54,108,108)}x.restore();
+  x.fillStyle='#e5fbff';x.font='bold 28px system-ui';
+  const words=name.match(/.{1,18}/g)||[name];words.slice(0,2).forEach((v,i)=>x.fillText(v,26,333+i*34));
+  x.font='15px monospace';x.fillStyle='#a8d7e4';x.fillText(row.agent_id?'AGENT '+row.agent_id.slice(0,15):'AGENT · UNBOUND',26,414);
+  const texture=new T.CanvasTexture(c);texture.colorSpace=T.SRGBColorSpace;textures.push(texture);return texture;
+ }
+ let rows=[],agents=new Map();
+ function clear(){for(const o of shells)scene.remove(o);shells.length=0;for(const m of materials)m.dispose();materials.length=0;for(const t of textures)t.dispose();textures.length=0}
+ function fill(input,source){
+  clear();rows=input.slice(0,450);
+  const columns=11,spacing=4.6,depth=7.7;
+  rows.forEach((row,i)=>{
+   const ix=i%columns,iz=Math.floor(i/columns),x=(ix-(columns-1)/2)*spacing,z=3-iz*depth;
+   const color=new T.Color(stateColors[row.state]||'#37ebc3');
+   const bodyMat=new T.MeshStandardMaterial({color:0x152d3b,metalness:.45,roughness:.38,emissive:color,emissiveIntensity:.12});materials.push(bodyMat);
+   const shell=new T.Mesh(shellGeo,bodyMat);shell.position.set(x,.75,z);shell.userData=row;scene.add(shell);shells.push(shell);
+   const screenMat=new T.MeshBasicMaterial({map:thumbnail(row),side:T.DoubleSide});materials.push(screenMat);
+   const face=new T.Mesh(frontGeo,screenMat);face.position.set(x,1.1,z+1.195);face.userData=row;scene.add(face);shells.push(face);
+  });
+  label.textContent=rows.length+' repository cabinets · '+source+' · select a thumbnail to inspect';
+ }
+ async function load(){
+  try{
+   const response=await fetch(dataUrl+'?t='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw Error('snapshot HTTP '+response.status);
+   const data=await response.json();
+   if(!data.complete||!Array.isArray(data.cabinets)||!data.cabinets.length)throw Error('missing inventory');
+   agents=new Map((data.agents||[]).map(a=>[a.cabinet,a]));
+   fill(data.cabinets.map(c=>({...c,agent_id:c.agent_id||agents.get(c.name)?.id})), 'persistent inventory');return;
+  }catch(e){}
+  try{
+   const response=await fetch('https://api.github.com/users/DavidWise01/repos?type=public&sort=full_name&per_page=100',{headers:{Accept:'application/vnd.github+json'}});
+   if(!response.ok)throw Error('GitHub HTTP '+response.status);
+   const repos=await response.json();if(!Array.isArray(repos)||!repos.length)throw Error('empty');
+   fill(repos.map(r=>({name:r.name,url:r.html_url,state:r.archived?'REST':'ACTIVE',agent_id:null})), 'live public GitHub sample (up to 100)');
+  }catch(e){label.textContent='Repository inventory unavailable; no synthetic cabinets presented.'}
+ }
+ renderer.domElement.addEventListener('click',event=>{
+  const box=renderer.domElement.getBoundingClientRect();
+  mouse.set(((event.clientX-box.left)/box.width)*2-1,-((event.clientY-box.top)/box.height)*2+1);
+  ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(shells)[0];if(!hit)return;
+  const r=hit.object.userData;const agent=agents.get(r.name)||null;
+  label.textContent=r.name+' · '+r.state+(agent?' · '+agent.id:' · agent not yet published');
+  host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:r.name,agent,url:r.url||null}}));
+ });
+ let yaw=0,zoom=46,drag=false,startX=0,downX=0;
+ renderer.domElement.addEventListener('pointerdown',e=>{drag=true;startX=downX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
+ renderer.domElement.addEventListener('pointerup',()=>{drag=false});
+ renderer.domElement.addEventListener('pointermove',e=>{if(drag){yaw=Math.max(-.7,Math.min(.7,yaw+(e.clientX-startX)*.003));startX=e.clientX}});
+ renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(17,Math.min(110,zoom+Math.sign(e.deltaY)*4))},{passive:false});
+ const resize=()=>{const w=Math.max(320,host.clientWidth),h=Math.max(280,host.clientHeight);renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix()};
+ const observer=new ResizeObserver(resize);observer.observe(host);resize();
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');let alive=true;
+ function animate(t){if(!alive)return;requestAnimationFrame(animate);const tick=t*.001;
+  if(!reduced.matches){core.rotation.y=tick*.18;ring.rotation.z=tick*.1}
+  camera.position.set(Math.sin(yaw)*zoom,Math.max(9,zoom*.40),Math.cos(yaw)*zoom);
+  camera.lookAt(0,1,-7);renderer.render(scene,camera)}
+ await load();requestAnimationFrame(animate);
+ return {refresh:load,destroy(){alive=false;observer.disconnect();clear();shellGeo.dispose();frontGeo.dispose();renderer.dispose();renderer.domElement.remove()}};
 }
