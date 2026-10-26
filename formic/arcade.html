@@ -65,8 +65,13 @@ $('query').oninput=draw;$('filter').onchange=draw;$('reload').onclick=load;load(
 </script><script>
 document.getElementById('formic-three').addEventListener('formic-cabinet-selected',event=>{
 const panel=document.getElementById('agent-inspector');panel.replaceChildren();
+const pages=event.detail.pagesUrl,source=event.detail.url;
+const links=document.createElement('p');
+if(pages){const a=document.createElement('a');a.href=pages;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open GitHub Pages';links.append(a)}
+if(source){const a=document.createElement('a');a.href=source;a.target='_blank';a.rel='noopener noreferrer';a.textContent=(pages?' · ':'')+'Source repository';links.append(a)}
+panel.append(links);
 const a=event.detail.agent;
-if(!a){const u=event.detail.url;panel.textContent='Public repository observed; persisted agent record not available yet. ';if(u){const link=document.createElement('a');link.href=u;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open repository';panel.append(link)}return;}
+if(!a){const u=event.detail.url;const note=document.createElement('p');note.textContent='Public repository observed; persisted agent record not available yet.';panel.append(note);if(u){const link=document.createElement('a');link.href=u;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open repository';panel.append(link)}return;}
 const heading=document.createElement('h3');heading.textContent=a.cabinet+' · '+a.id;
 const line=document.createElement('p');line.textContent=a.state+' / '+a.mode+' / HEGEMON '+a.decision+' / observations '+a.observation_count;
 panel.append(heading,line);const route=event.detail.route;if(route){const p=document.createElement('p');p.textContent='DIASPORA '+route.state+' · '+route.route.join(' → ')+' · checksum '+route.checksum.slice(0,16);panel.append(p)}
