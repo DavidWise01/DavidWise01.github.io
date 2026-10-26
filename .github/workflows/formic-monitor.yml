@@ -32,6 +32,8 @@ jobs:
         run: |
           python3 scripts/formic_monitor.py
           python3 scripts/formic_arcade.py
+          test -s formic/arcade.json
+          python3 -m json.tool formic/arcade.json > /dev/null
       - name: Commit bounded public evidence
         run: |
           git config user.name "formic-observer[bot]"
