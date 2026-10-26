@@ -11,6 +11,7 @@ from formic_heartbeat import heartbeat
 from formic_rhythm import rhythm
 from formic_phase import phase
 from formic_diodic import close_cycle
+from formic_feedback import feedback
 
 ROOT=Path(__file__).resolve().parents[1]
 DEST=ROOT/"formic"/"arcade.json"
@@ -105,6 +106,7 @@ def main():
             "phase":phase(rhythm_state["samples"]),
             "heartbeat":heartbeat(cabinets,old,now),
             "scope":"Public repository metadata only. No code execution, scans, vulnerability claims, or automatic actions."}
+    report["feedback"]=feedback(report,old)
     report["diodic"]=close_cycle(report,old)
     DEST.parent.mkdir(parents=True,exist_ok=True)
     DEST.write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
