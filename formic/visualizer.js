@@ -35,7 +35,7 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
   x.font='15px monospace';x.fillStyle='#a8d7e4';x.fillText(row.agent_id?'AGENT '+row.agent_id.slice(0,15):'AGENT · UNBOUND',26,414);
   const texture=new T.CanvasTexture(c);texture.colorSpace=T.SRGBColorSpace;textures.push(texture);return texture;
  }
- let rows=[],agents=new Map();
+ let rows=[],agents=new Map(),diaspora=new Map();
  function clear(){for(const o of shells)scene.remove(o);shells.length=0;for(const o of wiring){scene.remove(o);o.geometry.dispose();o.material.dispose()}wiring.length=0;for(const m of materials)m.dispose();materials.length=0;for(const t of textures)t.dispose();textures.length=0}
  // FORMIC SILO: 4 cabinet sites, 1 coupler, repeated four times.
  // Each module houses 16 cabinets; additional modules are adjacent silos.
@@ -70,6 +70,7 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
     for(let pos=0;pos<4;pos++){
      const index=silo*PER_SILO+tier*4+pos;if(index>=rows.length)continue;
      const row=rows[index],x=baseX+(pos-1.5)*spacing,z=baseZ;
+     const route=diaspora.get(row.name);
      const color=new T.Color(stateColors[row.state]||'#37ebc3');
      const mat=new T.MeshStandardMaterial({color:0x152d3b,metalness:.4,roughness:.4,emissive:color,emissiveIntensity:.16});
      materials.push(mat);
@@ -77,7 +78,7 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
      const screenMat=new T.MeshBasicMaterial({map:thumbnail(row),side:T.DoubleSide});materials.push(screenMat);
      const face=new T.Mesh(frontGeo,screenMat);face.position.set(x,y+.25,z+1.2);face.userData=row;scene.add(face);shells.push(face);
      // Cabinet agent port -> tier riser -> FORMIC central uplink.
-     addWire([{x,y,z:-0+baseZ-1.5},{x,y,z:trunkZ},{x:trunkX,y,z:trunkZ}],color,.28);
+     addWire([{x,y,z:baseZ-1.5},{x,y,z:trunkZ},{x:trunkX,y,z:trunkZ}],route&&route.state==='HOLD'?0xff6b86:color,route?.state==='HOLD'?.85:.28);
     }
     if(tier<3){
      const junction={x:trunkX,y:y+shelfHeight/2,z:trunkZ};
@@ -92,7 +93,7 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
   // Bring the first silo into the frame rather than showing an empty upper void.
   const centerX=0,centerY=ground+1.5*shelfHeight;
   focus.set(centerX,centerY,0);
-  label.textContent=rows.length+' repository cabinets · '+siloCount+' silo(s) · '+source+' · 4×1×4×1×4×1×4';
+  label.textContent=rows.length+' repository cabinets · '+siloCount+' silo(s) · '+source+' · DIASPORA 1:1 · 4×1×4×1×4×1×4';
  }
  async function load(){
   try{
@@ -101,6 +102,7 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
    const data=await response.json();
    if(!data.complete||!Array.isArray(data.cabinets)||!data.cabinets.length)throw Error('missing inventory');
    agents=new Map((data.agents||[]).map(a=>[a.cabinet,a]));
+   diaspora=new Map((data.diaspora?.links||[]).map(link=>[link.cabinet,link]));
    fill(data.cabinets.map(c=>({...c,agent_id:c.agent_id||agents.get(c.name)?.id})), 'persistent inventory');return;
   }catch(e){}
   try{
@@ -116,7 +118,7 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
   ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(shells)[0];if(!hit)return;
   const r=hit.object.userData;const agent=agents.get(r.name)||null;
   label.textContent=r.name+' · '+r.state+(agent?' · '+agent.id:' · agent not yet published');
-  host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:r.name,agent,url:r.url||null}}));
+  host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:r.name,agent,route:diaspora.get(r.name)||null,url:r.url||null}}));
  });
  let yaw=0,zoom=94,drag=false,startX=0,downX=0;
  renderer.domElement.addEventListener('pointerdown',e=>{drag=true;startX=downX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
