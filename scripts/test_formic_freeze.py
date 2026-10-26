@@ -7,6 +7,7 @@ from formic_grid import build_grid
 from formic_rhythm import rhythm
 from formic_phase import phase
 from formic_agents import bind_agents
+from formic_diaspora import build_diaspora
 
 class FormicFreezeTest(unittest.TestCase):
     def test_feedback_hysteresis(self):
@@ -39,6 +40,17 @@ class FormicFreezeTest(unittest.TestCase):
         self.assertTrue(all(a["execute"] is False for a in agents))
         self.assertTrue(all(len(a["witnesses"])==3 for a in agents))
         self.assertEqual(agents[0]["id"],bind_agents(cabinets,{}, "2026-10-27T00:00:00Z")[0]["id"])
+
+    def test_diaspora_1_to_1(self):
+        c=[{"name":"ud0","url":"https://github.com/DavidWise01/ud0","state":"ACTIVE","circuit":"CORE"}]
+        a=bind_agents(c,{},"2026-10-26T00:00:00Z")
+        result=build_diaspora(c,a,"2026-10-26T00:00:00Z")
+        self.assertEqual(result["integrity"],"PASS")
+        self.assertEqual(len(result["links"]),1)
+        self.assertFalse(result["execute"])
+        broken=build_diaspora(c,[],"2026-10-26T00:00:00Z")
+        self.assertEqual(broken["integrity"],"HOLD")
+        self.assertIn("agent_cardinality_mismatch",broken["faults"][0]["errors"])
 
     def test_observational_engines(self):
         items=[{"name":"ud0","state":"ACTIVE","archived":False,"fork":False},
