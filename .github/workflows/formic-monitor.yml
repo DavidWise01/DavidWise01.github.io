@@ -3,6 +3,12 @@ on:
   schedule:
     - cron: '17 * * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/formic_*.py'
+      - 'scripts/test_formic_freeze.py'
+      - '.github/workflows/formic-monitor.yml'
 permissions:
   contents: write
 concurrency:
