@@ -19,15 +19,24 @@ def request(page):
     with urllib.request.urlopen(req,timeout=20) as response:
         return json.load(response)
 
-def health(r,prior):
+def health(r, prior):
+    """Descriptive lifecycle, not a statement of security or a mutation."""
     reasons=[]
-    if r.get("archived"): reasons.append("archived")
-    if r.get("disabled"): reasons.append("disabled")
+    if r.get("disabled"): reasons.append("repository_disabled")
     if not r.get("default_branch"): reasons.append("no_default_branch")
-    if prior and r.get("default_branch") != prior.get("default_branch"): reasons.append("branch_changed")
-    if prior and r.get("visibility") != prior.get("visibility"): reasons.append("visibility_changed")
-    if reasons: return "REVIEW",reasons
-    return "OBSERVED",[]
+    if prior and r.get("default_branch") != prior.get("default_branch"):
+        reasons.append("branch_changed")
+    if prior and r.get("visibility") != prior.get("visibility"):
+        reasons.append("visibility_changed")
+    if prior and r.get("archived") != prior.get("archived"):
+        reasons.append("archive_state_changed")
+    if reasons:
+        return "REVIEW", reasons
+    if prior and prior.get("state") == "REVIEW":
+        return "RECOVERY", ["prior_review_no_longer_observed"]
+    if r.get("archived"):
+        return "REST", ["intentionally_archived_or_preserved"]
+    return "ACTIVE", []
 
 def main():
     now=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
@@ -62,10 +71,10 @@ def main():
     changed=[{"name":r["name"],"reasons":r["reasons"]} for r in cabinets if r["reasons"]]
     removed=sorted(set(previous)-names) if old.get("complete") else []
     if removed: changed.append({"name":"[absent from new public inventory]","reasons":["previously_public_now_not_listed"],"count":len(removed)})
-    report={"schema":"formic-arcade-v1","generated_at":now,"owner":OWNER,"complete":complete,
-            "cabinet_count":len(cabinets),"observed":sum(r["state"]=="OBSERVED" for r in cabinets),
+    report={"schema":"formic-arcade-v2","generated_at":now,"owner":OWNER,"complete":complete,
+            "cabinet_count":len(cabinets),"observed":sum(r["state"] in ("ACTIVE","REST","RECOVERY") for r in cabinets),\n            "lifecycle_counts":{k:sum(r["state"]==k for r in cabinets) for k in ("ACTIVE","REST","REVIEW","RECOVERY")},
             "review":sum(r["state"]=="REVIEW" for r in cabinets),
-            "changes":changed[:75],"previous_public_names_not_listed":removed[:75],
+            "changes":changed[:75],\n            "transitions":[{"name":r["name"],"from":previous[r["name"]].get("state"),"to":r["state"],"at":now,"evidence":r["reasons"]} for r in cabinets if r["name"] in previous and previous[r["name"]].get("state") != r["state"]][:100],"previous_public_names_not_listed":removed[:75],
             "cabinets":cabinets,
             "scope":"Public repository metadata only. No code execution, scans, vulnerability claims, or automatic actions."}
     DEST.parent.mkdir(parents=True,exist_ok=True)
