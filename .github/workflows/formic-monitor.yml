@@ -27,6 +27,8 @@ jobs:
           python3 -m compileall -q scripts
           python3 -m unittest discover -s scripts -p 'test_formic_freeze.py' -v
       - name: Observe public perimeter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python3 scripts/formic_monitor.py
           python3 scripts/formic_arcade.py
