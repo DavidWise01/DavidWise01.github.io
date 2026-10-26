@@ -8,6 +8,7 @@ import urllib.error
 import os
 from formic_grid import build_grid
 from formic_heartbeat import heartbeat
+from formic_rhythm import rhythm
 
 ROOT=Path(__file__).resolve().parents[1]
 DEST=ROOT/"formic"/"arcade.json"
@@ -88,6 +89,7 @@ def main():
         tunnels.append({"cabinet":r["name"],"state":r["state"],"decision":"HOLD",
                         "recommendation":action,"execute":False,"witnesses":witnesses,
                         "observed_at":now,"boundary":"Human review; no automated mutation"})
+    grid=build_grid(cabinets)
     report={"schema":"formic-arcade-v2","generated_at":now,"owner":OWNER,"complete":complete,
             "cabinet_count":len(cabinets),"observed":sum(r["state"] in ("ACTIVE","REST","RECOVERY") for r in cabinets),
             "lifecycle_counts":{k:sum(r["state"]==k for r in cabinets) for k in ("ACTIVE","REST","REVIEW","RECOVERY")},
@@ -95,7 +97,8 @@ def main():
             "changes":changed[:75],
             "transitions":[{"name":r["name"],"from":previous[r["name"]].get("state"),"to":r["state"],"at":now,"evidence":r["reasons"]} for r in cabinets if r["name"] in previous and previous[r["name"]].get("state") != r["state"]][:100],"previous_public_names_not_listed":removed[:75],
             "cabinets":cabinets,"maintenance_tunnels":tunnels[:100],
-            "power_grid":build_grid(cabinets),
+            "power_grid":grid,
+            "rhythm":rhythm(cabinets,old,now),
             "heartbeat":heartbeat(cabinets,old,now),
             "scope":"Public repository metadata only. No code execution, scans, vulnerability claims, or automatic actions."}
     DEST.parent.mkdir(parents=True,exist_ok=True)
