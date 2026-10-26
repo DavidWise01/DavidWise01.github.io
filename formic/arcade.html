@@ -65,7 +65,7 @@ $('query').oninput=draw;$('filter').onchange=draw;$('reload').onclick=load;load(
 document.getElementById('formic-three').addEventListener('formic-cabinet-selected',event=>{
 const panel=document.getElementById('agent-inspector');panel.replaceChildren();
 const a=event.detail.agent;
-if(!a){panel.textContent='Simulated cabinet: no published agent identity yet.';return;}
+if(!a){const u=event.detail.url;panel.textContent='Public repository observed; persisted agent record not available yet. ';if(u){const link=document.createElement('a');link.href=u;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open repository';panel.append(link)}return;}
 const heading=document.createElement('h3');heading.textContent=a.cabinet+' · '+a.id;
 const line=document.createElement('p');line.textContent=a.state+' / '+a.mode+' / HEGEMON '+a.decision+' / observations '+a.observation_count;
 panel.append(heading,line);
