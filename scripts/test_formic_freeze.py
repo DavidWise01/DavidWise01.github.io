@@ -8,6 +8,7 @@ from formic_rhythm import rhythm
 from formic_phase import phase
 from formic_agents import bind_agents
 from formic_diaspora import build_diaspora
+from formic_exchange import exchange
 
 class FormicFreezeTest(unittest.TestCase):
     def test_feedback_hysteresis(self):
@@ -51,6 +52,19 @@ class FormicFreezeTest(unittest.TestCase):
         broken=build_diaspora(c,[],"2026-10-26T00:00:00Z")
         self.assertEqual(broken["integrity"],"HOLD")
         self.assertIn("agent_cardinality_mismatch",broken["faults"][0]["errors"])
+
+    def test_diaspora_idea_exchange(self):
+        cabinets=[{"name":"ud0","url":"https://github.com/DavidWise01/ud0",
+                   "state":"ACTIVE","pages_url":"https://davidwise01.github.io/ud0/"},
+                  {"name":"az1","url":"https://github.com/DavidWise01/az1",
+                   "state":"REVIEW","pages_url":None}]
+        agents=bind_agents(cabinets,{},"2026-10-26T00:00:00Z")
+        mesh=build_diaspora(cabinets,agents,"2026-10-26T00:00:00Z")
+        ideas=exchange(cabinets,agents,mesh,"2026-10-26T00:00:00Z")
+        self.assertEqual(ideas["idea_count"],2)
+        self.assertFalse(ideas["autonomous_writes"])
+        self.assertTrue(all(not p["implementation"]["write"] for p in ideas["proposals"]))
+        self.assertEqual(len({p["id"] for p in ideas["proposals"]}),2)
 
     def test_observational_engines(self):
         items=[{"name":"ud0","state":"ACTIVE","archived":False,"fork":False},
