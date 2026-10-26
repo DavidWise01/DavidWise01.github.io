@@ -7,6 +7,7 @@ import urllib.request
 import urllib.error
 import os
 from formic_grid import build_grid
+from formic_heartbeat import heartbeat
 
 ROOT=Path(__file__).resolve().parents[1]
 DEST=ROOT/"formic"/"arcade.json"
@@ -95,6 +96,7 @@ def main():
             "transitions":[{"name":r["name"],"from":previous[r["name"]].get("state"),"to":r["state"],"at":now,"evidence":r["reasons"]} for r in cabinets if r["name"] in previous and previous[r["name"]].get("state") != r["state"]][:100],"previous_public_names_not_listed":removed[:75],
             "cabinets":cabinets,"maintenance_tunnels":tunnels[:100],
             "power_grid":build_grid(cabinets),
+            "heartbeat":heartbeat(cabinets,old,now),
             "scope":"Public repository metadata only. No code execution, scans, vulnerability claims, or automatic actions."}
     DEST.parent.mkdir(parents=True,exist_ok=True)
     DEST.write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
