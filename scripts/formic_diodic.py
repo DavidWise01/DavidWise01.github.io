@@ -16,11 +16,12 @@ def close_cycle(report, prior):
         {"id":"B","role":"continuity","finding":"review flags: "+str(report["review"])},
         {"id":"C","role":"provenance","finding":"public GitHub API; not an intrusion attestation"}
     ]
-    decision="HOLD" if report["review"] else "YES_OBSERVE"
+    damping=report.get("feedback",{})
+    decision="HOLD" if damping.get("state") != "OBSERVE" else "YES_OBSERVE"
     output={"gate":"FORMIC_OUT","at":stamp,"decision":decision,
             "execute":False,"outcome":"observation recorded; no firewall or repository mutation"}
     frame={"schema":"formic-diodic-v1","ingress":incoming,
-           "witnesses":witnesses,"hegemons_decision":decision,"egress":output,
+           "witnesses":witnesses,"hegemons_decision":decision,"feedback":damping,"egress":output,
            "boundary":"Every cycle begins and ends with FORMIC; evidence is not authority to execute"}
     frame["digest"]=hashlib.sha256(canonical(frame).encode("utf-8")).hexdigest()
     return frame
