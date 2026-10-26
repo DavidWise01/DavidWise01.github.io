@@ -1,0 +1,44 @@
+name: FORMIC Pages publication
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'formic/**'
+      - 'index.html'
+      - '.github/workflows/formic-pages.yml'
+  workflow_run:
+    workflows: ["FORMIC persistent public perimeter observer"]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: formic-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - name: Verify publication inputs
+        run: |
+          test -s index.html
+          test -s formic/index.html
+          test -s formic/arcade.html
+          if test -f formic/arcade.json && ! test -s formic/arcade.json; then
+            echo "::warning::Arcade snapshot is empty; UI must label data unavailable."
+          fi
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
