@@ -15,11 +15,11 @@ input{min-width:200px;flex:1}.stats{display:flex;gap:16px;flex-wrap:wrap}.stats 
 .cabinet strong{overflow-wrap:anywhere;display:block}.cabinet small{color:#afc7d4}
 .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
 .links a{font-size:13px}.amber{color:#ffd08a}.bad{color:#ff899b}
-</style></head><body><header><div class="muted">ROOT0 / FORMIC / HEGEMON</div><h1>DIASPORA MESH</h1>
-<p class="muted">Repository → one cabinet → one witness agent → verified or declared GitHub Pages destination. Read-only.</p>
+</style></head><body><header><div class="muted">ROOT0 / FORMIC / HEGEMON</div><h1>REPOSITORY HUB</h1>
+<p class="muted">All public repositories in one searchable hub. Open each GitHub Pages site or its source repository.</p>
 <nav><a href="./">FORMIC Cortex</a> · <a href="./arcade.html">Silo Arcade</a> · <a href="https://github.com/DavidWise01">GitHub source</a></nav></header>
 <main><section class="stats panel"><span>Repositories: <b id="count">—</b></span><span>Agents: <b id="agents">—</b></span><span>Mesh: <b id="integrity">Waiting</b></span><span>Origin: <b id="origin">—</b></span></section>
-<section id="scene" aria-label="Interactive 3D silo mesh"></section>
+<details><summary style="cursor:pointer;padding:12px;color:#74efcf">Optional 3D cabinet view</summary><section id="scene" aria-label="Interactive 3D silo mesh"></section></details>
 <div class="bar"><input id="search" aria-label="Search repositories" placeholder="Find repository or Pages site…"><select id="filter" aria-label="Filter"><option value="all">All cabinets</option><option value="pages">Pages linked</option><option value="missing">Pages unverified</option><option value="review">Review / Recovery</option></select><button id="refresh">Reload public inventory</button></div>
 <section id="selected" class="panel">Select a cabinet in 3D or use the cards below. Links open only when you click them.</section>
 <section id="list" class="grid" aria-label="Repository cabinets"></section>
@@ -51,7 +51,7 @@ function display(){
  &&(filter==='all'||filter==='pages'&&page||filter==='missing'&&!page||filter==='review'&&['REVIEW','RECOVERY'].includes(r.state));
  });const grid=$('list');grid.replaceChildren();
  const frag=document.createDocumentFragment();
- for(const r of rows.slice(0,1000)){
+ for(const r of rows){
  const c=document.createElement('article');c.className='cabinet';
  const art=document.createElement('div');art.className='poster';art.textContent='◈';c.append(art);
  const h=document.createElement('strong');h.textContent=r.name;c.append(h);
@@ -60,7 +60,7 @@ function display(){
  const p=anchor(pages(r),'GitHub Pages');if(p)links.append(p);
  const src=anchor(r.url,'Source');if(src)links.append(src);
  const btn=document.createElement('button');btn.textContent='Inspect';btn.addEventListener('click',()=>openDetail(r));links.append(btn);c.append(links);frag.append(c);
- }grid.append(frag);$('note').textContent=rows.length+' matching repositories. '+(rows.length>1000?'Showing first 1000.':'');
+ }grid.append(frag);$('note').textContent=rows.length+' matching repositories.';
 }
 async function load(){
  $('note').textContent='Loading public metadata…';let source='published snapshot';
@@ -81,5 +81,6 @@ async function load(){
 }
 $('search').addEventListener('input',display);$('filter').addEventListener('change',display);$('refresh').addEventListener('click',async()=>{await load();if(renderer?.refresh)await renderer.refresh()});
 $('scene').addEventListener('formic-cabinet-selected',e=>{const r=inventory.find(x=>x.name===e.detail.cabinet);if(r)openDetail(r)});
-renderer=await mountFormic3D($('scene'));await load();
+await load();
+const details=document.querySelector('details');details.addEventListener('toggle',async()=>{if(details.open&&!renderer)renderer=await mountFormic3D($('scene'))});
 </script></body></html>
