@@ -14,6 +14,7 @@ from formic_diodic import close_cycle
 from formic_feedback import feedback
 from formic_agents import bind_agents
 from formic_diaspora import build_diaspora
+from formic_exchange import exchange
 
 ROOT=Path(__file__).resolve().parents[1]
 DEST=ROOT/"formic"/"arcade.json"
@@ -126,6 +127,7 @@ def main():
             "heartbeat":heartbeat(cabinets,old,now),
             "scope":"Public repository metadata only. No code execution, scans, vulnerability claims, or automatic actions."}
     report["diaspora"]=build_diaspora(cabinets,agents,now)
+    report["exchange"]=exchange(cabinets,agents,report["diaspora"],now)
     report["feedback"]=feedback(report,old)
     report["diodic"]=close_cycle(report,old)
     DEST.parent.mkdir(parents=True,exist_ok=True)
