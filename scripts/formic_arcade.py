@@ -71,11 +71,28 @@ def main():
     changed=[{"name":r["name"],"reasons":r["reasons"]} for r in cabinets if r["reasons"]]
     removed=sorted(set(previous)-names) if old.get("complete") else []
     if removed: changed.append({"name":"[absent from new public inventory]","reasons":["previously_public_now_not_listed"],"count":len(removed)})
+    tunnels=[]
+    for r in cabinets:
+        if r["state"] not in ("REVIEW","RECOVERY"): continue
+        reason=r["reasons"]
+        action=("Inspect changed metadata and compare against intended configuration"
+                if r["state"]=="REVIEW" else
+                "Observe next completed cycle before declaring stable")
+        witnesses=[
+            {"id":"A","role":"inventory","finding":"Public cabinet present in completed inventory","evidence":r["url"]},
+            {"id":"B","role":"continuity","finding":", ".join(reason) or "No current metadata deviation","evidence":now},
+            {"id":"C","role":"provenance","finding":"GitHub API public metadata snapshot; not a host security scan","evidence":now}
+        ]
+        tunnels.append({"cabinet":r["name"],"state":r["state"],"decision":"HOLD",
+                        "recommendation":action,"execute":False,"witnesses":witnesses,
+                        "observed_at":now,"boundary":"Human review; no automated mutation"})
     report={"schema":"formic-arcade-v2","generated_at":now,"owner":OWNER,"complete":complete,
-            "cabinet_count":len(cabinets),"observed":sum(r["state"] in ("ACTIVE","REST","RECOVERY") for r in cabinets),\n            "lifecycle_counts":{k:sum(r["state"]==k for r in cabinets) for k in ("ACTIVE","REST","REVIEW","RECOVERY")},
+            "cabinet_count":len(cabinets),"observed":sum(r["state"] in ("ACTIVE","REST","RECOVERY") for r in cabinets),
+            "lifecycle_counts":{k:sum(r["state"]==k for r in cabinets) for k in ("ACTIVE","REST","REVIEW","RECOVERY")},
             "review":sum(r["state"]=="REVIEW" for r in cabinets),
-            "changes":changed[:75],\n            "transitions":[{"name":r["name"],"from":previous[r["name"]].get("state"),"to":r["state"],"at":now,"evidence":r["reasons"]} for r in cabinets if r["name"] in previous and previous[r["name"]].get("state") != r["state"]][:100],"previous_public_names_not_listed":removed[:75],
-            "cabinets":cabinets,
+            "changes":changed[:75],
+            "transitions":[{"name":r["name"],"from":previous[r["name"]].get("state"),"to":r["state"],"at":now,"evidence":r["reasons"]} for r in cabinets if r["name"] in previous and previous[r["name"]].get("state") != r["state"]][:100],"previous_public_names_not_listed":removed[:75],
+            "cabinets":cabinets,"maintenance_tunnels":tunnels[:100],
             "scope":"Public repository metadata only. No code execution, scans, vulnerability claims, or automatic actions."}
     DEST.parent.mkdir(parents=True,exist_ok=True)
     DEST.write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
