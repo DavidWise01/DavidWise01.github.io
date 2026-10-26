@@ -20,7 +20,8 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
  function thumbnail(row){
   // Procedural per-repository art: clearly identifies a repo, not a screenshot.
   const c=document.createElement('canvas');c.width=192;c.height=232;
-  const x=c.getContext('2d');x.scale(.5,.5);name=escapeName(row.name),state=row.state||'ACTIVE',accent=stateColors[state]||'#37ebc3';
+  const x=c.getContext('2d');x.scale(.5,.5);
+  const name=escapeName(row.name),state=row.state||'ACTIVE',accent=stateColors[state]||'#37ebc3';
   const hue=Array.from(name).reduce((a,ch)=>a+ch.charCodeAt(0),0)%360;
   const grad=x.createLinearGradient(0,0,384,464);grad.addColorStop(0,'hsl('+hue+',43%,19%)');grad.addColorStop(1,'#060b18');x.fillStyle=grad;x.fillRect(0,0,384,464);
   x.strokeStyle=accent;x.lineWidth=7;x.strokeRect(12,12,360,440);
