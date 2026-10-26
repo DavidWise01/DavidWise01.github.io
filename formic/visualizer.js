@@ -19,7 +19,8 @@ export async function mountFormic3D(host,{mode='arcade',dataUrl='./arcade.json'}
   coreGroup.add(core);
   const ring=new THREE.Mesh(new THREE.TorusGeometry(14,.27,10,90),new THREE.MeshStandardMaterial({color:0x8a8aff,emissive:0x3b2a99,emissiveIntensity:.7}));
   ring.rotation.x=1;coreGroup.add(ring);
-  const supports=[];let cabinets=[];
+  const supports=[];let cabinets=[];let agentsByCabinet=new Map();
+  const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
   const boxGeo=new THREE.BoxGeometry(1.9,2.9,1.4),colors={ACTIVE:0x4ce4bc,REST:0x607f98,REVIEW:0xffba6b,RECOVERY:0xb39bff};
   function populate(rows){
     supports.forEach(o=>{scene.remove(o);o.material.dispose()});supports.length=0;
@@ -31,7 +32,8 @@ export async function mountFormic3D(host,{mode='arcade',dataUrl='./arcade.json'}
       const radius=21+ringN*5.3,y=((i%9)-4)*.3-6+Math.floor(i/360)*3;
       const mat=new THREE.MeshStandardMaterial({color:colors[r.state]||0x4ce4bc,emissive:colors[r.state]||0x4ce4bc,emissiveIntensity:.18,metalness:.3,roughness:.4});
       const mesh=new THREE.Mesh(boxGeo,mat);mesh.position.set(Math.cos(angle)*radius,y,Math.sin(angle)*radius);
-      mesh.rotation.y=-angle;mesh.userData={name:r.name,state:r.state,url:r.url};scene.add(mesh);supports.push(mesh);
+      mesh.rotation.y=-angle;mesh.userData={name:r.name,state:r.state,url:r.url,agent:agentsByCabinet.get(r.name)};scene.add(mesh);supports.push(mesh);
+      const dot=new THREE.Mesh(new THREE.SphereGeometry(.48,7,6),new THREE.MeshBasicMaterial({color:0xe6f7ff}));dot.position.set(mesh.position.x,mesh.position.y+2.2,mesh.position.z);dot.userData=mesh.userData;scene.add(dot);supports.push(dot);
     });
     status.textContent=(n?n+' visible repository cabinets':'27 FORMIC sentinels')+' · Three.js · visualization only';
   }
@@ -39,11 +41,12 @@ export async function mountFormic3D(host,{mode='arcade',dataUrl='./arcade.json'}
     const r=await fetch(dataUrl+(dataUrl.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});
     if(!r.ok)throw Error('HTTP '+r.status);
     const obj=await r.json();if(!obj.complete||!Array.isArray(obj.cabinets))throw Error('incomplete');
-    populate(obj.cabinets);
+    agentsByCabinet=new Map((obj.agents||[]).map(a=>[a.cabinet,a]));populate(obj.cabinets);
   }catch(e){status.textContent='Live cabinet inventory unavailable — showing simulated hive.';
     const fallback=Array.from({length:27},(_,i)=>({name:'FORMIC '+(i+1),state:'ACTIVE'}));populate(fallback);
     status.textContent='27 simulated sentinels · no published arcade inventory';}}
   let dragging=false,lastX=0,rotation=0,zoom=74;
+  renderer.domElement.addEventListener('click',e=>{const bounds=renderer.domElement.getBoundingClientRect();pointer.set(((e.clientX-bounds.left)/bounds.width)*2-1,-((e.clientY-bounds.top)/bounds.height)*2+1);raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(supports,false);if(!hits.length)return;const info=hits[0].object.userData;const agent=info.agent;status.textContent=agent?info.name+' · agent '+agent.id+' · '+agent.state+' · '+agent.decision+' · observations '+agent.observation_count:info.name+' · simulated cabinet';host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:info.name,agent:agent||null}}));});
   renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
   renderer.domElement.addEventListener('pointerup',()=>dragging=false);
   renderer.domElement.addEventListener('pointermove',e=>{if(dragging){rotation+=(e.clientX-lastX)*.006;lastX=e.clientX}});
