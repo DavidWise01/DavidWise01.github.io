@@ -119,9 +119,9 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
   const r=hit.object.userData;const agent=agents.get(r.name)||null;
   const known={'ud0':'https://davidwise01.github.io/ud0/','az1':'https://davidwise01.github.io/az1/','DavidWise01.github.io':'https://davidwise01.github.io/'};
   const pagesUrl=r.pages_url||known[r.name]||null;
-  label.textContent=r.name+' · '+r.state+(pagesUrl?' · opening GitHub Pages':' · Pages URL unverified')+(agent?' · '+agent.id:'');
+  label.textContent=r.name+' · '+r.state+(pagesUrl?' · Pages link in inspector':' · Pages URL unverified')+(agent?' · '+agent.id:'');
   host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:r.name,agent,route:diaspora.get(r.name)||null,url:r.url||null,pagesUrl}}));
-  if(pagesUrl)window.open(pagesUrl,'_blank','noopener,noreferrer');
+  // Selection only. Explicit HTML link opens Pages; avoid popup-blocker and accidental navigation.
  });
  let yaw=0,zoom=94,drag=false,startX=0,downX=0;
  renderer.domElement.addEventListener('pointerdown',e=>{drag=true;startX=downX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
