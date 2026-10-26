@@ -109,7 +109,7 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
    const response=await fetch('https://api.github.com/users/DavidWise01/repos?type=public&sort=full_name&per_page=100',{headers:{Accept:'application/vnd.github+json'}});
    if(!response.ok)throw Error('GitHub HTTP '+response.status);
    const repos=await response.json();if(!Array.isArray(repos)||!repos.length)throw Error('empty');
-   fill(repos.map(r=>({name:r.name,url:r.html_url,state:r.archived?'REST':'ACTIVE',agent_id:null})), 'live public GitHub sample (up to 100)');
+   fill(repos.map(r=>({name:r.name,url:r.html_url,homepage:r.homepage,pages_url:(r.homepage&&/^https:\/\/[^/]*github\.io(?:\/|$)/i.test(r.homepage))?r.homepage:null,state:r.archived?'REST':'ACTIVE',agent_id:null})), 'live public GitHub sample (up to 100)');
   }catch(e){label.textContent='Repository inventory unavailable; no synthetic cabinets presented.'}
  }
  renderer.domElement.addEventListener('click',event=>{
@@ -117,8 +117,11 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
   mouse.set(((event.clientX-box.left)/box.width)*2-1,-((event.clientY-box.top)/box.height)*2+1);
   ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(shells)[0];if(!hit)return;
   const r=hit.object.userData;const agent=agents.get(r.name)||null;
-  label.textContent=r.name+' · '+r.state+(agent?' · '+agent.id:' · agent not yet published');
-  host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:r.name,agent,route:diaspora.get(r.name)||null,url:r.url||null}}));
+  const known={'ud0':'https://davidwise01.github.io/ud0/','az1':'https://davidwise01.github.io/az1/','DavidWise01.github.io':'https://davidwise01.github.io/'};
+  const pagesUrl=r.pages_url||known[r.name]||null;
+  label.textContent=r.name+' · '+r.state+(pagesUrl?' · opening GitHub Pages':' · Pages URL unverified')+(agent?' · '+agent.id:'');
+  host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:r.name,agent,route:diaspora.get(r.name)||null,url:r.url||null,pagesUrl}}));
+  if(pagesUrl)window.open(pagesUrl,'_blank','noopener,noreferrer');
  });
  let yaw=0,zoom=94,drag=false,startX=0,downX=0;
  renderer.domElement.addEventListener('pointerdown',e=>{drag=true;startX=downX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
