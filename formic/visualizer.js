@@ -11,9 +11,10 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
  const light=new T.DirectionalLight(0xffffff,2.2);light.position.set(-12,28,24);scene.add(light);
  const floor=new T.GridHelper(145,18,0x2b6375,0x153447);floor.position.y=-66;scene.add(floor);
  const core=new T.Mesh(new T.IcosahedronGeometry(3.5,1),new T.MeshStandardMaterial({color:0x3cf0c6,emissive:0x126b6b,wireframe:true}));
- core.position.set(0,0,-18);scene.add(core);
+ core.position.set(0,-15,-18);scene.add(core);
  const ring=new T.Mesh(new T.TorusGeometry(5,.11,8,72),new T.MeshBasicMaterial({color:0xa48fff}));ring.position.copy(core.position);scene.add(ring);
  const shells=[],materials=[],textures=[],wiring=[];const ray=new T.Raycaster(),mouse=new T.Vector2();
+ const focus=new T.Vector3(0,-36,0);
  const shellGeo=new T.BoxGeometry(3.3,5.3,2.35),frontGeo=new T.PlaneGeometry(2.9,3.55);
  const stateColors={ACTIVE:'#37ebc3',REST:'#93a5bc',REVIEW:'#ffc76a',RECOVERY:'#b99dff'};
  const escapeName=s=>String(s||'repository').slice(0,32);
@@ -36,19 +37,9 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
  }
  let rows=[],agents=new Map();
  function clear(){for(const o of shells)scene.remove(o);shells.length=0;for(const o of wiring){scene.remove(o);o.geometry.dispose();o.material.dispose()}wiring.length=0;for(const m of materials)m.dispose();materials.length=0;for(const t of textures)t.dispose();textures.length=0}
- function gridSlots(n,z,scale=1,offsetX=0,offsetY=0){
-  const slots=[],step=6.05*scale,half=(n-1)/2;
-  for(let iy=0;iy<n;iy++)for(let ix=0;ix<n;ix++)slots.push({x:(ix-half)*step+offsetX,y:(half-iy)*step+offsetY,z});
-  return slots;
- }
- function toroidalBand(){
-  // Logical 1×17×17×1 register: 289 unique sites embedded on a torus.
-  const out=[];for(let u=0;u<17;u++)for(let v=0;v<17;v++){
-   const a=2*Math.PI*u/17,b=2*Math.PI*v/17,R=39,r=8;
-   out.push({x:(R+r*Math.cos(b))*Math.cos(a),y:(R+r*Math.cos(b))*Math.sin(a),z:-5+r*Math.sin(b)});
-  }return out;
- }
- function addWire(points,color,opacity=.2){
+ // FORMIC SILO: 4 cabinet sites, 1 coupler, repeated four times.
+ // Each module houses 16 cabinets; additional modules are adjacent silos.
+ function addWire(points,color,opacity=.32){
   const geo=new T.BufferGeometry().setFromPoints(points.map(p=>new T.Vector3(p.x,p.y,p.z)));
   const mat=new T.LineBasicMaterial({color,transparent:true,opacity,depthWrite:false});
   const line=new T.Line(geo,mat);scene.add(line);wiring.push(line);
@@ -56,35 +47,52 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
  function fill(input,source){
   clear();
   const coreSet=new Set(['ud0','az1','oasis','davidwise01.github.io','the.source','root0']);
-  const ordered=[...input].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
-  const priority=ordered.filter(r=>r.state==='REVIEW'||r.state==='RECOVERY');
-  const inner=ordered.filter(r=>coreSet.has(String(r.name).toLowerCase())&&!priority.includes(r));
-  const outer=ordered.filter(r=>!priority.includes(r)&&!inner.includes(r));
-  const outerSlots=gridSlots(18,12),innerSlots=gridSlots(18,-22,.72,9,7),bandSlots=toroidalBand();
-  const positioned=[];
-  function assign(items,slots,tier){items.forEach((row,i)=>{if(i<slots.length)positioned.push({row,slot:slots[i],tier})})}
-  assign(priority,bandSlots,'BAND');assign(inner,innerSlots,'CORE');
-  const remaining=outerSlots.length;
-  assign(outer.slice(0,remaining),outerSlots,'OUTER');
-  assign(outer.slice(remaining),innerSlots.slice(inner.length),'INNER_OVERFLOW');
-  assign(priority.slice(bandSlots.length),outerSlots.slice(Math.min(outer.length,outerSlots.length)),'OVERFLOW');
-  rows=positioned.map(x=>x.row);
-  const rendered=Math.min(positioned.length,937);
-  for(let i=0;i<rendered;i++){
-   const {row,slot,tier}=positioned[i],color=new T.Color(stateColors[row.state]||'#37ebc3');
-   const bodyMat=new T.MeshStandardMaterial({color:0x152d3b,metalness:.45,roughness:.38,emissive:color,emissiveIntensity:.12});materials.push(bodyMat);
-   const shell=new T.Mesh(shellGeo,bodyMat);shell.position.set(slot.x,slot.y,slot.z);shell.userData=row;scene.add(shell);shells.push(shell);
-   const screenMat=new T.MeshBasicMaterial({map:thumbnail(row),side:T.DoubleSide});materials.push(screenMat);
-   const face=new T.Mesh(frontGeo,screenMat);face.position.set(slot.x,slot.y+.2,slot.z+1.2);face.userData=row;scene.add(face);shells.push(face);
-   // One cabinet → one agent witness route → central FORMIC, no agent executes code.
-   addWire([slot,{x:slot.x*.70,y:slot.y*.70,z:-18},{x:0,y:0,z:-18}],color,.075);
+  const ordered=[...input].sort((a,b)=>{
+   const ac=coreSet.has(String(a.name).toLowerCase())?0:1,bc=coreSet.has(String(b.name).toLowerCase())?0:1;
+   return ac-bc||String(a.name).localeCompare(String(b.name));
+  });
+  // Every row gets exactly one unique shelf slot. 4×1×4×1×4×1×4.
+  // 16 cabinets + 3 coupling levels per silo; never treat a coupler as a repo.
+  const MAX=640,PER_SILO=16;
+  rows=ordered.slice(0,MAX);
+  const siloCount=Math.ceil(rows.length/PER_SILO);
+  const columns=Math.max(1,Math.ceil(Math.sqrt(siloCount)));
+  const siloWidth=19,spacing=4.4,shelfHeight=7.6,ground=-49;
+  for(let silo=0;silo<siloCount;silo++){
+   const col=silo%columns,line=Math.floor(silo/columns);
+   const baseX=(col-(columns-1)/2)*siloWidth;
+   const baseZ=-line*17;
+   const trunkX=baseX, trunkZ=baseZ-4;
+   // Individual vertical service riser with 3 single-coupler junctions.
+   addWire([{x:trunkX,y:ground-2,z:trunkZ},{x:trunkX,y:ground+4*shelfHeight+4,z:trunkZ}],0x4dc9bc,.55);
+   for(let tier=0;tier<4;tier++){
+    const y=ground+tier*shelfHeight;
+    for(let pos=0;pos<4;pos++){
+     const index=silo*PER_SILO+tier*4+pos;if(index>=rows.length)continue;
+     const row=rows[index],x=baseX+(pos-1.5)*spacing,z=baseZ;
+     const color=new T.Color(stateColors[row.state]||'#37ebc3');
+     const mat=new T.MeshStandardMaterial({color:0x152d3b,metalness:.4,roughness:.4,emissive:color,emissiveIntensity:.16});
+     materials.push(mat);
+     const mesh=new T.Mesh(shellGeo,mat);mesh.position.set(x,y,z);mesh.userData=row;scene.add(mesh);shells.push(mesh);
+     const screenMat=new T.MeshBasicMaterial({map:thumbnail(row),side:T.DoubleSide});materials.push(screenMat);
+     const face=new T.Mesh(frontGeo,screenMat);face.position.set(x,y+.25,z+1.2);face.userData=row;scene.add(face);shells.push(face);
+     // Cabinet agent port -> tier riser -> FORMIC central uplink.
+     addWire([{x,y,z:-0+baseZ-1.5},{x,y,z:trunkZ},{x:trunkX,y,z:trunkZ}],color,.28);
+    }
+    if(tier<3){
+     const junction={x:trunkX,y:y+shelfHeight/2,z:trunkZ};
+     const nodeMat=new T.MeshBasicMaterial({color:0xc19dff});materials.push(nodeMat);
+     const node=new T.Mesh(new T.OctahedronGeometry(.65),nodeMat);
+     node.position.set(junction.x,junction.y,junction.z);scene.add(node);shells.push(node);
+     addWire([junction,{x:trunkX,y:junction.y,z:trunkZ-2}],0xb99dff,.6);
+    }
+   }
+   addWire([{x:trunkX,y:ground+4*shelfHeight+4,z:trunkZ},{x:0,y:0,z:-18}],0x69d6cc,.20);
   }
-  // Hypercube shadow: corners of outer/inner 18² faces bound by 4 connectors.
-  const corners=[0,17,306,323];
-  corners.forEach(i=>addWire([outerSlots[i],innerSlots[i]],0x8daaff,.52));
-  const edge=(a,b)=>addWire([a,b],0x4e91b9,.4);
-  for(const slots of [outerSlots,innerSlots])for(let j=0;j<4;j++)edge(slots[corners[j]],slots[corners[(j+1)%4]]);
-  label.textContent=rendered+' repository cabinets · '+source+' · 18×18 hypercube · 17×17 toroid register · agent wiring';
+  // Bring the first silo into the frame rather than showing an empty upper void.
+  const centerX=0,centerY=ground+1.5*shelfHeight;
+  focus.set(centerX,centerY,0);
+  label.textContent=rows.length+' repository cabinets · '+siloCount+' silo(s) · '+source+' · 4×1×4×1×4×1×4';
  }
  async function load(){
   try{
@@ -110,18 +118,18 @@ export async function mountFormic3D(host,{dataUrl='./arcade.json'}={}){
   label.textContent=r.name+' · '+r.state+(agent?' · '+agent.id:' · agent not yet published');
   host.dispatchEvent(new CustomEvent('formic-cabinet-selected',{detail:{cabinet:r.name,agent,url:r.url||null}}));
  });
- let yaw=0,zoom=185,drag=false,startX=0,downX=0;
+ let yaw=0,zoom=94,drag=false,startX=0,downX=0;
  renderer.domElement.addEventListener('pointerdown',e=>{drag=true;startX=downX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
  renderer.domElement.addEventListener('pointerup',()=>{drag=false});
  renderer.domElement.addEventListener('pointermove',e=>{if(drag){yaw=Math.max(-.7,Math.min(.7,yaw+(e.clientX-startX)*.003));startX=e.clientX}});
- renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(75,Math.min(265,zoom+Math.sign(e.deltaY)*4))},{passive:false});
+ renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(35,Math.min(240,zoom+Math.sign(e.deltaY)*4))},{passive:false});
  const resize=()=>{const w=Math.max(320,host.clientWidth),h=Math.max(280,host.clientHeight);renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix()};
  const observer=new ResizeObserver(resize);observer.observe(host);resize();
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');let alive=true;
  function animate(t){if(!alive)return;requestAnimationFrame(animate);const tick=t*.001;
   if(!reduced.matches){core.rotation.y=tick*.18;ring.rotation.z=tick*.1}
-  camera.position.set(Math.sin(yaw)*zoom,Math.max(7,zoom*.08),Math.cos(yaw)*zoom);
-  camera.lookAt(0,0,0);renderer.render(scene,camera)}
+  camera.position.set(focus.x+Math.sin(yaw)*zoom,focus.y+Math.max(9,zoom*.16),focus.z+Math.cos(yaw)*zoom);
+  camera.lookAt(focus);renderer.render(scene,camera)}
  await load();requestAnimationFrame(animate);
  return {refresh:load,destroy(){alive=false;observer.disconnect();clear();shellGeo.dispose();frontGeo.dispose();renderer.dispose();renderer.domElement.remove()}};
 }
