@@ -21,14 +21,14 @@ input{min-width:200px;flex:1}.stats{display:flex;gap:16px;flex-wrap:wrap}.stats 
 <main><section class="stats panel"><span>Repositories: <b id="count">—</b></span><span>Agents: <b id="agents">—</b></span><span>Mesh: <b id="integrity">Waiting</b></span><span>Origin: <b id="origin">—</b></span></section>
 <details><summary style="cursor:pointer;padding:12px;color:#74efcf">Optional 3D cabinet view</summary><section id="scene" aria-label="Interactive 3D silo mesh"></section></details>
 <div class="bar"><input id="search" aria-label="Search repositories" placeholder="Find repository or Pages site…"><select id="filter" aria-label="Filter"><option value="all">All cabinets</option><option value="pages">Pages linked</option><option value="missing">Pages unverified</option><option value="review">Review / Recovery</option></select><button id="refresh">Reload public inventory</button></div>
-<section class="panel"><h2>Agent Convocation · sphere reports</h2><p class="muted">Independent repository observations from the published snapshot. No votes, consensus, or autonomous cross-repository actions.</p><div id="convene" class="grid"></div></section><section id="selected" class="panel">Select a cabinet in 3D or use the cards below. Links open only when you click them.</section>
+<section class="panel"><h2>Agent Convocation · sphere reports</h2><p class="muted">Independent repository observations from the published snapshot. No votes, consensus, or autonomous cross-repository actions.</p><div id="convene" class="grid"></div></section><section class="panel"><h2>Ideas exchanged · implementation proposals</h2><p class="muted">Each origin agent suggests one scoped improvement. Peer reports remain independent; repository writes require approval.</p><div id="ideas" class="grid"></div></section><section id="selected" class="panel">Select a cabinet in 3D or use the cards below. Links open only when you click them.</section>
 <section id="list" class="grid" aria-label="Repository cabinets"></section>
 <p id="note" class="muted" role="status"></p></main>
 <script type="module">
 import {mountFormic3D} from './visualizer.js';
 const $=id=>document.getElementById(id);
 const known={'ud0':'https://davidwise01.github.io/ud0/','az1':'https://davidwise01.github.io/az1/','DavidWise01.github.io':'https://davidwise01.github.io/'};
-let inventory=[],agents=new Map(),routes=new Map(),renderer=null;
+let inventory=[],agents=new Map(),routes=new Map(),ideas=[],renderer=null;
 function pages(r){if(r.pages_url)return r.pages_url;if(known[r.name])return known[r.name];const h=r.homepage||'';
 try{const u=new URL(h);return u.protocol==='https:'&&u.hostname.endsWith('.github.io')?u.href:null}catch{return null}}
 function anchor(url,label){if(!url)return null;const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=label;return a}
@@ -43,6 +43,19 @@ function openDetail(r){
  const sourceLink=anchor(r.url,'Open repository source');if(sourceLink)links.append(sourceLink);
  target.append(links);
  const note=document.createElement('p');note.className='muted';note.textContent='Pages links are metadata-derived, not guaranteed reachable. Selecting does not open a popup.';target.append(note);
+}
+function showIdeas(){
+ const root=$('ideas');root.replaceChildren();
+ if(!ideas.length){root.textContent='No published idea exchanges yet. The next successful inventory cycle will supply proposals.';return}
+ for(const idea of ideas.slice(0,300)){
+  const card=document.createElement('article');card.className='cabinet';
+  const head=document.createElement('strong');head.textContent=idea.origin+' · '+idea.kind;card.append(head);
+  const msg=document.createElement('p');msg.textContent=idea.idea;card.append(msg);
+  const note=document.createElement('small');note.textContent=idea.proposal_state+' · '+idea.observations.length+' independent peer observations · no automatic repository write';card.append(note);
+  const steps=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Implementation steps';steps.append(summary);
+  const list=document.createElement('ol');for(const step of idea.implementation.steps){const li=document.createElement('li');li.textContent=step;list.append(li)}steps.append(list);card.append(steps);
+  root.append(card);
+ }
 }
 function convene(){
  const root=$('convene');root.replaceChildren();
@@ -85,16 +98,16 @@ async function load(){
  const r=await fetch('./arcade.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error();
  const data=await r.json();if(!data.complete||!Array.isArray(data.cabinets)||!data.cabinets.length)throw Error();
  inventory=data.cabinets;agents=new Map((data.agents||[]).map(a=>[a.cabinet,a]));
- routes=new Map((data.diaspora?.links||[]).map(a=>[a.cabinet,a]));
+ routes=new Map((data.diaspora?.links||[]).map(a=>[a.cabinet,a]));ideas=data.exchange?.proposals||[];
  $('integrity').textContent=data.diaspora?.integrity||'unpublished';
  }catch{
- source='GitHub public API (sample)';agents.clear();routes.clear();
+ source='GitHub public API (sample)';agents.clear();routes.clear();ideas=[];
  try{const r=await fetch('https://api.github.com/users/DavidWise01/repos?type=public&per_page=100&sort=full_name',{headers:{Accept:'application/vnd.github+json'}});
  if(!r.ok)throw Error('HTTP '+r.status);const data=await r.json();if(!Array.isArray(data))throw Error('invalid inventory');
  inventory=data.map(r=>({name:r.name,url:r.html_url,homepage:r.homepage,state:r.archived?'REST':'ACTIVE'}));
  $('integrity').textContent='pending';}catch(e){inventory=[];source='unavailable';$('integrity').textContent='unavailable';$('note').textContent='Inventory could not be loaded: '+e.message}
  }
- $('count').textContent=inventory.length;$('agents').textContent=agents.size;$('origin').textContent=source;convene();display();
+ $('count').textContent=inventory.length;$('agents').textContent=agents.size;$('origin').textContent=source;convene();showIdeas();display();
 }
 $('search').addEventListener('input',display);$('filter').addEventListener('change',display);$('refresh').addEventListener('click',async()=>{await load();if(renderer?.refresh)await renderer.refresh()});
 $('scene').addEventListener('formic-cabinet-selected',e=>{const r=inventory.find(x=>x.name===e.detail.cabinet);if(r)openDetail(r)});
