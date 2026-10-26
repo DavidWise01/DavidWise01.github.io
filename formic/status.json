@@ -1,0 +1,94 @@
+{
+  "alerts": [],
+  "changes": [],
+  "disclaimer": "Public reachability and metadata only; no host telemetry, network firewall, or intrusion detection.",
+  "generated_at": "2026-10-26T19:22:27+00:00",
+  "history": [
+    {
+      "alerts": 0,
+      "metadata_changes": 0,
+      "site_http": {
+        "az1": 200,
+        "formic": 404,
+        "root0": 200,
+        "ud0": 200
+      },
+      "time": "2026-10-26T19:22:27+00:00"
+    }
+  ],
+  "mode": "read-only scheduled public observation",
+  "observer": "GitHub Actions",
+  "repositories": {
+    "az1": {
+      "archived": false,
+      "available": true,
+      "checked_at": "2026-10-26T19:22:27+00:00",
+      "default_branch": "main",
+      "open_issues_count": 0,
+      "pushed_at": "2026-09-08T12:06:47Z",
+      "repository": "DavidWise01/az1",
+      "size": 542,
+      "status": 200,
+      "updated_at": "2026-09-08T12:08:22Z",
+      "visibility": "public"
+    },
+    "root0": {
+      "archived": false,
+      "available": true,
+      "checked_at": "2026-10-26T19:22:27+00:00",
+      "default_branch": "main",
+      "open_issues_count": 0,
+      "pushed_at": "2026-10-26T18:54:28Z",
+      "repository": "DavidWise01/DavidWise01.github.io",
+      "size": 201,
+      "status": 200,
+      "updated_at": "2026-10-26T18:54:33Z",
+      "visibility": "public"
+    },
+    "ud0": {
+      "archived": false,
+      "available": true,
+      "checked_at": "2026-10-26T19:22:27+00:00",
+      "default_branch": "main",
+      "open_issues_count": 0,
+      "pushed_at": "2026-09-21T00:07:08Z",
+      "repository": "DavidWise01/ud0",
+      "size": 156339,
+      "status": 200,
+      "updated_at": "2026-09-21T00:07:12Z",
+      "visibility": "public"
+    }
+  },
+  "schema": "formic-public-watch-v1",
+  "sites": {
+    "az1": {
+      "checked_at": "2026-10-26T19:22:27+00:00",
+      "consecutive_http_errors": 0,
+      "ok": true,
+      "status": 200,
+      "url": "https://davidwise01.github.io/az1/"
+    },
+    "formic": {
+      "checked_at": "2026-10-26T19:22:27+00:00",
+      "consecutive_http_errors": 1,
+      "detail": "HTTP failure",
+      "ok": false,
+      "status": 404,
+      "url": "https://davidwise01.github.io/formic/"
+    },
+    "root0": {
+      "checked_at": "2026-10-26T19:22:27+00:00",
+      "consecutive_http_errors": 0,
+      "ok": true,
+      "status": 200,
+      "url": "https://davidwise01.github.io/"
+    },
+    "ud0": {
+      "checked_at": "2026-10-26T19:22:27+00:00",
+      "consecutive_http_errors": 0,
+      "ok": true,
+      "status": 200,
+      "url": "https://davidwise01.github.io/ud0/"
+    }
+  }
+}
