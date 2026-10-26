@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FORMIC · Diaspora Mesh</title><style>
+:root{color-scheme:dark;font-family:system-ui,Segoe UI,sans-serif;background:#070f1c;color:#e8f9ff}
+*{box-sizing:border-box}body{margin:0}header,main{max-width:1350px;margin:auto;padding:20px}header{border-bottom:1px solid #294b65}
+a{color:#74efcf}h1{margin:.2em 0;font-size:clamp(30px,5vw,50px)}
+.muted{color:#9bb4c4}.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:18px 0}
+input,select,button{background:#10283b;border:1px solid #436a7d;color:#e8f9ff;padding:10px;border-radius:8px;font:inherit}
+input{min-width:200px;flex:1}.stats{display:flex;gap:16px;flex-wrap:wrap}.stats b{color:#7cf5ce}
+#scene{height:390px;position:relative;background:#081423;border:1px solid #30556d;border-radius:12px;overflow:hidden}
+.panel{background:#102036;border:1px solid #2c5268;border-radius:12px;padding:16px;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.cabinet{border:1px solid #365d70;border-radius:10px;padding:12px;background:#102a3c;min-width:0}
+.poster{height:92px;display:grid;place-items:center;border:1px solid #366478;border-radius:8px;margin-bottom:9px;background:radial-gradient(circle at 40% 40%,#285878,#0d1a2c);color:#9cfce3;font-size:32px}
+.cabinet strong{overflow-wrap:anywhere;display:block}.cabinet small{color:#afc7d4}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.links a{font-size:13px}.amber{color:#ffd08a}.bad{color:#ff899b}
+</style></head><body><header><div class="muted">ROOT0 / FORMIC / HEGEMON</div><h1>DIASPORA MESH</h1>
+<p class="muted">Repository → one cabinet → one witness agent → verified or declared GitHub Pages destination. Read-only.</p>
+<nav><a href="./">FORMIC Cortex</a> · <a href="./arcade.html">Silo Arcade</a> · <a href="https://github.com/DavidWise01">GitHub source</a></nav></header>
+<main><section class="stats panel"><span>Repositories: <b id="count">—</b></span><span>Agents: <b id="agents">—</b></span><span>Mesh: <b id="integrity">Waiting</b></span><span>Origin: <b id="origin">—</b></span></section>
+<section id="scene" aria-label="Interactive 3D silo mesh"></section>
+<div class="bar"><input id="search" aria-label="Search repositories" placeholder="Find repository or Pages site…"><select id="filter" aria-label="Filter"><option value="all">All cabinets</option><option value="pages">Pages linked</option><option value="missing">Pages unverified</option><option value="review">Review / Recovery</option></select><button id="refresh">Reload public inventory</button></div>
+<section id="selected" class="panel">Select a cabinet in 3D or use the cards below. Links open only when you click them.</section>
+<section id="list" class="grid" aria-label="Repository cabinets"></section>
+<p id="note" class="muted" role="status"></p></main>
+<script type="module">
+import {mountFormic3D} from './visualizer.js';
+const $=id=>document.getElementById(id);
+const known={'ud0':'https://davidwise01.github.io/ud0/','az1':'https://davidwise01.github.io/az1/','DavidWise01.github.io':'https://davidwise01.github.io/'};
+let inventory=[],agents=new Map(),routes=new Map(),renderer=null;
+function pages(r){if(r.pages_url)return r.pages_url;if(known[r.name])return known[r.name];const h=r.homepage||'';
+try{const u=new URL(h);return u.protocol==='https:'&&u.hostname.endsWith('.github.io')?u.href:null}catch{return null}}
+function anchor(url,label){if(!url)return null;const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=label;return a}
+function openDetail(r){
+ const target=$('selected');target.replaceChildren();
+ const title=document.createElement('h2');title.textContent=r.name;target.append(title);
+ const agent=agents.get(r.name),route=routes.get(r.name);
+ const info=document.createElement('p');info.className='muted';info.textContent='Repository: '+(r.state||'ACTIVE')+' · Agent: '+(agent?.id||'unpublished')+' · Silo: '+(route?.silo??'unassigned')+' · Mesh: '+(route?.state||'unverified');target.append(info);
+ const links=document.createElement('div');links.className='links';
+ const pageLink=anchor(pages(r),'Open GitHub Pages');if(pageLink)links.append(pageLink);
+ else{const m=document.createElement('span');m.className='amber';m.textContent='No declared Pages URL';links.append(m)}
+ const sourceLink=anchor(r.url,'Open repository source');if(sourceLink)links.append(sourceLink);
+ target.append(links);
+ const note=document.createElement('p');note.className='muted';note.textContent='Pages links are metadata-derived, not guaranteed reachable. Selecting does not open a popup.';target.append(note);
+}
+function display(){
+ const search=$('search').value.toLowerCase(),filter=$('filter').value;
+ const rows=inventory.filter(r=>{
+ const page=pages(r);return (r.name+' '+(page||'')).toLowerCase().includes(search)
+ &&(filter==='all'||filter==='pages'&&page||filter==='missing'&&!page||filter==='review'&&['REVIEW','RECOVERY'].includes(r.state));
+ });const grid=$('list');grid.replaceChildren();
+ const frag=document.createDocumentFragment();
+ for(const r of rows.slice(0,1000)){
+ const c=document.createElement('article');c.className='cabinet';
+ const art=document.createElement('div');art.className='poster';art.textContent='◈';c.append(art);
+ const h=document.createElement('strong');h.textContent=r.name;c.append(h);
+ const status=document.createElement('small');status.textContent=(r.state||'ACTIVE')+' · '+(routes.get(r.name)?.state||'agent pending');c.append(status);
+ const links=document.createElement('div');links.className='links';
+ const p=anchor(pages(r),'GitHub Pages');if(p)links.append(p);
+ const src=anchor(r.url,'Source');if(src)links.append(src);
+ const btn=document.createElement('button');btn.textContent='Inspect';btn.addEventListener('click',()=>openDetail(r));links.append(btn);c.append(links);frag.append(c);
+ }grid.append(frag);$('note').textContent=rows.length+' matching repositories. '+(rows.length>1000?'Showing first 1000.':'');
+}
+async function load(){
+ $('note').textContent='Loading public metadata…';let source='published snapshot';
+ try{
+ const r=await fetch('./arcade.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error();
+ const data=await r.json();if(!data.complete||!Array.isArray(data.cabinets)||!data.cabinets.length)throw Error();
+ inventory=data.cabinets;agents=new Map((data.agents||[]).map(a=>[a.cabinet,a]));
+ routes=new Map((data.diaspora?.links||[]).map(a=>[a.cabinet,a]));
+ $('integrity').textContent=data.diaspora?.integrity||'unpublished';
+ }catch{
+ source='GitHub public API (sample)';agents.clear();routes.clear();
+ try{const r=await fetch('https://api.github.com/users/DavidWise01/repos?type=public&per_page=100&sort=full_name',{headers:{Accept:'application/vnd.github+json'}});
+ if(!r.ok)throw Error('HTTP '+r.status);const data=await r.json();if(!Array.isArray(data))throw Error('invalid inventory');
+ inventory=data.map(r=>({name:r.name,url:r.html_url,homepage:r.homepage,state:r.archived?'REST':'ACTIVE'}));
+ $('integrity').textContent='pending';}catch(e){inventory=[];source='unavailable';$('integrity').textContent='unavailable';$('note').textContent='Inventory could not be loaded: '+e.message}
+ }
+ $('count').textContent=inventory.length;$('agents').textContent=agents.size;$('origin').textContent=source;display();
+}
+$('search').addEventListener('input',display);$('filter').addEventListener('change',display);$('refresh').addEventListener('click',async()=>{await load();if(renderer?.refresh)await renderer.refresh()});
+$('scene').addEventListener('formic-cabinet-selected',e=>{const r=inventory.find(x=>x.name===e.detail.cabinet);if(r)openDetail(r)});
+renderer=await mountFormic3D($('scene'));await load();
+</script></body></html>
