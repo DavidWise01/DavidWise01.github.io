@@ -27,6 +27,21 @@ def request(page):
     with urllib.request.urlopen(req,timeout=20) as response:
         return json.load(response)
 
+def pages_link(r):
+    """Only explicit GitHub Pages homepages or known verified project links."""
+    name=r.get("name","")
+    known={"DavidWise01.github.io":"https://davidwise01.github.io/",
+           "ud0":"https://davidwise01.github.io/ud0/",
+           "az1":"https://davidwise01.github.io/az1/"}
+    declared=r.get("homepage")
+    if isinstance(declared,str) and declared.startswith("https://"):
+        from urllib.parse import urlparse
+        host=urlparse(declared).hostname or ""
+        if host=="davidwise01.github.io" or host.endswith(".github.io"):
+            return declared,"declared"
+    if name in known:return known[name],"known"
+    return None,"unverified"
+
 def health(r, prior):
     """Descriptive lifecycle, not a statement of security or a mutation."""
     reasons=[]
@@ -66,6 +81,7 @@ def main():
                        "homepage":r.get("homepage") if isinstance(r.get("homepage"),str) else None}
                 state,reasons=health(entry,previous.get(name))
                 entry.update(state=state,reasons=reasons)
+                entry["pages_url"],entry["pages_source"]=pages_link(r)
                 cabinets.append(entry)
             if len(batch)<100: complete=True;break
     except (urllib.error.HTTPError,urllib.error.URLError,TimeoutError,OSError,ValueError) as exc:
