@@ -42,7 +42,7 @@ function openDetail(r){
  else{const m=document.createElement('span');m.className='amber';m.textContent='No declared Pages URL';links.append(m)}
  const sourceLink=anchor(r.url,'Open repository source');if(sourceLink)links.append(sourceLink);
  target.append(links);
- const note=document.createElement('p');note.className='muted';note.textContent='Pages links are metadata-derived, not guaranteed reachable. Selecting does not open a popup.';target.append(note);
+ const note=document.createElement('p');note.className='muted';note.textContent='Pages links are metadata-derived, not guaranteed reachable. Latest agent observation: '+(agent?.observed_at||'not yet published')+'. Selecting does not open a popup.';target.append(note);
 }
 function showIdeas(){
  const root=$('ideas');root.replaceChildren();
@@ -85,7 +85,7 @@ function display(){
  const c=document.createElement('article');c.className='cabinet';
  const art=document.createElement('div');art.className='poster';art.textContent='◈';c.append(art);
  const h=document.createElement('strong');h.textContent=r.name;c.append(h);
- const status=document.createElement('small');status.textContent=(r.state||'ACTIVE')+' · '+(routes.get(r.name)?.state||'agent pending');c.append(status);
+ const status=document.createElement('small');status.textContent=(r.state||'ACTIVE')+' · '+(routes.get(r.name)?.state||'agent pending')+(agents.get(r.name)?.observed_at?' · observed '+agents.get(r.name).observed_at:'');c.append(status);
  const links=document.createElement('div');links.className='links';
  const p=anchor(pages(r),'GitHub Pages');if(p)links.append(p);
  const src=anchor(r.url,'Source');if(src)links.append(src);
