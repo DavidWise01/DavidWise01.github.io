@@ -1,0 +1,28 @@
+name: FORMIC persistent public perimeter observer
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: formic-public-observer
+  cancel-in-progress: false
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Observe public perimeter
+        run: python3 scripts/formic_monitor.py
+      - name: Commit bounded public evidence
+        run: |
+          git config user.name "formic-observer[bot]"
+          git config user.email "formic-observer[bot]@users.noreply.github.com"
+          git add formic/status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore(formic): record hourly public perimeter observation [skip ci]"
+          git push
