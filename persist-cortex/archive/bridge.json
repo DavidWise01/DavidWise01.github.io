@@ -64,5 +64,19 @@
     "quorum": null,
     "automatic_cross_repository_write": false,
     "private_memory_sync": false
+  },
+  "signed_witness": {
+    "reader": "https://davidwise01.github.io/persist-cortex/signed-witness/",
+    "public_keys": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/witness-public-keys.json",
+    "attestation_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/witness-attestations.jsonl",
+    "manual_append": "https://github.com/DavidWise01/toph-cortex/actions/workflows/witness-attestation-append.yml",
+    "signature_algorithm": "Ed25519",
+    "domain": "ROOT0-ATTESTATION-v1",
+    "signature_subject": "exact temporal/delivery Git event hash",
+    "keys_currently_registered": 0,
+    "quorum": null,
+    "private_key_uploads": false,
+    "automatic_execution": false,
+    "git_pages_read_only": true
   }
 }
