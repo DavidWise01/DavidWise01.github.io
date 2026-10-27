@@ -1,0 +1,129 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX // 11 DISTRIBUTED CHECKPOINTS</title>
+<meta name="description" content="ROOT0 Gate 11: individually signed, append-only corpus checkpoints independently anchored by the 0root.ai Hallway, no votes or quorum.">
+<style>
+:root{color-scheme:dark;--bg:#060d1c;--panel:#0c1c31;--line:#2d506d;--text:#e6f8ff;--mint:#96f6be;--cyan:#72e5f7;--gold:#efd38f;--purple:#b8a2ff;--muted:#9fbcca;--warn:#ffaf91}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#214267,#060d1c 67%);color:var(--text);font:13px/1.65 ui-monospace,Consolas,monospace}header,main,footer{max-width:1290px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;border-bottom:1px solid var(--line)}h1{font-size:clamp(25px,4.7vw,49px);color:var(--cyan);letter-spacing:.055em;margin:0}nav{display:flex;flex-wrap:wrap;gap:13px}h2{font-size:17px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--mint)}a{color:var(--mint)}.dim,.sub,small{color:var(--muted)}main{display:grid;grid-template-columns:1fr 1fr;gap:17px}.panel{border:1px solid var(--line);background:#0b1b2eea;border-radius:13px;padding:19px;min-width:0}.wide{grid-column:1/-1}.stat{padding:8px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:14px}.value{color:var(--mint);text-align:right;overflow-wrap:anywhere}.warn{color:var(--warn)}button{font:inherit;color:var(--text);background:#13405b;border:1px solid #478ea9;border-radius:9px;padding:9px 13px;cursor:pointer;margin:8px 6px 0 0}button:disabled{opacity:.4}input,select{font:inherit;width:100%;padding:10px;color:var(--text);background:#081425;border:1px solid #3b637e;border-radius:8px}label{display:block;color:var(--muted);margin:12px 0 5px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#071323;border:1px solid var(--line);padding:14px;border-radius:9px;max-height:300px;overflow:auto}.note{border-left:2px solid var(--cyan);padding-left:12px;color:var(--muted)}.entry{border-bottom:1px solid var(--line);padding:11px 0;overflow-wrap:anywhere}.entry strong{color:var(--gold)}.entry small{display:block}#snapshots,#anchors{max-height:370px;overflow:auto}#message{color:var(--gold);min-height:25px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;margin:3px}.cells{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.cell{border:1px solid var(--line);border-radius:8px;padding:11px;text-align:center;background:#0b2c43;color:var(--mint)}.cell strong{display:block;font-size:13px}.cell small{display:block}#graph{width:100%;height:auto;max-height:230px}footer{border-top:1px solid var(--line)}@media(max-width:825px){main{grid-template-columns:1fr}.cells{grid-template-columns:repeat(2,1fr)}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / PERSIST CORTEX / 0ROOT.AI</div><h1>11 · DISTRIBUTED CHECKPOINTS</h1><div class="sub">One-way, independently signed, externally pinned memory anchors</div></div><nav><a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="../spine/">07</a><a href="../temporal/">08</a><a href="../identity-bridge/">09</a><a href="../signed-witness/">10</a><a href="https://0root.ai/">HALLWAY</a></nav></header>
+<main>
+<section class="panel wide"><h2>FOUR-STREAM CORPUS STATE → SIGNED SNAPSHOT → INDEPENDENT ANCHOR</h2>
+<svg id="graph" viewBox="0 0 880 230" role="img" aria-label="Four source ledgers flow forward into independent signed checkpoint in TOPH CORTEX then into a separately pinned receipt at 0root.ai">
+<g fill="#102d48" stroke="#65c1dd" stroke-width="1.8"><rect x="9" y="24" width="142" height="37" rx="9"/><rect x="9" y="72" width="142" height="37" rx="9"/><rect x="9" y="120" width="142" height="37" rx="9"/><rect x="9" y="168" width="142" height="37" rx="9"/></g>
+<g fill="#f0faff" font-size="12" text-anchor="middle"><text x="80" y="47">CORPUS</text><text x="80" y="95">TEMPORAL</text><text x="80" y="143">DELIVERY</text><text x="80" y="191">ATTESTATION</text></g>
+<g fill="none" stroke="#527fa3" stroke-width="2"><path d="M151 43 L245 114 M151 91 L245 114 M151 138 L245 114 M151 187 L245 114"/><path d="M449 114 L540 114 M744 114 L842 114"/></g>
+<g fill="#242549" stroke="#bba6ff" stroke-width="2"><rect x="245" y="71" width="204" height="86" rx="14"/></g><g text-anchor="middle" fill="#fbfaff"><text x="347" y="103" font-size="16">TOPH CORTEX</text><text x="347" y="122" font-size="12">Ed25519 checkpoint</text><text x="347" y="139" font-size="11">A / B / C · independent</text></g>
+<g fill="#123e3b" stroke="#8ff3bf" stroke-width="2"><rect x="540" y="71" width="204" height="86" rx="14"/></g><g text-anchor="middle" fill="#effff7"><text x="642" y="102" font-size="16">0ROOT.AI</text><text x="642" y="124" font-size="12">independent key pin</text><text x="642" y="140" font-size="11">immutable receipt file</text></g>
+<g fill="#87e8f3"><path d="M840 108L857 114L840 120Z"/></g>
+<text x="440" y="215" fill="#9dbace" text-anchor="middle" font-size="12">PAST observes → PRESENT deserves → FUTURE reserves · NO QUORUM</text>
+</svg>
+<p class="note">The original four ledgers are not rewritten. A witness signs their exact chain counts and tips in TOPH. The Hallway independently verifies the signature against its own pinned key, then records the signed checkpoint under its own Git history. It does not execute future reservations or write backward.</p>
+</section>
+<section class="panel"><h2>TOPH / CANONICAL SIGNED CHECKPOINTS</h2>
+<div class="stat"><span>Four source ledgers</span><span class="value" id="streamStatus">LOADING</span></div>
+<div class="stat"><span>Witness key registry</span><span class="value" id="sourceKeys">LOADING</span></div>
+<div class="stat"><span>Checkpoint chain</span><span class="value" id="checkpointStatus">LOADING</span></div>
+<div class="stat"><span>Signed snapshots</span><span class="value" id="checkpointCount">—</span></div>
+<div class="stat"><span>Latest checkpoint SHA</span><span class="value" id="checkpointTip">GENESIS</span></div>
+<h3>Verified stream tips</h3><div class="cells"><div class="cell"><strong>CORPUS</strong><small id="sCORPUS">—</small></div><div class="cell"><strong>TEMPORAL</strong><small id="sTEMPORAL">—</small></div><div class="cell"><strong>DELIVERY</strong><small id="sDELIVERY">—</small></div><div class="cell"><strong>ATTESTATION</strong><small id="sATTESTATION">—</small></div></div>
+<button id="reload">RELOAD + VERIFY BOTH GIT HISTORIES</button><div id="message" aria-live="polite" role="status"></div>
+<p class="dim">Signing authority never comes from a majority. Each valid witness signature stands alone. A timestamp or snapshot does not prove the underlying observation scientifically true.</p>
+</section>
+<section class="panel"><h2>0ROOT / SEPARATE TRUST BOUNDARY</h2>
+<div class="stat"><span>Independent pinned keys</span><span id="pinnedCount" class="value">LOADING</span></div>
+<div class="stat"><span>Hallway anchoring</span><span id="anchorStatus" class="value">LOADING</span></div>
+<div class="stat"><span>Accepted external checkpoints</span><span id="anchorCount" class="value">—</span></div>
+<div class="stat"><span>Historical mismatch alerts</span><span id="rollbackCount" class="value">—</span></div>
+<h3>Independent trust model</h3><pre>TOPH signed checkpoint
+           |
+           v
+0root.ai verified key pin
+           |
+      Ed25519 verify
+           |
+  original stream-tip check
+           |
+       create-only Git
+           |
+   no return instruction
+
+NO VOTE · NO QUORUM · NO AUTORUN</pre>
+<p class="note">Without an independently enrolled key in the Hallway, signatures remain UNPINNED and no accepted anchor is claimed. A remote mismatch is surfaced as rollback evidence, not silently repaired.</p>
+</section>
+<section class="panel"><h2>CHECKPOINT TIMELINE</h2><div id="snapshots">No independently signed checkpoint yet.</div></section>
+<section class="panel"><h2>HALLWAY ACCEPTANCE HISTORY</h2><div id="anchors">No independently anchored checkpoint yet.</div></section>
+<section class="panel wide"><h2>MANUAL TWO-REPOSITORY OPERATION</h2>
+<p>First enroll a genuine witness signing key in TOPH's public registry and **separately pin its exact public bytes** in the Hallway. No key or signature is synthesized automatically.</p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/GATE11_DISTRIBUTED_CHECKPOINTS.md">Gate 11 checkpoint protocol and offline signing instructions</a> · <a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/checkpoint-append.yml">TOPH authenticated checkpoint append</a> · <a href="https://github.com/DavidWise01/0root/actions/workflows/checkpoint-anchor.yml">Hallway independently authenticated anchor</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/checkpoints.jsonl">Canonical TOPH checkpoint journal</a> · <a href="https://github.com/DavidWise01/0root/blob/master/memory-bridge/trust/checkpoint-key-pins.json">Independent Hallway trust pins</a> · <a href="https://github.com/DavidWise01/0root/tree/master/memory-bridge/checkpoints">Hallway immutable checkpoint receipts</a></p>
+<p class="note">This GitHub Pages reader has no credentials and never writes GitHub. The two manual workflows each write only to their own repositories. No private corpus snapshots, personal data, private keys or automatic remote execution are enabled.</p>
+<span class="pill">append-only</span><span class="pill">diodic / one-way</span><span class="pill">past · present · future</span><span class="pill">A/B/C independent</span><span class="pill">no quorum</span><span class="pill">externally pinned</span></section>
+</main><footer class="sub">ROOT0 / PERSIST CORTEX / 11 · independent signed historical anchors · public metadata only · no consensus or quorum</footer>
+<script>
+(()=>{"use strict";
+const SRC="https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/";
+const DST="https://raw.githubusercontent.com/DavidWise01/0root/master/memory-bridge/";
+const API="https://api.github.com/repos/DavidWise01/0root/contents/memory-bridge/checkpoints?ref=master";
+const STREAMS={CORPUS:"events-v2.jsonl",TEMPORAL:"temporal-events.jsonl",DELIVERY:"delivery-events.jsonl",ATTESTATION:"witness-attestations.jsonl"};
+const KEYS=["CORPUS","TEMPORAL","DELIVERY","ATTESTATION"],HEX=/^[a-f0-9]{64}$/;
+const el=id=>document.getElementById(id),entry=(tag,t,cls)=>{const e=document.createElement(tag);e.textContent=t;if(cls)e.className=cls;return e};
+function canon(x){if(Array.isArray(x))return "["+x.map(canon).join(",")+"]";if(x!==null&&typeof x==="object")return "{"+Object.keys(x).sort().map(k=>JSON.stringify(k)+":"+canon(x[k])).join(",")+"}";return JSON.stringify(x)}
+const enc=x=>new TextEncoder().encode(canon(x)),toHex=b=>[...new Uint8Array(b)].map(n=>n.toString(16).padStart(2,"0")).join("");
+async function digest(x){return toHex(await crypto.subtle.digest("SHA-256",enc(x)))}
+function b64(str,len){if(typeof str!=="string")throw Error("Non-base64 witness material");const binary=atob(str),arr=Uint8Array.from(binary,c=>c.charCodeAt(0));if(arr.length!==len||btoa(binary)!==str)throw Error("Malformed witness signature/key");return arr}
+async function getJson(url){const r=await fetch(url,{cache:"no-store"});if(!r.ok)throw Error("Fetch HTTP "+r.status+" / "+url);return r.json()}
+async function getRows(url){const r=await fetch(url,{cache:"no-store"});if(!r.ok)throw Error("Fetch HTTP "+r.status+" / "+url);const raw=await r.text();if(raw&&!raw.endsWith("\n"))throw Error("Incomplete JSONL");return raw?raw.split("\n").filter(Boolean).map(JSON.parse):[]}
+async function checkRows(rows,label){let prev="GENESIS";if(!Array.isArray(rows))throw Error(label+" not an array");for(let i=0;i<rows.length;i++){const e=rows[i];if(!e||e.seq!==i+1||e.prev!==prev||!HEX.test(e.hash))throw Error(label+" broken predecessor #"+(i+1));const {hash,...body}=e;if(await digest(body)!==hash)throw Error(label+" SHA-256 mismatch #"+(i+1));prev=hash}}
+function isState(state,streams){if(!state||Object.keys(state).sort().join(",")!==KEYS.slice().sort().join(","))return false;for(const name of KEYS){const r=state[name],list=streams[name];if(!r||Object.keys(r).sort().join(",")!=="count,tip"||!Number.isInteger(r.count)||r.count<0||r.count>list.length||r.tip!==(r.count?list[r.count-1].hash:"GENESIS"))return false}return true}
+async function publicKeys(reg){if(reg.schema!=="root0.witness-keys/1"||!Array.isArray(reg.keys))throw Error("Source signing registry invalid");const found=new Map();for(const k of reg.keys){const raw=b64(k.public_key_b64,32),id=toHex(await crypto.subtle.digest("SHA-256",raw));if(id!==k.key_id||found.has(id)||!["A","B","C"].includes(k.witness))throw Error("Source public-key fingerprint mismatch");found.set(id,k)}return found}
+async function receiverPins(reg){if(reg.schema!=="root0.checkpoint-trust-pins/1"||reg.receiver!=="DavidWise01/0root"||!Array.isArray(reg.pins))throw Error("Independent pin registry invalid");const found=new Map();for(const p of reg.pins){const raw=b64(p.public_key_b64,32),id=toHex(await crypto.subtle.digest("SHA-256",raw));if(id!==p.key_id||found.has(id))throw Error("Duplicate or invalid independent pin");found.set(id,p)}return found}
+async function signVerify(e,key){if(!key||key.witness!==e.witness||String(key.github_actor_id)!==e.github_actor_id)throw Error("Untrusted witness for signed checkpoint");const payload={domain:"ROOT0-CHECKPOINT-v1",witness:e.witness,key_id:e.key_id,recorded_at:e.recorded_at,checkpoint_seq:e.seq,previous_checkpoint:e.prev,state:e.state};const bytes=enc(payload);
+const sum=toHex(await crypto.subtle.digest("SHA-256",bytes));if(sum!==e.payload_sha256)throw Error("Signed payload SHA mismatch #"+e.seq);
+const pub=await crypto.subtle.importKey("raw",b64(key.public_key_b64,32),{name:"Ed25519"},false,["verify"]);
+if(!await crypto.subtle.verify({name:"Ed25519"},pub,b64(e.signature_b64,64),bytes))throw Error("Ed25519 signature invalid #"+e.seq);
+const {hash,...body}=e;if(await digest(body)!==hash)throw Error("Checkpoint SHA mismatch #"+e.seq);
+return true}
+function render(list,anchors){const left=el("snapshots"),right=el("anchors");left.replaceChildren();right.replaceChildren();
+if(!list.length)left.textContent="No signed checkpoints have been created. No signatures are invented.";
+for(const e of [...list].reverse()){const row=entry("article","", "entry");row.append(entry("strong","#"+e.seq+" · "+e.witness+" · "+e.recorded_at));row.append(entry("div",KEYS.map(k=>k+": "+e.state[k].count).join(" / ")));row.append(entry("small","SHA "+e.hash,"dim"));left.append(row)}
+if(!anchors.length)right.textContent="No Hallway anchors yet; no remote receipt claimed.";
+for(const a of anchors){const row=entry("article","", "entry");row.append(entry("strong","#"+a.checkpoint.seq+" · "+a.checkpoint.witness+" · 0root.ai"));row.append(entry("div","Pinned signature / "+a.accepted_at));row.append(entry("small","Independent SHA "+a.checkpoint.hash,"dim"));right.append(row)}}
+async function findAnchors(pins,checkpoints,streams){
+const r=await fetch(API,{headers:{Accept:"application/vnd.github+json"},cache:"no-store"});
+if(r.status===404)return {items:[],mismatches:0};
+if(!r.ok)throw Error("Hallway anchor index unavailable HTTP "+r.status);
+const files=await r.json();if(!Array.isArray(files)||files.length>=1000)throw Error("Anchor listing incomplete or oversized");
+const target=new Map(checkpoints.map(c=>[c.hash,c])),found=[],seen=new Set();let mismatch=0;
+for(const f of files){if(f.type!=="file"||!HEX.test(f.name.slice(0,-5))||!f.name.endsWith(".json"))continue;
+const name=f.name;const a=await getJson(DST+"checkpoints/"+name);
+if(!a||a.schema!=="root0.checkpoint-anchor/1"||a.receiver!=="DavidWise01/0root"||!a.checkpoint||a.checkpoint.hash+".json"!==name||seen.has(name))throw Error("Hallway anchor structure invalid");
+seen.add(name);const e=a.checkpoint,pin=pins.get(e.key_id);await signVerify(e,pin);
+const canonical=target.get(e.hash);if(!canonical||JSON.stringify(canonical)!==JSON.stringify(e)||!isState(e.state,streams))mismatch++;
+found.push(a)}
+return {items:found,mismatches:mismatch}}
+async function refresh(){el("reload").disabled=true;for(const x of ["streamStatus","sourceKeys","checkpointStatus","pinnedCount","anchorStatus"])el(x).textContent="VERIFYING";
+try{if(!crypto?.subtle)throw Error("HTTPS/WebCrypto SHA/Ed25519 required");
+const [logs,keysConfig,pinsConfig,checkpoints]=await Promise.all([
+ Promise.all(KEYS.map(k=>getRows(SRC+STREAMS[k]))),
+ getJson(SRC+"witness-public-keys.json"),
+ getJson(DST+"trust/checkpoint-key-pins.json"),
+ getRows(SRC+"checkpoints.jsonl")
+ ]);
+const streams=Object.fromEntries(KEYS.map((k,i)=>[k,logs[i]]));for(const k of KEYS){await checkRows(streams[k],k);const list=streams[k];el("s"+k).textContent=list.length+" / "+(list.at(-1)?.hash||"GENESIS").slice(0,12)}
+el("streamStatus").textContent="PASS";const source=await publicKeys(keysConfig),pins=await receiverPins(pinsConfig);
+el("sourceKeys").textContent=source.size?source.size+" ENROLLED":"0 / UNENROLLED";el("pinnedCount").textContent=pins.size?pins.size+" PINNED":"0 / UNPINNED";
+await checkRows(checkpoints,"CHECKPOINT");let last=new Map();
+for(const e of checkpoints){const signing=source.get(e.key_id);await signVerify(e,signing);if(!isState(e.state,streams))throw Error("Checkpoint source rollback or missing tip #"+e.seq);
+const prior=last.get(e.witness);if(prior&&KEYS.some(k=>e.state[k].count<prior.state[k].count))throw Error("Per-witness checkpoint rollback");last.set(e.witness,e)}
+el("checkpointStatus").textContent=checkpoints.length?"PASS / SIGNED":"EMPTY / NOT SIGNED";
+el("checkpointCount").textContent=String(checkpoints.length);el("checkpointTip").textContent=checkpoints.at(-1)?.hash||"GENESIS";
+const anchor=await findAnchors(pins,checkpoints,streams);
+el("anchorCount").textContent=String(anchor.items.length);el("rollbackCount").textContent=String(anchor.mismatches);
+el("anchorStatus").textContent=anchor.mismatches?"ROLLBACK ALERT":anchor.items.length?"PASS / PINNED":"EMPTY / NO ANCHOR";
+el("message").textContent=anchor.mismatches?"WARNING: Signed Hallway history differs from current TOPH source. Review independently.":"Read-only verified; no private keys or remote writes used.";
+render(checkpoints,anchor.items);
+}catch(e){for(const x of ["streamStatus","checkpointStatus","anchorStatus"])el(x).textContent="HALTED";el("message").textContent="VERIFICATION HALTED: "+e.message;el("snapshots").textContent="No unverified checkpoints shown.";el("anchors").textContent="No unverified anchors shown."}
+finally{el("reload").disabled=false}}
+el("reload").onclick=refresh;refresh();
+})();
+</script></body></html>
