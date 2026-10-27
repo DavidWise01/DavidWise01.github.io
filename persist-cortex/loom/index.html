@@ -1,0 +1,130 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PERSIST CORTEX · GATE 14 / THREADED LOOM</title>
+<meta name="description" content="ROOT0 causal, append-only Git persistent loom with three independent witnesses, exact cubit, .dlw and GitHub/0root Hallway provenance.">
+<style>
+:root{color-scheme:dark;--bg:#06101d;--p:#0c2032;--line:#31536b;--sky:#7ce4fa;--mint:#9defc5;--gold:#f1d38e;--lilac:#c2aeff;--ink:#e6f8ff;--muted:#9dbbce;--danger:#ffaca3}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 45% -12%,#1c3e60,#06101d 65%);color:var(--ink);font:13px/1.65 ui-monospace,Consolas,monospace}header,main,footer{max-width:1280px;margin:auto;padding:20px}header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;border-bottom:1px solid var(--line)}
+h1{color:var(--sky);font-size:clamp(26px,4.5vw,49px);letter-spacing:.05em;margin:0}h2{color:var(--sky);font-size:17px;margin:0 0 10px}h3{color:var(--mint);font-size:14px;margin:8px 0}a{color:var(--mint)}nav{display:flex;gap:11px;flex-wrap:wrap}.dim,.sub,small{color:var(--muted)}
+main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{border:1px solid var(--line);border-radius:13px;background:#0b2031e9;padding:18px;min-width:0}.wide{grid-column:1/-1}.stat{display:flex;gap:12px;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0}.value{color:var(--mint);text-align:right;overflow-wrap:anywhere}
+button,select,input{font:inherit;border:1px solid #437b94;border-radius:8px;padding:9px;background:#0b2235;color:var(--ink)}button{cursor:pointer;background:#164761}button:disabled{opacity:.4;cursor:not-allowed}select,input{width:100%}label{display:block;margin-top:8px;color:var(--muted)}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#071626;padding:12px;border-radius:8px;border:1px solid var(--line)}
+.note{border-left:2px solid var(--sky);padding-left:12px;color:var(--muted)}.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.lane{border:1px solid var(--line);border-radius:10px;padding:12px;background:#123047}.lane strong{font-size:20px}.lane[data-lane=A] strong{color:var(--sky)}.lane[data-lane=B] strong{color:var(--lilac)}.lane[data-lane=C] strong{color:var(--gold)}
+#graph{width:100%;height:auto;min-height:260px;max-height:590px;background:#061624;border:1px solid var(--line);border-radius:12px;display:block}#eventList{max-height:520px;overflow-y:auto}.item{padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.item strong{color:var(--gold)}.item small{display:block}.pill{display:inline-block;border:1px solid #567086;border-radius:999px;margin:3px;padding:4px 10px;color:var(--mint)}#message{color:var(--gold);min-height:24px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.detail{border:1px solid var(--line);padding:12px;border-radius:10px}.detail strong{display:block;color:var(--mint)}footer{border-top:1px solid var(--line)}@media(max-width:850px){main{grid-template-columns:1fr}.lanes,.grid3{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / TESSY {{i}} / PERSIST CORTEX</div><h1>14 · THREADED PERSISTENT LOOM</h1><div class="sub">Causal threads · independent witnesses · .dlw · immutable cubit</div></div>
+<nav><a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="../spine/">07</a><a href="../temporal/">08</a><a href="../identity-bridge/">09</a><a href="../signed-witness/">10</a><a href="../checkpoints/">11</a><a href="../key-lifecycle/">12</a><a href="../referents/">13</a><a href="https://0root.ai/">HALLWAY</a></nav></header>
+<main>
+<section class="panel wide"><h2>THE LOOM: THREE OBSERVERS / ONE APPEND-ONLY FABRIC</h2>
+<svg id="graph" viewBox="0 0 980 290" role="img" aria-label="Planned thread topology until authenticated events exist; live graph links real causal Git events"></svg>
+<p class="note" id="graphNote">Topology loads from the verified Git journal. Planned example lanes are illustrative only; no worker, Git sync, or witness event is simulated as live activity.</p>
+<div class="lanes"><div class="lane" data-lane="A"><strong>A</strong>PAST OBSERVES<div id="laneA" class="dim">No witnessed events</div></div><div class="lane" data-lane="B"><strong>B</strong>PRESENT DESERVES<div id="laneB" class="dim">No witnessed events</div></div><div class="lane" data-lane="C"><strong>C</strong>FUTURE RESERVES<div id="laneC" class="dim">No witnessed events</div></div></div>
+</section>
+<section class="panel"><h2>LIVE GIT INTEGRITY</h2>
+<div class="stat"><span>Verified corpus spine</span><span id="corpusStatus" class="value">LOADING</span></div>
+<div class="stat"><span>Causal global SHA / .dlw</span><span id="loomStatus" class="value">LOADING</span></div>
+<div class="stat"><span>Independent Hallway anchor</span><span id="anchorStatus" class="value">LOADING</span></div>
+<div class="stat"><span>Persisted threads</span><span id="threadCount" class="value">0</span></div>
+<div class="stat"><span>Witnessed loom events</span><span id="eventCount" class="value">0</span></div>
+<div class="stat"><span>External receipts</span><span id="anchorCount" class="value">0</span></div>
+<div class="stat"><span>Ledger tip</span><span id="loomTip" class="value">GENESIS</span></div>
+<button id="reload">RELOAD & VERIFY PUBLIC GIT</button><div id="message" role="status" aria-live="polite"></div>
+<p class="dim">Read-only. GitHub Actions commits are required for persistence. Zero means no recorded observations, not unanimous silence or consensus.</p>
+</section>
+<section class="panel"><h2>THREAD OPERATORS / CONSTANTS</h2>
+<pre>OPEN        start one stable named thread
+WEAVE       append what / how / why
+LINK        cite earlier events from another thread
+COPY        retain exact cubit occurrence count
+DISTILL     retain lowercase cubit
+CHECKPOINT  append a witness snapshot
+CLOSE       close only that witness's lane
+
+PAST → PRESENT → FUTURE  (per thread/witness)
+A, B, C                   (no votes, no quorum)
+.dlw:SHA256                (referent provenance)
+cubit                     (unchangeable constant)
+[ ] { } ( )               (presentation grammar)</pre>
+<p class="note">Tessy {{i}} can be assigned a real source-linked thread; the page does not claim an agent is running. A LINK is a causal reference, not automatic cooperation between repositories.</p>
+</section>
+<section class="panel"><h2>EVENT REPLAY / FILTERS</h2>
+<label for="threadFilter">Thread</label><select id="threadFilter"><option value="">All threads</option></select>
+<label for="witnessFilter">Witness</label><select id="witnessFilter"><option value="">A / B / C</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select>
+<label for="search">Search WHAT / HOW / WHY / exact text</label><input id="search" placeholder="cubit · tessy · diaspora">
+<div id="eventList">No records yet.</div>
+</section>
+<section class="panel"><h2>PUBLIC CORPUS / HALLWAY BRIDGE</h2>
+<p><a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/loom-append.yml">Append authenticated threaded event</a> · <a href="https://github.com/DavidWise01/0root/actions/workflows/loom-anchor.yml">Independently anchor an event in 0root</a>.</p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/loom-events.jsonl">Canonical loom journal</a> · <a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/threaded_loom.py">Source validator</a> · <a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/GATE14_THREADED_LOOM.md">Gate 14 operating protocol</a>.</p>
+<p><a href="https://github.com/DavidWise01/0root/tree/master/memory-bridge/loom">Independent Hallway anchors</a> · <a href="../referents/">Gate 13 .dlw referents</a> · <a href="https://davidwise01.github.io/formic/">FORMIC diaspora hub</a>.</p>
+<div class="grid3"><div class="detail"><strong>Corpus</strong>Public DavidWise01 Git file blob references, verified when appended</div><div class="detail"><strong>Brain globule</strong>Thread naming for Tessy {{i}}, with independent A/B/C evidence</div><div class="detail"><strong>Temporal diode</strong>Past observes; present deserves; future reserves without triggering action</div></div>
+<p class="note">No private records, stored GitHub credentials, hidden signing keys, or unattended synchronization are provided by this browser. An independent Hallway anchor requires a separate authenticated receiving workflow and does not mean a checkpoint was cryptographically signed.</p>
+</section>
+</main><footer class="sub">PERSIST CORTEX / GATE 14 · THREADED LOOM · APPEND-ONLY .dlw · IMMUTABLE cubit · NO QUORUM · PUBLIC GIT READ ONLY</footer>
+<script>
+(()=>{'use strict';
+const BASE='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/';
+const API='https://api.github.com/repos/DavidWise01/0root/contents/memory-bridge/loom?ref=master',HALL='https://raw.githubusercontent.com/DavidWise01/0root/master/memory-bridge/loom/';
+const PHASES=['PAST_OBSERVES','PRESENT_DESERVES','FUTURE_RESERVES'],KINDS=['OPEN','WEAVE','LINK','COPY','DISTILL','CHECKPOINT','CLOSE'],HEX=/^[0-9a-f]{64}$/;
+const el=id=>document.getElementById(id),canon=x=>Array.isArray(x)?'['+x.map(canon).join(',')+']':x&&typeof x==='object'?'{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canon(x[k])).join(',')+'}':JSON.stringify(x);
+const enc=x=>new TextEncoder().encode(canon(x)),hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
+async function shaBytes(v){return hex(await crypto.subtle.digest('SHA-256',v))}
+async function sha(x){return shaBytes(enc(x))}
+let verified=[],busy=false,groupMap=new Map();
+function utc(s){return typeof s==='string'&&s.endsWith('Z')&&!Number.isNaN(Date.parse(s))}
+function tokenCount(s){return (s.match(/(?<![A-Za-z0-9_])cubit(?![A-Za-z0-9_])/g)||[]).length}
+function cubitCheck(source,out,mode){const a=tokenCount(source),b=tokenCount(out);
+if(mode==='copy'&&a!==b)throw Error('COPY rewrote cubit count');
+if(mode==='distill'&&a>0&&b===0)throw Error('DISTILL erased cubit');
+if(a>0&&/(?<![A-Za-z0-9_])(?:cubits|Cubit|CUBIT|cUbIt)(?![A-Za-z0-9_])/g.test(out))throw Error('Renamed cubit');}
+async function getRows(filename){const r=await fetch(BASE+filename,{cache:'no-store'});if(!r.ok)throw Error(filename+' HTTP '+r.status);const text=await r.text();if(text&&!text.endsWith('\n'))throw Error(filename+' incomplete JSONL');return text?text.split('\n').filter(Boolean).map(JSON.parse):[]}
+async function checkCorpus(rows){if(!rows.length)throw Error('Canonical corpus genesis missing');let p='GENESIS',heads=new Set();for(let i=0;i<rows.length;i++){let e=rows[i];if(!e||e.seq!==i+1||e.prev!==p||!HEX.test(e.hash))throw Error('Invalid corpus chain #'+(i+1));const {hash,...body}=e;if(await sha(body)!==hash)throw Error('Corpus SHA mismatch #'+e.seq);heads.add(hash);p=hash}return heads}
+async function checkLoom(rows,heads){let prev='GENESIS',threads=new Map(),lanes=new Map();for(let i=0;i<rows.length;i++){const e=rows[i],idx=i+1;if(!e||e.version!==14||e.seq!==idx||e.prev!==prev||!KINDS.includes(e.kind)||!PHASES.includes(e.phase)||!['A','B','C'].includes(e.witness)||typeof e.thread!=='string'||!/^[a-z0-9][a-z0-9._-]{0,63}$/.test(e.thread))throw Error('Loom schema/predecessor #'+idx);
+if(!utc(e.recorded_at)||!/^\d{4}-\d{2}-\d{2}$/.test(e.event_on)||!heads.has(e.corpus_tip))throw Error('Loom time/corpus anchor #'+idx);
+const now=e.recorded_at.slice(0,10),stage=PHASES.indexOf(e.phase);if((stage===0&&e.event_on>now)||(stage===1&&e.event_on!==now)||(stage===2&&e.event_on<=now))throw Error('Temporal date boundary #'+idx);
+for(const key of ['what','how','why'])if(typeof e[key]!=='string'||!e[key]||e[key].length>1600)throw Error('Missing witness '+key+' #'+idx);
+if(typeof e.text!=='string'||e.text.length>6000||!Array.isArray(e.refs)||e.refs.length>16||e.refs.some(n=>!Number.isInteger(n)||n<1||n>=idx)||e.refs.join(',')!==[...new Set(e.refs)].sort((a,b)=>a-b).join(','))throw Error('Loom text/refs invalid #'+idx);
+if(e.source&&(e.source.visibility!=='public'||!/^DavidWise01\/[A-Za-z0-9._-]+$/.test(e.source.repo)||!/^[0-9a-f]{40}$/.test(e.source.blob_sha)))throw Error('Untrusted Git source #'+idx);
+const earlier=threads.get(e.thread),lane=e.thread+'|'+e.witness,last=lanes.get(lane);
+if(e.kind==='OPEN'){if(earlier||e.thread_prev!==null||e.witness_prev!==null||e.refs.length||stage!==0)throw Error('OPEN cannot repeat #'+idx)}
+else{if(!earlier||e.thread_prev!==earlier.seq||e.witness_prev!==(last?.seq??null))throw Error('Thread/witness causal link #'+idx);
+if(last?.kind==='CLOSE')throw Error('Closed witness lane #'+idx);
+if(last){const j=PHASES.indexOf(last.phase);if(stage<j||stage>j+1)throw Error('Temporal reversal/skip #'+idx)}else if(stage!==0)throw Error('Missing first PAST observation #'+idx)}
+if(e.kind==='COPY'||e.kind==='DISTILL'){if(e.mode!==e.kind.toLowerCase()||!e.refs.length)throw Error('Missing transformation source #'+idx);cubitCheck(e.refs.map(n=>rows[n-1].text).join('\n'),e.text,e.mode)}
+else if(e.mode!==null)throw Error('Unexpected transform mode #'+idx);
+if(e.kind==='LINK'&&(!e.refs.length||!e.refs.some(n=>rows[n-1].thread!==e.thread)))throw Error('LINK must connect threads #'+idx);
+if(e.kind==='CLOSE'&&!last)throw Error('Unobserved lane CLOSE #'+idx);
+const {hash,watermark,...body}=e,domain=new TextEncoder().encode('ROOT0-THREADED-LOOM-v1\n'),data=enc(body),merge=new Uint8Array(domain.length+data.length);merge.set(domain);merge.set(data,domain.length);
+if(watermark!=='.dlw:'+await shaBytes(merge)||hash!==await sha({...body,watermark}))throw Error('.dlw or SHA mismatch #'+idx);
+prev=hash;threads.set(e.thread,e);lanes.set(lane,e)}
+return {tip:prev,threads,lanes}}
+function node(tag,s,cl){const x=document.createElement(tag);x.textContent=s;if(cl)x.className=cl;return x}
+function svgEl(tag,attrs,text){const x=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs||{}))x.setAttribute(k,String(v));if(text!==undefined)x.textContent=text;return x}
+function graph(rows){const svg=el('graph');svg.replaceChildren();
+const nodes=rows.length?rows.slice(-60):[];
+if(!nodes.length){svg.setAttribute('viewBox','0 0 980 290');svg.append(svgEl('text',{x:490,y:65,'text-anchor':'middle',fill:'#9fbfce','font-size':17},'ILLUSTRATIVE THREAD ENDPOINTS · 0 LIVE EVENTS'));
+const labels=['TESSY {{i}}','DIASPORA','cubit','0ROOT HALLWAY'];labels.forEach((label,i)=>{const x=30+i*240;svg.append(svgEl('rect',{x,y:120,width:202,height:63,rx:12,fill:'#102f46',stroke:['#7ce4fa','#c2aeff','#9defc5','#f1d38e'][i],'stroke-width':2}));svg.append(svgEl('text',{x:x+101,y:156,'text-anchor':'middle',fill:'#e6f8ff','font-size':14},label));if(i<3)svg.append(svgEl('path',{d:'M'+(x+204)+' 151 L'+(x+236)+' 151',stroke:'#5c95ac','stroke-width':2}))});svg.append(svgEl('text',{x:490,y:240,'text-anchor':'middle',fill:'#9fbfce','font-size':12},'Not running workers. Threads begin only with real authenticated Git events.'));return}
+const list=[...new Set(nodes.map(x=>x.thread))],height=Math.max(300,105*list.length+60),width=980;svg.setAttribute('viewBox','0 0 '+width+' '+height);const points=new Map();
+nodes.forEach((e,i)=>{const lane=list.indexOf(e.thread);const threadEvents=nodes.filter(x=>x.thread===e.thread);const pos=threadEvents.findIndex(x=>x.seq===e.seq);const x=130+(pos%7)*115,y=60+lane*105+Math.floor(pos/7)*16;points.set(e.seq,{x,y});
+if(pos===0)svg.append(svgEl('text',{x:15,y:y+4,fill:'#a5c4d0','font-size':12},e.thread.slice(0,15)))});
+for(const e of nodes){const dst=points.get(e.seq);for(const ref of [...(e.refs||[]),e.thread_prev].filter(Boolean)){const from=points.get(ref);if(!from)continue;svg.append(svgEl('path',{d:'M'+from.x+' '+from.y+' L'+dst.x+' '+dst.y,stroke:(e.refs||[]).includes(ref)?'#b19aff':'#416f88','stroke-width':(e.refs||[]).includes(ref)?2:1.5,fill:'none','stroke-dasharray':(e.refs||[]).includes(ref)?'5 4':'none'}))}}
+for(const e of nodes){const p=points.get(e.seq);svg.append(svgEl('circle',{cx:p.x,cy:p.y,r:16,fill:'#0c2b3e',stroke:e.witness==='A'?'#7ce4fa':e.witness==='B'?'#bba6ff':'#f1d38e','stroke-width':2}));
+svg.append(svgEl('text',{x:p.x,y:p.y+4,'text-anchor':'middle',fill:'#fff','font-size':11},String(e.seq)));svg.append(svgEl('text',{x:p.x,y:p.y+30,'text-anchor':'middle',fill:'#acc4ce','font-size':10},e.kind+' / '+e.witness))}}
+function render(){const sel=el('threadFilter').value,w=el('witnessFilter').value,q=el('search').value.toLowerCase(),out=el('eventList');out.replaceChildren();
+const xs=verified.filter(x=>(!sel||x.thread===sel)&&(!w||x.witness===w)&&(!q||[x.thread,x.kind,x.text,x.what,x.how,x.why].some(t=>t.toLowerCase().includes(q))));
+if(!xs.length){out.textContent='No matching, witnessed Git events.';return}
+for(const e of [...xs].reverse()){let block=node('article','', 'item');block.append(node('strong','#'+e.seq+' · '+e.thread+' · '+e.kind+' / '+e.witness));block.append(node('div',e.phase+' · '+e.event_on));block.append(node('div','WHAT · '+e.what));block.append(node('div','HOW · '+e.how));block.append(node('div','WHY · '+e.why));if(e.text)block.append(node('div','TEXT · '+e.text));if(e.refs.length)block.append(node('small','CAUSAL REFS · '+e.refs.join(', ')));if(e.source){const a=document.createElement('a');a.textContent=e.source.repo+'/'+e.source.path;a.href='https://github.com/'+e.source.repo+'/blob/main/'+e.source.path;a.target='_blank';a.rel='noopener noreferrer';block.append(a)}block.append(node('small','WATERMARK · '+e.watermark));block.append(node('small','SHA · '+e.hash));out.append(block)}}
+function prepareFilters(rows){let x=el('threadFilter'),old=x.value;x.replaceChildren();let empty=document.createElement('option');empty.value='';empty.textContent='All threads';x.append(empty);
+for(const thread of [...new Set(rows.map(r=>r.thread))].sort()){const option=document.createElement('option');option.value=thread;option.textContent=thread;x.append(option)}x.value=[...x.options].some(o=>o.value===old)?old:''}
+async function hallway(rows){const r=await fetch(API,{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});if(r.status===404)return {count:0,mismatch:0};if(!r.ok)throw Error('Hallway index HTTP '+r.status);
+const files=await r.json();if(!Array.isArray(files)||files.length>=1000)throw Error('Hallway listing incomplete');const known=new Map(rows.map(e=>[e.hash,e]));let count=0,mismatch=0;for(const f of files){if(f.type!=='file'||!f.name.endsWith('.json'))continue;const h=f.name.slice(0,-5);if(!HEX.test(h))throw Error('Invalid Hallway receipt name');const z=await fetch(HALL+f.name,{cache:'no-store'});if(!z.ok)throw Error('Hallway receipt HTTP '+z.status);const a=await z.json();if(a.schema!=='root0.loom-anchor/14'||a.receiver!=='DavidWise01/0root'||a.event?.hash!==h)throw Error('Invalid independent receipt');count++;if(canon(known.get(h))!==canon(a.event))mismatch++}return {count,mismatch}}
+async function refresh(){if(busy)return;busy=true;el('reload').disabled=true;for(const k of ['corpusStatus','loomStatus','anchorStatus'])el(k).textContent='VERIFYING';
+try{if(!crypto?.subtle)throw Error('HTTPS WebCrypto SHA-256 required');const [corpus,rows]=await Promise.all([getRows('events-v2.jsonl'),getRows('loom-events.jsonl')]);const heads=await checkCorpus(corpus);el('corpusStatus').textContent='PASS / '+corpus.length;
+const replay=await checkLoom(rows,heads);verified=rows;el('loomStatus').textContent=rows.length?'PASS / '+rows.length:'EMPTY / VALID';el('threadCount').textContent=replay.threads.size;el('eventCount').textContent=rows.length;el('loomTip').textContent=replay.tip;
+for(const w of ['A','B','C']){const n=rows.filter(e=>e.witness===w);el('lane'+w).textContent=n.length?n.length+' witnessed event(s) · last '+n.at(-1).phase:'No witnessed events'}
+prepareFilters(rows);graph(rows);render();
+try{const a=await hallway(rows);el('anchorCount').textContent=a.count;el('anchorStatus').textContent=a.mismatch?'HISTORY MISMATCH / '+a.mismatch:a.count?'PASS / '+a.count:'NONE / VALID'}catch(e){el('anchorStatus').textContent='NOT VERIFIED / unavailable'}
+el('graphNote').textContent=rows.length?'Verified, live public Git event graph; solid edges are thread lineage and dashed violet edges are causal links.':'Illustrative endpoints only. No running workers or fabricated memory events.';
+el('message').textContent='Source chains replayed; no vote or automatic Git write required to observe.'}
+catch(e){verified=[];for(const k of ['corpusStatus','loomStatus','anchorStatus'])el(k).textContent='HALTED';el('message').textContent='INTEGRITY HALTED · '+e.message;el('eventList').textContent='Unverified records suppressed';graph([])}finally{busy=false;el('reload').disabled=false}}
+el('reload').onclick=refresh;el('threadFilter').onchange=render;el('witnessFilter').onchange=render;el('search').oninput=render;refresh();
+})();
+</script></body></html>
