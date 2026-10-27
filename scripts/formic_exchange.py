@@ -33,7 +33,12 @@ def exchange(cabinets,agents,mesh,at):
                        "target_verified":False} for o in others]
         entry={"origin":name,"agent_id":a["id"],"kind":kind,"idea":idea,
                "source":c.get("url"),"pages_url":c.get("pages_url"),
-               "observations":observations,"proposal_state":"READY_FOR_REVIEW",
+               "observations":observations,"proposal_state":"HOLD_UNVERIFIED",
+               "bounds":{"origin_sphere_only":True,"requires_owner_approval":True,
+                         "requires_passing_tests":True,"requires_evidence":True,
+                         "peer_observations_are_votes":False},
+               "verification":{"branch":None,"pull_request":None,"test_result":"NOT_RUN",
+                               "deployment_result":"NOT_CHECKED","applied":False},
                "implementation":{"target_repository":name,"write":False,
                    "steps":["Inspect current repository and Pages configuration",
                             "Draft scoped change on branch",
@@ -46,4 +51,4 @@ def exchange(cabinets,agents,mesh,at):
     return {"schema":"formic-diaspora-exchange-v1","observed_at":at,
             "mesh_integrity":integrity,"idea_count":len(proposals),
             "proposals":proposals,"autonomous_writes":False,
-            "note":"Ideas exchanged as public evidence reports, never as votes or automatically executed repository changes."}
+            "note":"Ideas exchanged as public evidence reports. Changes remain HOLD until evidence, tests, and owner approval; no autonomous repository writes."}
