@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX // 04 PROCEDURAL</title>
+<meta name="description" content="Gate 04 Procedural Cortex — evidence-linked, versioned routines, guided execution, local checkpoints and append-only run history.">
+<style>
+:root{color-scheme:dark;--bg:#040914;--panel:#0b1829;--line:#29475e;--cyan:#72e7f4;--green:#86efac;--gold:#f3d083;--muted:#9eb5c5;--text:#e2f8ff;--danger:#ff9e9e}
+*{box-sizing:border-box}body{margin:0;font:13px/1.65 ui-monospace,Consolas,monospace;color:var(--text);background:radial-gradient(ellipse at top,#193450 0%,#040914 65%)}header,main,footer{max-width:1250px;margin:auto;padding:22px}header{border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+h1{font-size:clamp(25px,4.5vw,48px);color:var(--cyan);letter-spacing:.08em;margin:0}h2{font-size:17px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--green);margin:4px 0 10px}.sub,.dim,small{color:var(--muted)}a{color:var(--green)}nav{display:flex;gap:15px;flex-wrap:wrap}main{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{min-width:0;border:1px solid var(--line);border-radius:12px;padding:20px;background:#0a1726ed}.wide{grid-column:1/-1}label{display:block;color:var(--muted);margin:11px 0 5px}input,textarea,select{display:block;width:100%;background:#06101e;color:var(--text);border:1px solid #345d71;padding:10px;border-radius:8px;font:inherit}textarea{min-height:82px;resize:vertical}button{padding:9px 12px;color:var(--text);background:#113e53;border:1px solid #377e9d;border-radius:8px;margin:7px 7px 0 0;cursor:pointer;font:inherit}button:hover:not(:disabled){background:#205a71}button:disabled{opacity:.36;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:1fr auto;gap:6px 15px}.stats span{border-bottom:1px solid var(--line);padding:7px 0}.value{text-align:right;color:var(--green);overflow-wrap:anywhere}
+#cortex{width:100%;height:auto;max-height:210px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#06101c;border:1px solid var(--line);border-radius:8px;padding:13px;max-height:310px;overflow:auto}
+#history{max-height:465px;overflow:auto}.event{padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.event strong{color:var(--gold)}.event small{display:block}
+.note{color:var(--muted);padding-left:12px;border-left:2px solid var(--cyan)}#message{color:var(--gold);min-height:24px;margin-top:12px}.step{padding:12px;border:1px solid var(--line);border-radius:8px;background:#091c2c;margin-top:10px}.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:4px 10px;margin:5px}
+footer{border-top:1px solid var(--line)}@media(max-width:800px){main{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / DIASPORA / PERSIST CORTEX</div><h1>04 · PROCEDURAL MEMORY</h1><div class="sub">Knowledge → method → witnessed execution → replay</div></div>
+<nav><a href="../">01 / IDENTITY</a><a href="../episodic/">02 / EPISODIC</a><a href="../semantic/">03 / SEMANTIC</a><a href="https://davidwise01.github.io/formic/">DIASPORA</a></nav></header>
+<main>
+<section class="panel"><h2>CORTEX / EXECUTION BOUNDARY</h2>
+<svg id="cortex" viewBox="0 0 500 195" role="img" aria-label="Identity, witnessed evidence, semantic claim, and procedural execution chain">
+<g stroke="#488eae" stroke-width="2" fill="none"><path d="M63 93 L185 93 L310 93 L437 93"/><path d="M310 93V165H437V93" stroke-dasharray="4 6"/></g><g fill="#112d40" stroke="#70dced" stroke-width="2"><circle cx="63" cy="93" r="37"/><circle cx="185" cy="93" r="37"/><circle cx="310" cy="93" r="37"/><circle cx="437" cy="93" r="37"/></g>
+<g text-anchor="middle" fill="#e6fcff" font-size="11"><text x="63" y="90">01</text><text x="63" y="104">identity</text><text x="185" y="90">02</text><text x="185" y="104">event</text><text x="310" y="90">03</text><text x="310" y="104">claim</text><text x="437" y="90">04</text><text x="437" y="104">routine</text><text x="374" y="185" fill="#f3d083">step witness / checkpoint</text></g></svg>
+<div class="stats"><span>IDENTITY</span><span class="value" id="identity">LOADING</span><span>EPISODIC CHAIN</span><span class="value" id="episodic">LOADING</span><span>SEMANTIC CHAIN</span><span class="value" id="semantic">LOADING</span><span>PROCEDURE CHAIN</span><span class="value" id="procedureIntegrity">LOADING</span><span>RUN CHAIN</span><span class="value" id="runIntegrity">LOADING</span><span>ACTIVE PROCEDURES</span><span class="value" id="procedureCount">0</span><span>RUN EVENTS</span><span class="value" id="runCount">0</span><span>ACTIVE RUNS</span><span class="value" id="activeRuns">0</span></div>
+<button id="verify">VERIFY ALL GATES + REPLAY</button><p class="note">This is a guided, human-observed executor. It never evaluates user-supplied code or writes to remote services. A routine records how to act; the agent/operator decides what actually happened.</p>
+</section>
+<section class="panel"><h2>PROCEDURE / DEFINITION</h2>
+<label for="kind">Operation</label><select id="kind"><option value="DEFINE">DEFINE / new routine</option><option value="REVISE">REVISE / new immutable version</option><option value="RETIRE">RETIRE / close current version</option></select>
+<div id="revision" hidden><label for="target">Active procedure version</label><select id="target"><option value="">Select procedure</option></select><label for="reason">Revision / retirement reason</label><textarea id="reason" maxlength="3000"></textarea></div>
+<label for="evidence">Supporting semantic relationship</label><select id="evidence"><option value="">Choose evidence</option></select>
+<label for="name">Procedure name</label><input id="name" maxlength="150" placeholder="e.g. Verify diaspora node startup">
+<label for="intent">Intent / purpose</label><textarea id="intent" maxlength="3000" placeholder="What this routine is supposed to do"></textarea>
+<label for="preconditions">Preconditions</label><textarea id="preconditions" maxlength="3000" placeholder="What must be true before step 1"></textarea>
+<label for="steps">Steps — one action per line</label><textarea id="steps" style="min-height:130px" maxlength="12000" placeholder="Observe agent state&#10;Record state and provenance&#10;Verify observed result"></textarea>
+<label for="expected">Expected outcome</label><textarea id="expected" maxlength="3000"></textarea>
+<button id="saveProcedure">APPEND PROCEDURE EVENT</button><div id="message" role="status" aria-live="polite"></div>
+</section>
+<section class="panel"><h2>PROCEDURAL EXECUTION / CHECKPOINT</h2>
+<label for="selectedProcedure">Choose current version</label><select id="selectedProcedure"><option value="">No procedures yet</option></select>
+<button id="startRun">START NEW RUN</button>
+<label for="selectedRun">Resume an open run</label><select id="selectedRun"><option value="">No active runs</option></select>
+<div class="step" id="stepInfo">Create a procedure and start a run.</div>
+<label for="what">WHAT happened at this step</label><textarea id="what" maxlength="4000" placeholder="Observed result; do not infer success"></textarea>
+<label for="how">HOW it was observed</label><textarea id="how" maxlength="4000" placeholder="Evidence or method"></textarea>
+<label for="why">WHY / interpretation (optional)</label><textarea id="why" maxlength="4000" placeholder="Unknown is valid"></textarea>
+<button id="observed">STEP OBSERVED</button><button id="blocked">STEP BLOCKED</button><button id="finish">FINISH RUN</button><button id="abort">ABORT RUN</button>
+<p class="note">Blocked steps are recorded but do not advance the routine. Interrupted runs resume from the last observed step after refreshing this page.</p>
+</section>
+<section class="panel"><h2>IMMUTABLE PROCEDURE / RUN HISTORY</h2><label for="filter">Search history</label><input id="filter" placeholder="Name, event, step, witness"><div id="history">No history yet.</div></section>
+<section class="panel wide"><h2>BACKUP / REPLAY / DIASPORA</h2><p>Both procedure definitions and run events are independently SHA-256 chained and stored together in a single browser-local snapshot. All references to Gates 01–03 are checked on load, replay, and import.</p>
+<button id="export">EXPORT PROCEDURAL MEMORY</button><button id="import">IMPORT & VERIFY</button><input type="file" id="file" hidden accept=".json,application/json">
+<pre id="checkpoint">No checkpoint yet.</pre>
+<p class="note">Browser localStorage can be cleared or modified. Export an archive to preserve the event history. No automatic GitHub synchronization, public memory publishing, background execution, or agent-to-agent communication is enabled.</p>
+<a href="https://davidwise01.github.io/formic/">OPEN DIASPORA / FORMIC ↗</a> &nbsp; | &nbsp; <a href="../semantic/">RETURN TO SEMANTIC MEMORY ↗</a>
+<div><span class="pill">01 identity</span><span class="pill">02 episodic</span><span class="pill">03 semantic</span><span class="pill">04 procedural</span><span class="pill">05 working — next</span></div>
+</section>
+</main><footer class="sub">ROOT0 · PERSIST CORTEX · 04 PROCEDURAL · guided execution, independent observations, no votes or quorums</footer>
+<script>
+(()=>{'use strict';
+const ID='persist-cortex-identity-v1',EP='persist-cortex-episodes-v1',SE='persist-cortex-semantic-v1',KEY='persist-cortex-procedures-v1',FORMAT='persist-cortex-procedural-v4',el=id=>document.getElementById(id);
+const empty=()=>({format:FORMAT,definitions:[],runs:[]});
+let data=empty(),stored=null,identities=[],episodes=[],semantics=[],latest=null,semanticActive=new Map(),defsActive=new Map(),runsActive=new Map(),ready=false,locked=false,busy=false;
+const good=s=>typeof s==='string'&&s.length>0,hash=async v=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(v)))),b=>b.toString(16).padStart(2,'0')).join('');
+function say(s){el('message').textContent=s}
+function disable(b){busy=b;for(const id of ['saveProcedure','startRun','observed','blocked','finish','abort','import'])el(id).disabled=b||locked||!ready;el('verify').disabled=b}
+async function checkIdentity(xs){if(!Array.isArray(xs))throw Error('Identity history not an array');let prev='GENESIS';for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==1||x.seq!==i+1||x.kind!=='IDENTITY'||x.prev!==prev||!good(x.timestamp)||!x.payload||!good(x.payload.agent)||!good(x.payload.purpose)||!good(x.payload.bounds)||!good(x.hash))throw Error('Identity event invalid #'+(i+1));const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Identity hash mismatch #'+(i+1));prev=h}}
+async function checkEpisodes(xs,ids){if(!Array.isArray(xs))throw Error('Episodic history not an array');let prev='GENESIS';const owners=new Map(ids.map(i=>[i.hash,i.payload.agent])),seen=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==2||x.seq!==i+1||x.prev!==prev||!['OBSERVATION','CORRECTION'].includes(x.kind)||!good(x.timestamp)||!good(x.identityHash)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!['A','B','C'].includes(x.witness)||!good(x.episode)||!good(x.what)||!good(x.how)||typeof x.why!=='string'||typeof x.source!=='string'||!good(x.hash))throw Error('Episode invalid #'+(i+1));if(x.kind==='OBSERVATION'&&x.corrects!==null)throw Error('Original episode correction reference');if(x.kind==='CORRECTION'&&(!Number.isInteger(x.corrects)||!seen.has(x.corrects)||seen.get(x.corrects).kind!=='OBSERVATION'||seen.get(x.corrects).episode!==x.episode))throw Error('Broken episodic correction');const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Episode hash mismatch #'+(i+1));prev=h;seen.set(x.seq,x)}}
+async function checkSemantics(xs,eps,ids){if(!Array.isArray(xs))throw Error('Semantic history not an array');let prev='GENESIS';const owner=new Map(ids.map(i=>[i.hash,i.payload.agent])),ep=new Map(eps.map(x=>[x.seq,x])),active=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==3||x.seq!==i+1||x.prev!==prev||!['ASSERT','AMEND','WITHDRAW'].includes(x.kind)||!good(x.timestamp)||!good(x.identityHash)||!owner.has(x.identityHash)||x.agent!==owner.get(x.identityHash)||!Number.isInteger(x.episodeSeq)||!ep.has(x.episodeSeq)||ep.get(x.episodeSeq).hash!==x.episodeHash||!good(x.subject)||!good(x.predicate)||!good(x.object)||!['OBSERVED','INFERRED','HYPOTHESIS'].includes(x.basis)||typeof x.detail!=='string'||typeof x.reason!=='string'||!good(x.hash))throw Error('Semantic event invalid #'+(i+1));if(x.kind==='ASSERT'&&x.target!==null)throw Error('Assertion targets old claim');if(x.kind!=='ASSERT'&&(!Number.isInteger(x.target)||!active.has(x.target)||!good(x.reason)))throw Error('Semantic revision target invalid');if(x.kind==='WITHDRAW'){const t=active.get(x.target);if(x.subject!==t.subject||x.predicate!==t.predicate||x.object!==t.object)throw Error('Withdrawal mismatch')}const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Semantic hash mismatch #'+(i+1));if(x.kind!=='ASSERT')active.delete(x.target);if(x.kind!=='WITHDRAW')active.set(x.seq,x);prev=h}return active}
+async function checkDefs(xs,sems,ids){if(!Array.isArray(xs))throw Error('Procedure definitions not an array');const refs=new Map(sems.map(x=>[x.seq,x])),owners=new Map(ids.map(i=>[i.hash,i.payload.agent]));let prev='GENESIS',active=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==4||x.seq!==i+1||x.prev!==prev||!['DEFINE','REVISE','RETIRE'].includes(x.kind)||!good(x.timestamp)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!refs.has(x.semanticSeq)||refs.get(x.semanticSeq).hash!==x.semanticHash||refs.get(x.semanticSeq).kind==='WITHDRAW'||!good(x.name)||!good(x.intent)||typeof x.preconditions!=='string'||!good(x.expected)||!Array.isArray(x.steps)||!x.steps.length||x.steps.length>32||x.steps.some(s=>!good(s)||s.length>500)||typeof x.reason!=='string'||!good(x.hash))throw Error('Procedure invalid #'+(i+1));if(x.kind==='DEFINE'&&x.target!==null)throw Error('Definition cannot target');if(x.kind!=='DEFINE'&&(!Number.isInteger(x.target)||!active.has(x.target)||!good(x.reason)))throw Error('Procedure revision target invalid');if(x.kind==='RETIRE'){const t=active.get(x.target);if(['name','intent','preconditions','expected'].some(k=>x[k]!==t[k])||JSON.stringify(x.steps)!==JSON.stringify(t.steps))throw Error('Retirement cannot change procedure')}const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Procedure hash mismatch #'+(i+1));if(x.kind!=='DEFINE')active.delete(x.target);if(x.kind!=='RETIRE')active.set(x.seq,x);prev=h}return active}
+async function checkRuns(xs,defs,ids){if(!Array.isArray(xs))throw Error('Run events not an array');let prev='GENESIS',state=new Map();const versions=new Map(defs.filter(x=>x.kind!=='RETIRE').map(x=>[x.seq,x])),owners=new Map(ids.map(i=>[i.hash,i.payload.agent]));for(let i=0;i<xs.length;i++){
+ const x=xs[i];if(!x||x.version!==4||x.seq!==i+1||x.prev!==prev||!['START','STEP','FINISH','ABORT'].includes(x.kind)||!good(x.timestamp)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!versions.has(x.procedureSeq)||versions.get(x.procedureSeq).hash!==x.procedureHash||!Number.isInteger(x.runId)||!Number.isInteger(x.stepIndex)||!['STARTED','OBSERVED','BLOCKED','FINISHED','ABORTED'].includes(x.result)||typeof x.what!=='string'||typeof x.how!=='string'||typeof x.why!=='string'||!good(x.hash))throw Error('Run event invalid #'+(i+1));
+ if(x.kind==='START'){if(x.runId!==x.seq||x.stepIndex!==-1||x.result!=='STARTED'||state.has(x.runId))throw Error('Invalid START');state.set(x.runId,{procedureSeq:x.procedureSeq,progress:0,open:true,last:x})}
+ else {const s=state.get(x.runId);if(!s||!s.open||s.procedureSeq!==x.procedureSeq)throw Error('Run reference invalid #'+(i+1));const def=versions.get(s.procedureSeq);
+ if(x.kind==='STEP'){if(x.stepIndex!==s.progress||s.progress>=def.steps.length||!['OBSERVED','BLOCKED'].includes(x.result)||!good(x.what)||!good(x.how))throw Error('Run step order invalid #'+(i+1));if(x.result==='OBSERVED')s.progress++}
+ if(x.kind==='FINISH'){if(x.stepIndex!==s.progress||s.progress!==def.steps.length||x.result!=='FINISHED')throw Error('Incomplete finish #'+(i+1));s.open=false}
+ if(x.kind==='ABORT'){if(x.stepIndex!==s.progress||x.result!=='ABORTED'||!good(x.what)||!good(x.how))throw Error('Invalid abort #'+(i+1));s.open=false}
+ s.last=x;
+ }
+ const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Run hash mismatch #'+(i+1));prev=h
+}
+ return new Map([...state].filter(([id,s])=>s.open))}
+function element(tag,value,cls){const x=document.createElement(tag);x.textContent=value;if(cls)x.className=cls;return x}
+function populate(select,items,initial,previous){select.replaceChildren(new Option(initial,''));for(const [value,label] of items)select.add(new Option(label,String(value)));select.value=items.some(x=>String(x[0])===previous)?previous:''}
+function display(){
+ el('procedureCount').textContent=defsActive.size;el('runCount').textContent=data.runs.length;el('activeRuns').textContent=runsActive.size;
+ const prevClaim=el('evidence').value,prevTarget=el('target').value,prevProc=el('selectedProcedure').value,prevRun=el('selectedRun').value;
+ populate(el('evidence'),[...semanticActive.values()].map(x=>[x.seq,'#'+x.seq+' '+x.subject+' '+x.predicate+' '+x.object]),'Select semantic evidence',prevClaim);
+ populate(el('target'),[...defsActive.values()].map(x=>[x.seq,'#'+x.seq+' '+x.name]),'Select active procedure',prevTarget);
+ populate(el('selectedProcedure'),[...defsActive.values()].map(x=>[x.seq,'#'+x.seq+' '+x.name]),'Select procedure version',prevProc);
+ populate(el('selectedRun'),[...runsActive].map(([id,s])=>[id,'RUN #'+id+' · '+(data.definitions.find(x=>x.seq===s.procedureSeq)?.name||'?')+' / step '+(s.progress+1)]),'Select open run',prevRun);
+ showStep();history();
+ el('checkpoint').textContent=JSON.stringify({definitions:data.definitions.length,procedureHash:data.definitions.at(-1)?.hash||'GENESIS',runs:data.runs.length,runHash:data.runs.at(-1)?.hash||'GENESIS',openRuns:[...runsActive].map(([runId,s])=>({runId,procedureSeq:s.procedureSeq,nextStep:s.progress+1}))},null,2)
+}
+function showStep(){
+ const runId=Number(el('selectedRun').value),run=runsActive.get(runId),display=el('stepInfo');
+ if(!run){display.textContent='No open run selected. Select an active procedure and start a run.';return}
+ const def=data.definitions.find(x=>x.seq===run.procedureSeq);display.replaceChildren(element('strong','RUN #'+runId+' / '+def.name));
+ display.append(element('div','STEP '+(run.progress+1)+' / '+def.steps.length,'dim'));
+ display.append(element('div',run.progress>=def.steps.length?'All steps observed. You may FINISH.':def.steps[run.progress]));
+ display.append(element('small','Expected: '+def.expected,'dim'))
+}
+function history(){const box=el('history');box.replaceChildren();const q=el('filter').value.toLowerCase().trim();
+ const records=[...data.definitions.map(x=>({...x,stream:'DEFINITION'})),...data.runs.map(x=>({...x,stream:'RUN'}))].sort((a,b)=>b.timestamp.localeCompare(a.timestamp)||b.seq-a.seq);
+ const matches=records.filter(x=>{const name=x.stream==='RUN'?data.definitions.find(d=>d.seq===x.procedureSeq)?.name||'':x.name;return !q||[x.kind,x.stream,x.what||'',x.reason||'',x.result||'',name,x.agent].some(z=>z.toLowerCase().includes(q))});
+ if(!matches.length){box.textContent=q?'No matches':'No procedural records yet';return}
+ for(const x of matches){const card=element('article','', 'event');card.append(element('strong',x.stream+' #'+x.seq+' · '+x.kind));
+ card.append(element('div',x.stream==='RUN'?'RUN #'+x.runId+' / step '+(x.stepIndex+1)+' / '+x.result+' / '+(x.what||'') : x.name+' / '+x.steps.length+' steps'));
+ card.append(element('small',x.timestamp+' · '+x.agent,'dim'));
+ if(x.stream==='RUN'&&x.how)card.append(element('small','HOW: '+x.how,'dim'));
+ if(x.reason)card.append(element('small','REASON: '+x.reason,'dim'));
+ card.append(element('small','HASH '+x.hash,'dim'));box.append(card)}
+}
+async function readSources(){
+ const id=JSON.parse(localStorage.getItem(ID)||'[]'),ep=JSON.parse(localStorage.getItem(EP)||'[]'),se=JSON.parse(localStorage.getItem(SE)||'[]');
+ await checkIdentity(id);await checkEpisodes(ep,id);const active=await checkSemantics(se,ep,id);
+ identities=id;episodes=ep;semantics=se;semanticActive=active;latest=id.at(-1)||null;
+ el('identity').textContent=latest?'PASS / '+latest.payload.agent:'MISSING';
+ el('episodic').textContent=ep.length?'PASS / '+ep.length:'MISSING';
+ el('semantic').textContent=se.length?'PASS / '+se.length:'MISSING';
+}
+async function replay(){
+ await readSources();defsActive=await checkDefs(data.definitions,semantics,identities);runsActive=await checkRuns(data.runs,data.definitions,identities);
+ el('procedureIntegrity').textContent='PASS / '+data.definitions.length;el('runIntegrity').textContent='PASS / '+data.runs.length;
+ ready=!!latest&&episodes.length>0&&semanticActive.size>0;locked=false;display();disable(false);return true
+}
+function halt(e){ready=false;locked=true;el('procedureIntegrity').textContent='HALTED';el('runIntegrity').textContent='HALTED';say('CHAIN HALTED: '+e.message);disable(false)}
+async function start(){
+ try{if(!crypto?.subtle)throw Error('HTTPS or localhost required');stored=localStorage.getItem(KEY);data=stored?JSON.parse(stored):empty();if(data.format!==FORMAT)throw Error('Unexpected memory format');await replay();if(!ready)say('Complete Gates 01, 02 and an active relationship in Gate 03 first.')}
+ catch(e){halt(e)}disable(false)
+}
+function unchanged(){if(localStorage.getItem(KEY)!==stored)throw Error('Local memory changed in another tab. Reload to verify before writing.')}
+async function commit(next){unchanged();await checkDefs(next.definitions,semantics,identities);await checkRuns(next.runs,next.definitions,identities);const encoded=JSON.stringify(next);localStorage.setItem(KEY,encoded);if(localStorage.getItem(KEY)!==encoded)throw Error('Storage readback failure');stored=encoded;data=next;await replay()}
+function definitionForm(){return {name:el('name').value.trim(),intent:el('intent').value.trim(),preconditions:el('preconditions').value.trim(),expected:el('expected').value.trim(),steps:el('steps').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}}
+function revisionKind(){const revision=el('kind').value!=='DEFINE';el('revision').hidden=!revision;const retiring=el('kind').value==='RETIRE';for(const id of ['name','intent','preconditions','steps','expected'])el(id).readOnly=retiring}
+el('kind').onchange=revisionKind;
+el('target').onchange=()=>{const x=defsActive.get(Number(el('target').value));if(!x)return;for(const id of ['name','intent','preconditions','expected'])el(id).value=x[id];el('steps').value=x.steps.join('\n')};
+el('selectedRun').onchange=showStep;el('filter').oninput=history;
+el('saveProcedure').onclick=async()=>{
+ if(busy||locked)return;disable(true);try{
+  unchanged();await replay();if(!ready)throw Error('Upstream identity, witness and semantic relationship required');
+  const kind=el('kind').value,target=kind==='DEFINE'?null:Number(el('target').value),previous=kind==='DEFINE'?null:defsActive.get(target);
+  if(kind!=='DEFINE'&&!previous)throw Error('Select a current procedure to revise');
+  let claim=semanticActive.get(Number(el('evidence').value));
+  if(kind==='RETIRE'&&!claim){claim=semantics.find(s=>s.seq===previous.semanticSeq&&s.hash===previous.semanticHash)}
+  if(!claim||claim.kind==='WITHDRAW')throw Error('Select a valid semantic evidence claim');
+  const reason=kind==='DEFINE'?'':el('reason').value.trim();if(kind!=='DEFINE'&&!reason)throw Error('Give a revision reason');
+  const form=kind==='RETIRE'?{name:previous.name,intent:previous.intent,preconditions:previous.preconditions,expected:previous.expected,steps:previous.steps}:definitionForm();
+  if(!form.name||!form.intent||!form.expected||!form.steps.length||form.steps.length>32||form.steps.some(s=>s.length>500))throw Error('Name, intent, expected result and 1–32 short steps required');
+  const body={version:4,seq:data.definitions.length+1,kind,timestamp:new Date().toISOString(),prev:data.definitions.at(-1)?.hash||'GENESIS',identityHash:latest.hash,agent:latest.payload.agent,semanticSeq:claim.seq,semanticHash:claim.hash,...form,target,reason};
+  const record={...body,hash:await hash(body)};await commit({...data,definitions:[...data.definitions,record]});
+  say('COMMITTED '+kind+' #'+record.seq+' / immutable procedure witness');if(kind==='DEFINE'){el('name').value='';el('steps').value='';el('intent').value='';el('preconditions').value='';el('expected').value=''}
+ }catch(e){say('NOT COMMITTED: '+e.message)}finally{disable(false)}
+};
+function selectedVersion(){return defsActive.get(Number(el('selectedProcedure').value))}
+function openRun(){return runsActive.get(Number(el('selectedRun').value))}
+async function runEvent(kind,result){
+ if(busy||locked)return;disable(true);
+ try{
+  unchanged();await replay();if(!latest)throw Error('Verified identity required');
+  let proc,runId,stepIndex=-1;
+  if(kind==='START'){proc=selectedVersion();if(!proc)throw Error('Select a procedure');runId=data.runs.length+1}
+  else {const run=openRun();if(!run)throw Error('Select an open run');proc=data.definitions.find(d=>d.seq===run.procedureSeq);runId=Number(el('selectedRun').value);stepIndex=run.progress}
+  if(kind==='FINISH'&&stepIndex!==proc.steps.length)throw Error('Finish requires every step observed');
+  const what=kind==='START'?'':el('what').value.trim(),how=kind==='START'?'':el('how').value.trim(),why=kind==='START'?'':el('why').value.trim();
+  if((kind==='STEP'||kind==='ABORT')&&(!what||!how))throw Error('WHAT and HOW are required');
+  const body={version:4,seq:data.runs.length+1,kind,timestamp:new Date().toISOString(),prev:data.runs.at(-1)?.hash||'GENESIS',identityHash:latest.hash,agent:latest.payload.agent,procedureSeq:proc.seq,procedureHash:proc.hash,runId,stepIndex,result,what,how,why};
+  const record={...body,hash:await hash(body)};await commit({...data,runs:[...data.runs,record]});
+  if(kind==='START')el('selectedRun').value=String(runId);
+  if(kind!=='START'){el('what').value='';el('how').value='';el('why').value=''}
+  showStep();say('RECORDED '+kind+' / RUN #'+runId+' / '+result);
+ }catch(e){say('NOT RECORDED: '+e.message)}finally{disable(false)}
+}
+el('startRun').onclick=()=>runEvent('START','STARTED');
+el('observed').onclick=()=>runEvent('STEP','OBSERVED');
+el('blocked').onclick=()=>runEvent('STEP','BLOCKED');
+el('finish').onclick=()=>runEvent('FINISH','FINISHED');
+el('abort').onclick=()=>runEvent('ABORT','ABORTED');
+el('verify').onclick=async()=>{disable(true);try{unchanged();await replay();say('REPLAY PASS: all four gates, procedure versions and step records verified')}catch(e){halt(e)}finally{disable(false)}};
+el('export').onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='persist-cortex-procedural.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)};
+el('import').onclick=()=>el('file').click();
+el('file').onchange=async e=>{const file=e.target.files[0];if(!file)return;disable(true);
+ try{unchanged();await replay();const obj=JSON.parse(await file.text());if(!obj||obj.format!==FORMAT)throw Error('Unsupported archive');await checkDefs(obj.definitions,semantics,identities);await checkRuns(obj.runs,obj.definitions,identities);if(obj.definitions.length<data.definitions.length||data.definitions.some((x,i)=>obj.definitions[i].hash!==x.hash)||obj.runs.length<data.runs.length||data.runs.some((x,i)=>obj.runs[i].hash!==x.hash))throw Error('Imports may only extend existing histories');await commit(obj);say('IMPORT PASS / '+obj.definitions.length+' definitions / '+obj.runs.length+' run events')}
+ catch(err){say('IMPORT REJECTED: '+err.message)}finally{e.target.value='';disable(false)}
+};
+window.addEventListener('storage',e=>{if([ID,EP,SE,KEY].includes(e.key)){locked=true;ready=false;el('procedureIntegrity').textContent='RELOAD REQUIRED';say('Upstream memory changed in another tab. Reload to verify before working.');disable(false)}});
+start();
+})();
+</script></body></html>
