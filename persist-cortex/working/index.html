@@ -1,0 +1,225 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX // 05 WORKING // TESSY {{i}}</title>
+<meta name="description" content="Persist Cortex Gate 05: evidence-backed working memory and OASIS Tessy isomorphic inference worker">
+<style>
+:root{color-scheme:dark;--bg:#040914;--panel:#0c192b;--line:#27475f;--cyan:#66e3f3;--mint:#8cf5bc;--gold:#f5d082;--fg:#e3f9ff;--muted:#a9becd}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -6%,#193857,#040914 67%);font:13px/1.6 ui-monospace,Consolas,monospace;color:var(--fg)}header,main,footer{max-width:1240px;margin:auto;padding:20px}header{border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}h1{margin:0;color:var(--cyan);font-size:clamp(25px,5vw,45px);letter-spacing:.07em}h2{font-size:16px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--mint)}nav{display:flex;flex-wrap:wrap;gap:13px}a{color:var(--mint)}.sub,.dim,small{color:var(--muted)}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{min-width:0;background:#0a1727e8;border:1px solid var(--line);border-radius:13px;padding:20px}.wide{grid-column:1/-1}.stat{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);padding:8px 0}.value{color:var(--mint);text-align:right;overflow-wrap:anywhere}label{color:var(--muted);display:block;margin:12px 0 5px}input,textarea,select{font:inherit;width:100%;color:var(--fg);background:#06101e;padding:9px;border:1px solid #335d74;border-radius:7px}textarea{min-height:70px;resize:vertical}button{font:inherit;color:var(--fg);padding:9px 12px;border-radius:8px;border:1px solid #347e9a;background:#10384d;cursor:pointer;margin:8px 6px 0 0}button:hover:not(:disabled){background:#19516a}button:disabled{opacity:.35;cursor:not-allowed}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#050e19;padding:12px;border:1px solid var(--line);border-radius:8px;max-height:310px;overflow:auto}#memoryGlobe{width:100%;height:auto;max-height:270px}#history{max-height:355px;overflow:auto}.entry{padding:11px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.entry strong{color:var(--gold)}.entry small{display:block}.note{border-left:2px solid var(--mint);padding-left:10px;color:var(--muted)}#message{color:var(--gold);min-height:24px;margin-top:9px}.inline{display:grid;grid-template-columns:1fr 1fr;gap:13px}.badge{display:inline-block;border:1px solid var(--line);border-radius:30px;padding:3px 8px;margin:4px}footer{border-top:1px solid var(--line)}
+@keyframes orbit{to{transform:rotate(360deg)}}.orbit{transform-origin:170px 118px;animation:orbit 40s linear infinite}
+@media(max-width:780px){main{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / DIASPORA / PERSIST CORTEX</div><h1>05 · WORKING MEMORY</h1><div class="sub">TESSY {{i}} SOMORPHIC WORKER // BRAIN GLOBULE</div></div><nav><a href="../">01 IDENTITY</a><a href="../episodic/">02 EPISODIC</a><a href="../semantic/">03 SEMANTIC</a><a href="../procedural/">04 PROCEDURAL</a><a href="https://davidwise01.github.io/oasis/docs/mnp-3d/">OASIS TESSY</a><a href="https://davidwise01.github.io/formic/">DIASPORA</a></nav></header>
+<main>
+<section class="panel"><h2>{{i}} / BRAIN GLOBULE</h2>
+<svg id="memoryGlobe" viewBox="0 0 340 245" role="img" aria-label="Tessy isomorphic worker in brain globule with eight rings and 24 spoke coordinates">
+<defs><radialGradient id="core"><stop stop-color="#203f6c"/><stop offset="1" stop-color="#161236"/></radialGradient></defs>
+<g fill="none" stroke="#3d7895" opacity=".45"><circle cx="170" cy="118" r="94"/><circle cx="170" cy="118" r="78"/><circle cx="170" cy="118" r="59"/><circle cx="170" cy="118" r="42"/></g>
+<g class="orbit" fill="none" stroke="#a78bfa" stroke-dasharray="4 7"><ellipse cx="170" cy="118" rx="92" ry="32" transform="rotate(35 170 118)"/><ellipse cx="170" cy="118" rx="92" ry="32" transform="rotate(-35 170 118)"/></g>
+<g fill="#142f45" stroke="#4dcbe1"><circle cx="170" cy="118" r="37"/></g><circle cx="170" cy="118" r="28" fill="url(#core)"/>
+<text x="170" y="113" font-size="17" fill="#fff" text-anchor="middle">TESSY</text><text x="170" y="131" font-size="12" fill="#d4c7ff" text-anchor="middle">{{i}}</text>
+<circle id="attentionPoint" cx="170" cy="118" r="8" fill="#f5d082" stroke="#fff" stroke-width="1.4"/><text x="170" y="233" fill="#a8cce3" text-anchor="middle" font-size="10">8 × 24 address lattice · witness and proof receipt</text></svg>
+<div class="stat"><span>IDENTITY</span><span class="value" id="identityStatus">—</span></div><div class="stat"><span>EPISODIC</span><span class="value" id="episodeStatus">—</span></div><div class="stat"><span>SEMANTIC</span><span class="value" id="semanticStatus">—</span></div><div class="stat"><span>PROCEDURAL</span><span class="value" id="procedureStatus">—</span></div><div class="stat"><span>WORKING CHAIN</span><span class="value" id="integrity">—</span></div><div class="stat"><span>WORKER</span><span class="value" id="workerStatus">INITIALIZING</span></div><div class="stat"><span>ACTIVE GOAL</span><span class="value" id="goalState">IDLE</span></div><div class="stat"><span>FOCUS</span><span class="value" id="focusState">UNFOCUSED</span></div><div class="stat"><span>EVENTS</span><span class="value" id="count">0</span></div><div class="stat"><span>IDENTITY NAME</span><span class="value" id="agent">—</span></div>
+</section>
+<section class="panel"><h2>GOAL / VOLITION BOUNDARY</h2><p class="note">A single resumable active goal; closing it records a witnessed transition. A goal is an operator request, not a claim of truth.</p>
+<label for="objective">Working objective</label><textarea id="objective" maxlength="2000" placeholder="What is Tessy examining?"></textarea>
+<label>Structured inference target</label><div class="inline"><div><label for="subject">Subject</label><input id="subject" maxlength="160" placeholder="cortex"/></div><div><label for="predicate">Relation</label><input id="predicate" maxlength="160" placeholder="obtains"/></div></div><label for="object">Object</label><input id="object" maxlength="160" placeholder="evidence">
+<button id="goalAppend">APPEND ACTIVE GOAL</button><h3>Current working context</h3><pre id="goalView">No goal.</pre>
+<label for="closeReason">Reason to close current goal</label><input id="closeReason" maxlength="1000" placeholder="Concluded, superseded or suspended"><button id="closeGoal">CLOSE GOAL / PRESERVE HISTORY</button>
+</section>
+<section class="panel"><h2>ATTENTION / {{i}} × {{d}}</h2><div class="inline"><div><label for="y">Y = {{i}} · isomorphic operator</label><select id="y"><option value="0">V0 / BASE</option><option value="1">V1</option><option value="2">V2</option><option value="3">V3</option><option value="4">V4</option><option value="5">V5</option><option value="6">V6</option><option value="7">V7</option></select></div><div><label for="x">X = {{d}} · dimension</label><select id="x"><option value="0">A / 0°</option><option value="1">B / 15°</option><option value="2">C / 30°</option><option value="3">D / 45°</option><option value="4">E / 60°</option><option value="5">F / 75°</option><option value="6">G / 90°</option><option value="7">H / 105°</option><option value="8">I / 120°</option><option value="9">J / 135°</option><option value="10">K / 150°</option><option value="11">L / 165°</option><option value="12">M / 180°</option><option value="13">N / 195°</option><option value="14">O / 210°</option><option value="15">P / 225°</option><option value="16">Q / 240°</option><option value="17">R / 255°</option><option value="18">S / 270°</option><option value="19">T / 285°</option><option value="20">U / 300°</option><option value="21">V / 315°</option><option value="22">W / 330°</option><option value="23">X / 345°</option></select></div></div>
+<label for="source">Semantic focal reference</label><select id="source"><option value="">No semantic claims yet</option></select>
+<label for="procedure">Procedural support</label><select id="procedure"><option value="">No procedures yet</option></select>
+<label for="attention">Focus note</label><textarea id="attention" maxlength="2000" placeholder="Why these addresses?"></textarea>
+<button id="focusAppend">APPEND FOCUS</button>
+<p class="note">Only active semantic claims with basis OBSERVED enter the worker as premise facts (maximum 48). INFERRED and HYPOTHESIS records remain visible upstream but are not silently promoted to observations.</p>
+</section>
+<section class="panel"><h2>TESSY / READ-ONLY INFERENCE</h2>
+<p><a href="https://github.com/DavidWise01/oasis/blob/main/docs/mnp-3d/index.html">Original OASIS Tessy source</a> · Build 028 guarded deduction + Build 032 unified-cycle contract, ported into an isolated web worker.</p>
+<button id="runWorker">RUN TESSY {{i}} WORKER</button><button id="receiptAppend">APPEND PROOF RECEIPT</button>
+<h3>Uncommitted worker result</h3><pre id="receipt">No worker result.</pre><h3>Last committed result</h3><pre id="lastReceipt">No committed inference receipt.</pre><p class="note">Result is DERIVED, CONFLICT, or ABSTAIN. A derivation means a result follows from the supplied symbolic rules and premises, not independent validation of those premises.</p>
+<div id="message" role="status" aria-live="polite"></div>
+</section>
+<section class="panel"><h2>WORKING HISTORY / RETENTION</h2><div id="history">No events.</div></section>
+<section class="panel"><h2>RESTART CHECKPOINT / RESTORE</h2><pre id="checkpoint">No checkpoint yet.</pre><div class="stat"><span>TIP SHA-256</span><span class="value" id="lastHash">GENESIS</span></div>
+<button id="verify">VERIFY ALL + REPLAY</button><button id="export">EXPORT JSON</button><button id="import">IMPORT & VERIFY</button><input type="file" id="file" hidden accept=".json,application/json">
+<p class="note">History survives ordinary reloads only in this browser's local storage. Export for backup. The worker does not contact a server or persist activity automatically. No GitHub synchronization, multi-device memory, or independent tamper-proof attestation is implemented here.</p>
+</section>
+<section class="panel wide"><h2>DIASPORA / {{i}} BRAIN GLOBULE INTEGRATION</h2>
+<p>Connected knowledge ancestry: identity → witness → semantic claim → procedural routine → working focus → Tessy proof receipt. The historical OASIS app remains unchanged. Gate 05 integrates its bounded rule engine as a new local worker and retains a link to the OASIS Tessy source.</p>
+<a href="https://davidwise01.github.io/formic/">DIASPORA / FORMIC</a> &nbsp; | &nbsp; <a href="https://davidwise01.github.io/oasis/docs/mnp-3d/">OASIS TESSY 3D</a>
+<div><span class="badge">01 identity</span><span class="badge">02 episodic</span><span class="badge">03 semantic</span><span class="badge">04 procedural</span><span class="badge">05 working / Tessy</span><span class="badge">06 archive next</span></div></section>
+</main><footer class="sub">PERSIST CORTEX · Gate 05 · Tessy brain globule · symbolic isomorphic worker · no votes / no quorums</footer>
+<script>(()=>{'use strict';
+const ID='persist-cortex-identity-v1',EP='persist-cortex-episodes-v1',SE='persist-cortex-semantic-v1',PR='persist-cortex-procedures-v1',KEY='persist-cortex-working-v1',FORMAT='persist-cortex-working-v5';
+const el=id=>document.getElementById(id),good=s=>typeof s==='string'&&s.length>0,hash=async v=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(v)))),b=>b.toString(16).padStart(2,'0')).join('');
+let identities=[],episodes=[],semantics=[],procedures={definitions:[],runs:[]},semanticActive=new Map(),procedureActive=new Map(),latest=null;
+let work=[],stored=null,verifiedSources=null,ready=false,locked=false,busy=false,worker=null,serial=0,pending=null,hasWorker=false;
+async function checkIdentity(xs){if(!Array.isArray(xs))throw Error('Identity history not an array');let prev='GENESIS';for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==1||x.seq!==i+1||x.kind!=='IDENTITY'||x.prev!==prev||!good(x.timestamp)||!x.payload||!good(x.payload.agent)||!good(x.payload.purpose)||!good(x.payload.bounds)||!good(x.hash))throw Error('Identity event invalid #'+(i+1));const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Identity hash mismatch #'+(i+1));prev=h}}
+async function checkEpisodes(xs,ids){if(!Array.isArray(xs))throw Error('Episodic history not an array');let prev='GENESIS';const owners=new Map(ids.map(i=>[i.hash,i.payload.agent])),seen=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==2||x.seq!==i+1||x.prev!==prev||!['OBSERVATION','CORRECTION'].includes(x.kind)||!good(x.timestamp)||!good(x.identityHash)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!['A','B','C'].includes(x.witness)||!good(x.episode)||!good(x.what)||!good(x.how)||typeof x.why!=='string'||typeof x.source!=='string'||!good(x.hash))throw Error('Episode invalid #'+(i+1));if(x.kind==='OBSERVATION'&&x.corrects!==null)throw Error('Original episode correction reference');if(x.kind==='CORRECTION'&&(!Number.isInteger(x.corrects)||!seen.has(x.corrects)||seen.get(x.corrects).kind!=='OBSERVATION'||seen.get(x.corrects).episode!==x.episode))throw Error('Broken episodic correction');const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Episode hash mismatch #'+(i+1));prev=h;seen.set(x.seq,x)}}
+async function checkSemantics(xs,eps,ids){if(!Array.isArray(xs))throw Error('Semantic history not an array');let prev='GENESIS';const owner=new Map(ids.map(i=>[i.hash,i.payload.agent])),ep=new Map(eps.map(x=>[x.seq,x])),active=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==3||x.seq!==i+1||x.prev!==prev||!['ASSERT','AMEND','WITHDRAW'].includes(x.kind)||!good(x.timestamp)||!good(x.identityHash)||!owner.has(x.identityHash)||x.agent!==owner.get(x.identityHash)||!Number.isInteger(x.episodeSeq)||!ep.has(x.episodeSeq)||ep.get(x.episodeSeq).hash!==x.episodeHash||!good(x.subject)||!good(x.predicate)||!good(x.object)||!['OBSERVED','INFERRED','HYPOTHESIS'].includes(x.basis)||typeof x.detail!=='string'||typeof x.reason!=='string'||!good(x.hash))throw Error('Semantic event invalid #'+(i+1));if(x.kind==='ASSERT'&&x.target!==null)throw Error('Assertion targets old claim');if(x.kind!=='ASSERT'&&(!Number.isInteger(x.target)||!active.has(x.target)||!good(x.reason)))throw Error('Semantic revision target invalid');if(x.kind==='WITHDRAW'){const t=active.get(x.target);if(x.subject!==t.subject||x.predicate!==t.predicate||x.object!==t.object)throw Error('Withdrawal mismatch')}const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Semantic hash mismatch #'+(i+1));if(x.kind!=='ASSERT')active.delete(x.target);if(x.kind!=='WITHDRAW')active.set(x.seq,x);prev=h}return active}
+async function checkDefs(xs,sems,ids){if(!Array.isArray(xs))throw Error('Procedure definitions not an array');const refs=new Map(sems.map(x=>[x.seq,x])),owners=new Map(ids.map(i=>[i.hash,i.payload.agent]));let prev='GENESIS',active=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==4||x.seq!==i+1||x.prev!==prev||!['DEFINE','REVISE','RETIRE'].includes(x.kind)||!good(x.timestamp)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!refs.has(x.semanticSeq)||refs.get(x.semanticSeq).hash!==x.semanticHash||refs.get(x.semanticSeq).kind==='WITHDRAW'||!good(x.name)||!good(x.intent)||typeof x.preconditions!=='string'||!good(x.expected)||!Array.isArray(x.steps)||!x.steps.length||x.steps.length>32||x.steps.some(s=>!good(s)||s.length>500)||typeof x.reason!=='string'||!good(x.hash))throw Error('Procedure invalid #'+(i+1));if(x.kind==='DEFINE'&&x.target!==null)throw Error('Definition cannot target');if(x.kind!=='DEFINE'&&(!Number.isInteger(x.target)||!active.has(x.target)||!good(x.reason)))throw Error('Procedure revision target invalid');if(x.kind==='RETIRE'){const t=active.get(x.target);if(['name','intent','preconditions','expected'].some(k=>x[k]!==t[k])||JSON.stringify(x.steps)!==JSON.stringify(t.steps))throw Error('Retirement cannot change procedure')}const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Procedure hash mismatch #'+(i+1));if(x.kind!=='DEFINE')active.delete(x.target);if(x.kind!=='RETIRE')active.set(x.seq,x);prev=h}return active}
+async function checkRuns(xs,defs,ids){if(!Array.isArray(xs))throw Error('Run events not an array');let prev='GENESIS',state=new Map();const versions=new Map(defs.filter(x=>x.kind!=='RETIRE').map(x=>[x.seq,x])),owners=new Map(ids.map(i=>[i.hash,i.payload.agent]));for(let i=0;i<xs.length;i++){
+ const x=xs[i];if(!x||x.version!==4||x.seq!==i+1||x.prev!==prev||!['START','STEP','FINISH','ABORT'].includes(x.kind)||!good(x.timestamp)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!versions.has(x.procedureSeq)||versions.get(x.procedureSeq).hash!==x.procedureHash||!Number.isInteger(x.runId)||!Number.isInteger(x.stepIndex)||!['STARTED','OBSERVED','BLOCKED','FINISHED','ABORTED'].includes(x.result)||typeof x.what!=='string'||typeof x.how!=='string'||typeof x.why!=='string'||!good(x.hash))throw Error('Run event invalid #'+(i+1));
+ if(x.kind==='START'){if(x.runId!==x.seq||x.stepIndex!==-1||x.result!=='STARTED'||state.has(x.runId))throw Error('Invalid START');state.set(x.runId,{procedureSeq:x.procedureSeq,progress:0,open:true,last:x})}
+ else {const s=state.get(x.runId);if(!s||!s.open||s.procedureSeq!==x.procedureSeq)throw Error('Run reference invalid #'+(i+1));const def=versions.get(s.procedureSeq);
+ if(x.kind==='STEP'){if(x.stepIndex!==s.progress||s.progress>=def.steps.length||!['OBSERVED','BLOCKED'].includes(x.result)||!good(x.what)||!good(x.how))throw Error('Run step order invalid #'+(i+1));if(x.result==='OBSERVED')s.progress++}
+ if(x.kind==='FINISH'){if(x.stepIndex!==s.progress||s.progress!==def.steps.length||x.result!=='FINISHED')throw Error('Incomplete finish #'+(i+1));s.open=false}
+ if(x.kind==='ABORT'){if(x.stepIndex!==s.progress||x.result!=='ABORTED'||!good(x.what)||!good(x.how))throw Error('Invalid abort #'+(i+1));s.open=false}
+ s.last=x;
+ }
+ const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Run hash mismatch #'+(i+1));prev=h
+}
+ return new Map([...state].filter(([id,s])=>s.open))}
+
+function setMessage(v){el('message').textContent=v}
+function controls(disabled){busy=disabled;for(const id of ['goalAppend','focusAppend','runWorker','receiptAppend','closeGoal','import'])el(id).disabled=disabled||locked||!ready;el('verify').disabled=disabled||locked;el('receiptAppend').disabled=disabled||locked||!ready||!pending}
+function create(tag,t,cls){const n=document.createElement(tag);n.textContent=t;if(cls)n.className=cls;return n}
+function selectFill(id,items,placeholder,previous){const node=el(id);node.replaceChildren(new Option(placeholder,''));for(const [key,label] of items)node.add(new Option(label,String(key)));node.value=items.some(v=>String(v[0])===previous)?previous:''}
+function state(xs){let active=null,focus=null,last=null;for(const e of xs){if(e.kind==='GOAL'){active={id:e.seq,objective:e.payload.objective,goal:e.payload.goal};focus=null;last=null}
+if(e.kind==='FOCUS')focus={y:e.payload.y,x:e.payload.x,semanticSeq:e.payload.semanticSeq,procedureSeq:e.payload.procedureSeq,note:e.payload.note};
+if(e.kind==='INFERENCE')last=e.payload;
+if(e.kind==='CLOSE'){active=null;focus=null;last=null}}
+return{active,focus,last}}
+function validTriple(t){return Array.isArray(t)&&t.length===3&&t.every(v=>typeof v==='string'&&v.length>0&&v.length<=160)}
+function requireReceipt(r){return r&&r.engine==='tessy-i-somorphic-v1'&&['DERIVED','CONFLICT','ABSTAIN'].includes(r.decision)&&r.write==='NONE'&&r.status==='READ_ONLY'&&r.route&&Number.isInteger(r.sourceCount)&&Array.isArray(r.sourceHashes)&&r.sourceHashes.every(x=>/^[a-f0-9]{64}$/.test(x))&&Array.isArray(r.proof)&&validTriple(r.goal)}
+async function verifyWork(xs,ids,eps,se,defs){
+ if(!Array.isArray(xs))throw Error('Working journal must be an array');let prev='GENESIS';const owner=new Map(ids.map(i=>[i.hash,i.payload.agent])),sMap=new Map(se.map(e=>[e.seq,e])),dMap=new Map(defs.map(e=>[e.seq,e]));
+ let active=null,focus=null;
+ for(let i=0;i<xs.length;i++){
+  const e=xs[i];if(!e||e.version!==5||e.seq!==i+1||e.prev!==prev||!['GOAL','FOCUS','INFERENCE','CLOSE'].includes(e.kind)||!good(e.timestamp)||!owner.has(e.identityHash)||e.agent!==owner.get(e.identityHash)||!e.payload||!good(e.hash))throw Error('Working event malformed #'+(i+1));
+  const p=e.payload;
+  if(e.kind==='GOAL'){if(active||!good(p.objective)||!validTriple(p.goal)||e.goalId!==e.seq)throw Error('Invalid or overlapping goal #'+e.seq);active=e.goalId;focus=null}
+  else if(e.goalId!==active||!active)throw Error('Orphan working event #'+e.seq);
+  if(e.kind==='FOCUS'){
+   if(!Number.isInteger(p.y)||p.y<0||p.y>7||!Number.isInteger(p.x)||p.x<0||p.x>23||!Number.isInteger(p.semanticSeq)||!sMap.has(p.semanticSeq)||sMap.get(p.semanticSeq).hash!==p.semanticHash||sMap.get(p.semanticSeq).kind==='WITHDRAW'||!(p.procedureSeq===null||(Number.isInteger(p.procedureSeq)&&dMap.has(p.procedureSeq)&&dMap.get(p.procedureSeq).hash===p.procedureHash))||typeof p.note!=='string')throw Error('Invalid focus references #'+e.seq);
+   focus={y:p.y,x:p.x};
+  }
+  if(e.kind==='INFERENCE'){
+   if(!focus||!requireReceipt(p.receipt)||!good(p.requestHash)||!Array.isArray(p.premises)||p.premises.length>48||p.premises.some(z=>!z||!validTriple(z.triple)||!good(z.semanticHash)||!se.some(s=>s.hash===z.semanticHash&&s.basis==='OBSERVED'&&s.kind!=='WITHDRAW'))||!validTriple(p.receipt.goal)||p.receipt.route.i!=='V'+focus.y||p.receipt.route.d!=='ABCDEFGHIJKLMNOPQRSTUVWX'[focus.x]||!p.premises.every(z=>se.some(s=>s.hash===z.semanticHash&&s.subject===z.triple[0]&&s.predicate===z.triple[1]&&s.object===z.triple[2]))||p.receipt.sourceHashes.some(h=>!p.premises.some(z=>z.semanticHash===h)))throw Error('Inference provenance invalid #'+e.seq);
+   const goal=xs.find(x=>x.seq===active);if(JSON.stringify(p.receipt.goal)!==JSON.stringify(goal.payload.goal))throw Error('Inference goal mismatch #'+e.seq);
+   if(await hash({premises:p.premises,goal:goal.payload.goal,y:focus.y,x:focus.x})!==p.requestHash)throw Error('Inference request mismatch #'+e.seq);
+  }
+  if(e.kind==='CLOSE'){if(!good(p.reason))throw Error('Close requires a reason');active=null;focus=null}
+  const {hash:h,...body}=e;if(await hash(body)!==h)throw Error('Working SHA mismatch #'+e.seq);prev=h;
+ }
+ return state(xs)
+}
+async function readSources(){
+ const identity=JSON.parse(localStorage.getItem(ID)||'[]'),episode=JSON.parse(localStorage.getItem(EP)||'[]'),semantic=JSON.parse(localStorage.getItem(SE)||'[]'),proc=JSON.parse(localStorage.getItem(PR)||'null');
+ await checkIdentity(identity);await checkEpisodes(episode,identity);
+ const sa=await checkSemantics(semantic,episode,identity);
+ if(!proc||proc.format!=='persist-cortex-procedural-v4')throw Error('Gate 04 procedure store missing; create a procedure there first');
+ const pa=await checkDefs(proc.definitions,semantic,identity);await checkRuns(proc.runs,proc.definitions,identity);
+ identities=identity;episodes=episode;semantics=semantic;procedures=proc;semanticActive=sa;procedureActive=pa;latest=identity.at(-1)||null;
+ verifiedSources=[ID,EP,SE,PR].map(k=>localStorage.getItem(k));
+ for(const [id,value] of [['identityStatus',latest?'PASS':'MISSING'],['episodeStatus',episode.length?'PASS':'MISSING'],['semanticStatus',sa.size?'PASS / '+sa.size:'NO ACTIVE CLAIMS'],['procedureStatus',pa.size?'PASS / '+pa.size:'NO ACTIVE ROUTINES']])el(id).textContent=value;
+ ready=!!latest&&episode.length>0&&sa.size>0&&pa.size>0
+}
+function ensureSourcesUnchanged(){for(const [i,k] of [ID,EP,SE,PR].entries())if(localStorage.getItem(k)!==verifiedSources?.[i])throw Error('Source changed; replay required')}
+async function replay(){
+ await readSources();
+ const ss=await verifyWork(work,identities,episodes,semantics,procedures.definitions);
+ el('integrity').textContent='PASS / '+work.length;
+ el('count').textContent=work.length;
+ el('agent').textContent=latest?.payload.agent||'—';
+ el('lastHash').textContent=work.at(-1)?.hash||'GENESIS';
+ locked=false;draw(ss);return ss
+}
+function halt(e){ready=false;locked=true;el('integrity').textContent='HALTED';setMessage('REPLAY HALTED · '+e.message);controls(false)}
+function draw(ss){
+ el('goalState').textContent=ss.active?'ACTIVE #'+ss.active.id:'IDLE';
+ el('goalView').textContent=ss.active?ss.active.objective+'\n'+ss.active.goal.join(' → '):'No active goal. Create one to initialize working context.';
+ el('focusState').textContent=ss.focus?'{{i}} V'+ss.focus.y+' × {{d}} '+'ABCDEFGHIJKLMNOPQRSTUVWX'[ss.focus.x]:'UNFOCUSED';
+ el('lastReceipt').textContent=ss.last?JSON.stringify(ss.last.receipt,null,2):'No committed inference receipt.';
+ el('checkpoint').textContent=JSON.stringify({active: ss.active,focus:ss.focus,lastDecision:ss.last?.receipt.decision||null,workingEvents:work.length,tip:work.at(-1)?.hash||'GENESIS'},null,2);
+ const p=el('attentionPoint');if(p&&p.setAttribute){const y=ss.focus?.y??0,x=ss.focus?.x??0;const angle=2*Math.PI*x/24;const radius=ss.focus?78:0;p.setAttribute('cx',String(170+Math.cos(angle)*radius));p.setAttribute('cy',String(118+Math.sin(angle)*radius))}
+ const sPrev=el('source').value,pPrev=el('procedure').value;
+ selectFill('source',[...semanticActive.values()].map(s=>[s.seq,'#'+s.seq+' '+s.subject+' / '+s.predicate+' / '+s.object]),'Select active semantic focus',sPrev);
+ selectFill('procedure',[...procedureActive.values()].map(s=>[s.seq,'#'+s.seq+' '+s.name]),'Select current procedure',pPrev);
+ el('history').replaceChildren();
+ if(!work.length)el('history').textContent='No working-memory events.';
+ for(const e of [...work].reverse()){const x=create('div','', 'entry');x.append(create('strong','#'+e.seq+' · '+e.kind));x.append(create('small',e.timestamp+' · goal '+e.goalId,'dim'));x.append(create('div',e.kind==='GOAL'?e.payload.objective:e.kind==='INFERENCE'?e.payload.receipt.decision:e.kind==='FOCUS'?'{{i}} V'+e.payload.y+' / {{d}} '+'ABCDEFGHIJKLMNOPQRSTUVWX'[e.payload.x]:e.payload.reason));x.append(create('small',e.hash,'dim'));el('history').append(x)}
+}
+async function commit(kind,goalId,payload){
+ ensureSourcesUnchanged();if(localStorage.getItem(KEY)!==stored)throw Error('Working memory changed in another tab; reload');
+ const body={version:5,seq:work.length+1,kind,timestamp:new Date().toISOString(),prev:work.at(-1)?.hash||'GENESIS',identityHash:latest.hash,agent:latest.payload.agent,goalId,payload};
+ const entry={...body,hash:await hash(body)},next=[...work,entry];
+ await verifyWork(next,identities,episodes,semantics,procedures.definitions);
+ const encoded=JSON.stringify(next);localStorage.setItem(KEY,encoded);if(localStorage.getItem(KEY)!==encoded)throw Error('Write/readback failed');
+ work=next;stored=encoded;pending=null;const ss=await replay();controls(false);return{entry,ss}
+}
+async function action(fn){if(busy||locked)return;controls(true);try{await fn()}catch(e){setMessage('REJECTED · '+e.message)}finally{controls(false)}}
+el('goalAppend').onclick=()=>action(async()=>{
+ await replay();if(!ready)throw Error('Verified upstream evidence and procedure required');
+ const ss=state(work);if(ss.active)throw Error('Close active goal before creating another');
+ const objective=el('objective').value.trim(),goal=[el('subject').value.trim(),el('predicate').value.trim(),el('object').value.trim()];
+ if(!objective||!validTriple(goal))throw Error('Objective and goal triple are required (≤160 characters per term)');
+ const {entry}=await commit('GOAL',work.length+1,{objective,goal});setMessage('GOAL #'+entry.seq+' APPENDED · restart-safe')
+});
+el('focusAppend').onclick=()=>action(async()=>{
+ await replay();const ss=state(work);if(!ss.active)throw Error('Create a goal first');
+ const claim=semanticActive.get(Number(el('source').value)),procedure=procedureActive.get(Number(el('procedure').value)),y=Number(el('y').value),x=Number(el('x').value);
+ if(!claim||!procedure)throw Error('Choose semantic evidence and an active procedure');
+ const payload={y,x,semanticSeq:claim.seq,semanticHash:claim.hash,procedureSeq:procedure.seq,procedureHash:procedure.hash,note:el('attention').value.trim()};
+ const {entry}=await commit('FOCUS',ss.active.id,payload);setMessage('FOCUS #'+entry.seq+' APPENDED · Tessy brain address selected')
+});
+function facts(){return[...semanticActive.values()].filter(s=>s.basis==='OBSERVED').slice(0,48).map(s=>({triple:[s.subject,s.predicate,s.object],semanticHash:s.hash}))}
+el('runWorker').onclick=()=>action(async()=>{
+ await replay();if(!hasWorker||!worker)throw Error('Tessy worker not available in this browser');
+ const ss=state(work);if(!ss.active||!ss.focus)throw Error('Create goal and focus first');
+ const request={premises:facts(),goal:ss.active.goal,y:ss.focus.y,x:ss.focus.x};
+ const requestHash=await hash(request),id=++serial;
+ pending=null;el('receipt').textContent='Tessy working… read-only evaluation';
+ worker.postMessage({id,request});
+ el('workerStatus').textContent='RUNNING #'+id;
+ setMessage('Tessy requested; awaiting proof receipt. No ledger changes.');
+});
+el('receiptAppend').onclick=()=>action(async()=>{
+ await replay();const ss=state(work);if(!pending||!ss.active||!ss.focus)throw Error('No pending verified proof receipt');
+ const req=pending.request,actual={premises:facts(),goal:ss.active.goal,y:ss.focus.y,x:ss.focus.x};
+ if(JSON.stringify(req)!==JSON.stringify(actual)||pending.goalId!==ss.active.id)throw Error('Evidence, goal or focus changed since inference; run Tessy again');
+ if(!requireReceipt(pending.receipt)||JSON.stringify(pending.receipt.goal)!==JSON.stringify(actual.goal)||pending.receipt.route.i!=='V'+actual.y||pending.receipt.route.d!=='ABCDEFGHIJKLMNOPQRSTUVWX'[actual.x])throw Error('Worker receipt malformed or mismatched');
+ const {entry}=await commit('INFERENCE',ss.active.id,{requestHash:pending.requestHash,premises:actual.premises,receipt:pending.receipt});setMessage('PROOF RECEIPT #'+entry.seq+' APPENDED · '+entry.payload.receipt.decision)
+});
+el('closeGoal').onclick=()=>action(async()=>{
+ await replay();const ss=state(work);if(!ss.active)throw Error('No active goal');
+ const reason=el('closeReason').value.trim();if(!reason)throw Error('Provide a closure reason');
+ const {entry}=await commit('CLOSE',ss.active.id,{reason});setMessage('GOAL CLOSED #'+entry.seq+' · prior state preserved')
+});
+el('verify').onclick=()=>action(async()=>{if(localStorage.getItem(KEY)!==stored)throw Error('Memory changed in another tab; reload');await replay();setMessage('VERIFIED · Gates 01–05, Tessy working journal and references')});
+el('export').onclick=()=>{const blob=new Blob([JSON.stringify({format:FORMAT,events:work},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='persist-cortex-working.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1500)};
+el('import').onclick=()=>el('file').click();
+el('file').onchange=async evt=>{const file=evt.target.files?.[0];if(!file)return;await action(async()=>{
+ await replay();const obj=JSON.parse(await file.text());if(obj.format!==FORMAT)throw Error('Unsupported working archive');
+ await verifyWork(obj.events,identities,episodes,semantics,procedures.definitions);
+ if(obj.events.length<work.length||work.some((x,i)=>x.hash!==obj.events[i].hash))throw Error('Import may only extend history');
+ ensureSourcesUnchanged();if(localStorage.getItem(KEY)!==stored)throw Error('Working journal changed in another tab');
+ const encoded=JSON.stringify(obj.events);localStorage.setItem(KEY,encoded);stored=encoded;work=obj.events;pending=null;await replay();setMessage('IMPORT PASS · '+work.length+' verified events')
+});evt.target.value=''};
+window.addEventListener('storage',e=>{if([ID,EP,SE,PR,KEY].includes(e.key)){locked=true;ready=false;pending=null;el('integrity').textContent='RELOAD REQUIRED';setMessage('Another tab changed memory. Reload to verify.');controls(false)}});
+async function bootstrap(){
+ try{
+  if(!crypto?.subtle)throw Error('Secure context required');
+  stored=localStorage.getItem(KEY);const loaded=stored?JSON.parse(stored):{format:FORMAT,events:[]};if(loaded.format!==FORMAT)throw Error('Unexpected working format');
+  work=loaded.events;await replay();
+  if(typeof Worker==='function'){
+   worker=new Worker('./tessy-brain-worker.js');
+   worker.onmessage=e=>{
+    const {id,ok,receipt,error}=e.data||{};if(id!==serial)return;
+    el('workerStatus').textContent=ok?'READY · RESULT':'WORKER ERROR';if(!ok){pending=null;el('receipt').textContent=String(error||'Unknown worker error');controls(false);return}
+    if(!requireReceipt(receipt)){pending=null;el('receipt').textContent='Invalid worker receipt';controls(false);return}
+    const ss=state(work),request={premises:facts(),goal:ss.active?.goal,y:ss.focus?.y,x:ss.focus?.x};
+    const requestHash=hash(request);
+    requestHash.then(h=>{
+      if(id!==serial)return;
+      pending={request,requestHash:h,receipt,goalId:ss.active?.id};
+      el('receipt').textContent=JSON.stringify(receipt,null,2);el('workerStatus').textContent=receipt.decision+' / READ ONLY';controls(false);
+    }).catch(err=>setMessage(err.message))
+   };
+   worker.onerror=e=>{hasWorker=false;pending=null;el('workerStatus').textContent='WORKER FAILED';setMessage('Tessy worker failed to load');controls(false)};
+   hasWorker=true;el('workerStatus').textContent='SPAWNED / READ ONLY'
+  }else{el('workerStatus').textContent='WORKER UNSUPPORTED'}
+  if(!ready)setMessage('Complete Gate 01–04 records first. Gate 05 remains read-only until inputs exist.')
+ }catch(e){halt(e)}controls(false)
+}
+bootstrap();
+})();</script></body></html>
