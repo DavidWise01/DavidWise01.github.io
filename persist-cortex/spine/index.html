@@ -102,12 +102,12 @@ async function refresh(){if(busy)return;busy=true;el('refresh').disabled=true;el
  finally{busy=false;el('refresh').disabled=false}
 }
 el('lookup').onclick=async()=>{const repo=el('lookupRepo').value.trim(),path=el('lookupPath').value.trim(),out=el('lookupResult');
- if(!/^DavidWise01\\/[A-Za-z0-9._-]+$/.test(repo)||!path||path.startsWith('/')||path.split('/').some(p=>!p||p==='.'||p==='..')){out.textContent='Invalid owner/path; only DavidWise01 public files accepted.';return}
+ if(!/^DavidWise01\/[A-Za-z0-9._-]+$/.test(repo)||!path||path.startsWith('/')||path.split('/').some(p=>!p||p==='.'||p==='..')){out.textContent='Invalid owner/path; only DavidWise01 public files accepted.';return}
  out.textContent='Looking up public default-branch source…';
  try{const uri='https://api.github.com/repos/'+repo+'/contents/'+path.split('/').map(encodeURIComponent).join('/');
  const res=await fetch(uri,{headers:{Accept:'application/vnd.github+json'}});if(!res.ok)throw Error('GitHub API '+res.status);
  const data=await res.json();if(data.type!=='file'||!/^([0-9a-f]{40})$/.test(data.sha))throw Error('Not a public regular file');
- out.textContent='SOURCE REPO: '+repo+'\\nSOURCE PATH: '+path+'\\nSOURCE SHA: '+data.sha+'\\n\\nUse these exact values in the authenticated append action.'}
+ out.textContent='SOURCE REPO: '+repo+'\nSOURCE PATH: '+path+'\nSOURCE SHA: '+data.sha+'\n\nUse these exact values in the authenticated append action.'}
  catch(e){out.textContent='LOOKUP FAILED: '+e.message}
 };
 el('refresh').onclick=refresh;el('filter').oninput=show;el('copy').onclick=()=>{if(pointer)navigator.clipboard.writeText(pointer).catch(e=>{el('message').textContent='Clipboard unavailable: '+e.message})};refresh();
