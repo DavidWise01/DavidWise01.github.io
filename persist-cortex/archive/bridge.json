@@ -47,5 +47,22 @@
     "voting": false,
     "automatic_execution": false,
     "remote_browser_writes": false
+  },
+  "witness_delivery": {
+    "reader": "https://davidwise01.github.io/persist-cortex/identity-bridge/",
+    "witness_registry": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/witness-registry.json",
+    "sender_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/delivery-events.jsonl",
+    "sender_action": "https://github.com/DavidWise01/toph-cortex/actions/workflows/delivery-receipt-append.yml",
+    "hallway_ack_action": "https://github.com/DavidWise01/0root/actions/workflows/temporal-receiver-ack.yml",
+    "direction": "OFFER -> REMOTE ACK FILE -> VERIFIED RECEIPT",
+    "witnesses": {
+      "A": "DavidWise01 GitHub actor ID 148925959",
+      "B": "UNASSIGNED",
+      "C": "UNASSIGNED"
+    },
+    "voting": false,
+    "quorum": null,
+    "automatic_cross_repository_write": false,
+    "private_memory_sync": false
   }
 }
