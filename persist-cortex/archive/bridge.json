@@ -142,6 +142,14 @@
     "latency": "observed monotonic HTTP round-trip only",
     "physical_time_dilation_measured": false,
     "scientific_priority_determined": false,
-    "status": "No live referent or transport sample yet; source note is separate and attributed"
+    "status": "No live referent or transport sample yet; source note is separate and attributed",
+    "watermark_attribution": ".dlw",
+    "watermark_format": ".dlw:<64 lowercase hex SHA-256>",
+    "claimant": "David Lee Wise",
+    "attribution_scope": "PROVENANCE_CONTAINER_ONLY",
+    "third_party_ownership_claim": false,
+    "attribution_manifest": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/attribution.dlw",
+    "format_version": 2,
+    "legacy_v1_readable": true
   }
 }
