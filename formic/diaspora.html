@@ -54,7 +54,7 @@ function showIdeas(){
   const note=document.createElement('small');note.textContent=idea.proposal_state+' · '+idea.observations.length+' independent peer observations · tests '+(idea.verification?.test_result||'NOT_RUN')+' · applied '+(idea.verification?.applied?'YES':'NO');card.append(note);
   const steps=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Implementation steps';steps.append(summary);
   const list=document.createElement('ol');for(const step of idea.implementation.steps){const li=document.createElement('li');li.textContent=step;list.append(li)}steps.append(list);card.append(steps);const bounds=document.createElement('p');bounds.className='muted';bounds.textContent='Bound: origin sphere only · evidence required · tests required · owner approval required · peers do not vote';card.append(bounds);
-  root.append(card);
+  if(idea.change_packet){const button=document.createElement('button');button.textContent='Export review packet';button.addEventListener('click',()=>{const packet={...idea.change_packet,packet_sha256:idea.packet_sha256};const blob=new Blob([JSON.stringify(packet,null,2)+'\\n'],{type:'application/json'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=idea.id+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),2000)});card.append(button);const signature=document.createElement('small');signature.textContent='SHA-256 '+idea.packet_sha256+' · DRAFT ONLY';card.append(signature)}root.append(card);
  }
 }
 function convene(){
