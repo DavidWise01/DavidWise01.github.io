@@ -150,6 +150,23 @@
     "third_party_ownership_claim": false,
     "attribution_manifest": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/attribution.dlw",
     "format_version": 2,
-    "legacy_v1_readable": true
+    "legacy_v1_readable": true,
+    "attribution_role": "provenance mark only"
+  },
+  "cubit_constant": {
+    "canonical": "cubit",
+    "case_sensitive": true,
+    "immutable_across": [
+      "copy",
+      "distill",
+      "summarize",
+      "export",
+      "import"
+    ],
+    "contract": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/cubit-constant.json",
+    "validation_workflow": "https://github.com/DavidWise01/toph-cortex/actions/workflows/cubit-constant-check.yml",
+    "mark": ".dlw",
+    "lexical_guarantee": "copy retains count; distill preserves exact token when source contains it",
+    "semantic_equivalence_proven": false
   }
 }
