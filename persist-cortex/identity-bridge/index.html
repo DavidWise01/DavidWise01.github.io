@@ -1,0 +1,126 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX · GATE 09 / WITNESS BRIDGE</title>
+<meta name="description" content="Gate 09: actor-bound independent A/B/C witnesses and one-way cross-repository receipt provenance, no votes or quorum.">
+<style>
+:root{color-scheme:dark;--bg:#06101b;--panel:#0e2033;--line:#2a5268;--cyan:#78e6f4;--mint:#95f4bf;--purple:#c2abff;--gold:#f1d28d;--text:#e9f8ff;--dim:#a6c3d0;--red:#ffb1b1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 44% -9%,#183c58,#06101b 67%);color:var(--text);font:13px/1.65 ui-monospace,Consolas,monospace}header,main,footer{max-width:1240px;margin:auto;padding:22px}header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid var(--line)}h1{margin:0;color:var(--cyan);letter-spacing:.07em;font-size:clamp(27px,4.1vw,48px)}h2{color:var(--cyan);font-size:17px;margin:0 0 12px}h3{color:var(--mint);font-size:14px;margin:9px 0}nav{display:flex;gap:13px;flex-wrap:wrap}a{color:var(--mint)}.sub,.dim,small{color:var(--dim)}
+main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{border:1px solid var(--line);background:#0c1d2eee;border-radius:13px;padding:20px;min-width:0}.wide{grid-column:1/-1}
+.stat{display:flex;gap:12px;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0}.value{color:var(--mint);text-align:right;overflow-wrap:anywhere}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;margin:3px}
+button{font:inherit;border-radius:8px;padding:9px 13px;color:var(--text);background:#173f55;border:1px solid #41879e;margin:7px 6px 0 0;cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}label{display:block;color:var(--dim);margin:12px 0 4px}select,input{font:inherit;background:#071321;color:var(--text);width:100%;border-radius:8px;border:1px solid #3c6d84;padding:10px}
+pre{background:#071522;border-radius:9px;border:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere;max-height:280px;overflow:auto;padding:12px}
+.note{border-left:2px solid var(--cyan);padding-left:12px;color:var(--dim)}#message{color:var(--gold);min-height:28px}
+#diagram{width:100%;height:auto;max-height:280px;display:block}.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.lane{border:1px solid var(--line);border-radius:10px;background:#10283b;padding:12px;overflow-wrap:anywhere}.lane h3{margin:0;color:var(--mint)}.lane[data-lane=B] h3{color:var(--purple)}.lane[data-lane=C] h3{color:var(--gold)}
+.entry{padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.entry strong{color:var(--gold)}.entry small{display:block}#events{max-height:440px;overflow:auto}footer{border-top:1px solid var(--line)}@media(max-width:810px){main{grid-template-columns:1fr}.lanes{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / TOPH CORTEX / PERSISTENCE</div><h1>09 · WITNESS BRIDGE</h1><div class="sub">AUTHENTICATED ACTOR · DIODE / ONE WAY · RECEIPT PROVENANCE</div></div><nav>
+<a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="../spine/">07</a><a href="../temporal/">08</a><a href="https://0root.ai/">0ROOT.AI</a>
+</nav></header><main>
+<section class="panel"><h2>WITNESS / DELIVERY DIODE</h2>
+<svg id="diagram" viewBox="0 0 520 245" role="img" aria-label="Three independent witness lanes feed a single temporal ledger, then send one-way offers to recipient repository without votes">
+<defs><marker id="end" markerWidth="7" markerHeight="7" refX="9" refY="5" orient="auto" viewBox="0 0 10 10"><path fill="#83e1f2" d="M0 0L10 5L0 10Z"/></marker></defs>
+<g stroke="#4d8aa6" stroke-width="2" fill="none"><path d="M72 50L196 123 M72 123L196 123 M72 196L196 123"/><path d="M290 123L382 123" marker-end="url(#end)"/></g>
+<g fill="#122e45" stroke="#76dfe9" stroke-width="2"><circle cx="72" cy="50" r="28"/><circle cx="72" cy="123" r="28"/><circle cx="72" cy="196" r="28"/></g>
+<g text-anchor="middle" fill="#e8faff" font-size="16"><text x="72" y="55">A</text><text x="72" y="128">B</text><text x="72" y="201">C</text></g>
+<circle cx="237" cy="123" r="53" fill="#292547" stroke="#c2abff" stroke-width="2"/><g text-anchor="middle" fill="white"><text x="237" y="117" font-size="14">TEMPORAL</text><text x="237" y="137" font-size="12">LEDGER</text></g>
+<rect x="385" y="77" width="126" height="93" rx="13" stroke="#8fe3b3" fill="#133b45" stroke-width="2"/>
+<g text-anchor="middle" fill="#e8faff"><text x="448" y="105" font-size="13">DESTINATION</text><text x="448" y="128" font-size="12">OFFER → ACK</text><text x="448" y="148" font-size="10">GIT RECEIPT</text></g>
+<text x="260" y="223" text-anchor="middle" fill="#a0b7cf" font-size="11">No quorum / no backward writes / no remote execution</text>
+</svg>
+<div class="stat"><span>Witness registry</span><span class="value" id="registryStatus">LOADING</span></div>
+<div class="stat"><span>Corpus chain v2</span><span class="value" id="corpusStatus">LOADING</span></div>
+<div class="stat"><span>Temporal chain</span><span class="value" id="temporalStatus">LOADING</span></div>
+<div class="stat"><span>Delivery chain</span><span class="value" id="deliveryStatus">LOADING</span></div>
+<div class="stat"><span>OFFER records</span><span class="value" id="offers">0</span></div>
+<div class="stat"><span>Verified receipt records</span><span class="value" id="receipts">0</span></div>
+<div class="stat"><span>Pending receipts</span><span class="value" id="pending">0</span></div>
+<div class="stat"><span>Delivery tip</span><span class="value" id="tip">GENESIS</span></div>
+<button id="verify">RELOAD + VERIFY GITHUB</button><div id="message" aria-live="polite" role="status"></div>
+<p class="note">A Git commit records an offer or a receipt; a remote ACK file is checked at append. An OFFER is never counted as delivered. Live revalidation of a remote file is separate from historical ledger verification.</p>
+</section>
+<section class="panel"><h2>INDEPENDENT WITNESS BINDINGS</h2><div class="lanes">
+<div class="lane" data-lane="A"><h3>A</h3><div id="wA">Not loaded</div></div>
+<div class="lane" data-lane="B"><h3>B</h3><div id="wB">Not loaded</div></div>
+<div class="lane" data-lane="C"><h3>C</h3><div id="wC">Not loaded</div></div></div>
+<p class="note">GitHub Actions confirms the account ID before accepting an event. B/C remain closed until independently enrolled in the reviewed Git registry. Names are account bindings, not cryptographic personhood proofs or votes.</p>
+<h3>Memory boundary</h3><pre>PAST     → OBSERVES
+PRESENT  → DESERVES
+FUTURE   → RESERVES
+
+A :: own lane and actor
+B :: own lane and actor
+C :: own lane and actor
+
+quorum        = null
+agreement     = NOT REQUIRED
+vote          = NONE
+write         = APPEND-ONLY
+remote action = NONE</pre>
+</section>
+<section class="panel wide"><h2>DELIVERY HISTORY / OUTBOX AND RECEIPTS</h2><label for="kindFilter">Filter events</label><select id="kindFilter"><option value="">OFFER and RECEIPT</option><option value="OFFER">Only offered</option><option value="RECEIPT">Only verified receipts</option></select><div id="events">No delivery record yet.</div></section>
+<section class="panel"><h2>MANUAL ONE-WAY DELIVERY</h2>
+<p>1. <a href="../temporal/">Append a witness observation in Gate 08</a> using a registered GitHub account.</p>
+<p>2. <a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/delivery-receipt-append.yml">OFFER a temporal event to a destination repository</a>.</p>
+<p>3. <a href="https://github.com/DavidWise01/0root/actions/workflows/temporal-receiver-ack.yml">For 0root, create a receiver ACK file in the Hallway repository</a>. It verifies the OFFER against TOPH first.</p>
+<p>4. <a href="../spine/">Find the ACK file's public Git blob SHA in Gate 07</a>; then use the TOPH delivery Action again with RECEIPT, OFFER number, path and SHA.</p>
+<p class="note">The TOPH workflow writes only to TOPH. The receiver workflow writes only to its own repository. The bridge is a two-step, proof-bearing exchange—not shared private filesystem access or unattended work.</p>
+</section>
+<section class="panel"><h2>CORPUS BRIDGE / SOURCES</h2>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/witness-registry.json">Witness actor registry</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/delivery-events.jsonl">Append-only delivery ledger</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/delivery_receipt.py">Receipt validator and writer</a></p>
+<p><a href="https://github.com/DavidWise01/0root/tree/master/memory-bridge">Hallway receipt inbox contract</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/tests/test_gate09.py">Identity and receipt regression tests</a></p>
+<p><a href="../archive/">Gate 06 browser-local archive</a></p>
+<p class="dim">The history is public metadata only. Neither local browser memories nor private repositories are exposed through this link. Any receiver outside 0root requires an equivalent public ACK contract and its own authorized writer.</p>
+</section>
+</main><footer class="sub">PERSIST CORTEX / 09 · authenticated GitHub actor binding · one-way independent receipts · no vote, no quorum</footer>
+<script>
+(()=>{"use strict";
+const B="https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/";
+const el=id=>document.getElementById(id),SHA=/^[a-f0-9]{64}$/,GIT=/^[a-f0-9]{40}$/,PHASES=["PAST_OBSERVES","PRESENT_DESERVES","FUTURE_RESERVES"];
+let temporal=[],delivery=[],busy=false;
+function stable(x){if(Array.isArray(x))return "["+x.map(stable).join(",")+"]";if(x!==null&&typeof x==="object")return "{"+Object.keys(x).sort().map(k=>JSON.stringify(k)+":"+stable(x[k])).join(",")+"}";return JSON.stringify(x)}
+async function hash(x){const bytes=new TextEncoder().encode(stable(x)),r=new Uint8Array(await crypto.subtle.digest("SHA-256",bytes));return[...r].map(x=>x.toString(16).padStart(2,"0")).join("")}
+const source=s=>s&&/^DavidWise01\/[A-Za-z0-9._-]+$/.test(s.repo)&&typeof s.path==="string"&&s.path.length>0&&!s.path.startsWith("/")&&!s.path.split("/").some(x=>!x||x==="."||x==="..")&&GIT.test(s.blob_sha)&&s.visibility==="public";
+const day=s=>typeof s==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s+"T00:00:00Z"))&&new Date(s+"T00:00:00Z").toISOString().slice(0,10)===s;
+async function readFile(path,json=false){const r=await fetch(B+path,{cache:"no-store"});if(!r.ok)throw Error(path+" HTTP "+r.status);const txt=await r.text();if(json)return JSON.parse(txt);if(txt&&!txt.endsWith("\n"))throw Error("Truncated "+path);return txt?txt.split("\n").filter(Boolean).map(JSON.parse):[]}
+function bindRegistry(r){if(!r||r.schema!=="root0.witness-registry/1"||r.owner!=="DavidWise01"||!r.lanes||Object.keys(r.lanes).sort().join(",")!=="A,B,C")throw Error("Untrusted witness registry");
+ const ids=new Set();for(const w of ["A","B","C"]){const x=r.lanes[w];if(!x||!["BOUND","UNASSIGNED"].includes(x.state))throw Error("Malformed "+w);
+ if(x.state==="BOUND"){if(!x.github_login||!/^[0-9]+$/.test(x.github_actor_id)||ids.has(x.github_actor_id))throw Error("Duplicate/missing witness identity");ids.add(x.github_actor_id)}
+ else if(x.github_login!==null||x.github_actor_id!==null)throw Error("Unassigned lane has ID");
+ el("w"+w).textContent=x.state==="BOUND"?x.github_login+" / GitHub #"+x.github_actor_id:"UNASSIGNED · blocked";}
+}
+async function checkCorpus(rows){if(!Array.isArray(rows)||!rows.length)throw Error("No valid Corpus v2 genesis");let prev="GENESIS";
+ for(let i=0;i<rows.length;i++){const e=rows[i];if(!e||e.seq!==i+1||e.prev!==prev||!source(e.source)||!SHA.test(e.hash))throw Error("Corpus malformed #"+(i+1));const {hash:given,...body}=e;if(await hash(body)!==given)throw Error("Corpus SHA mismatch #"+(i+1));prev=given}return prev}
+async function checkTemporal(rows,corpus){if(!Array.isArray(rows))throw Error("Temporal ledger invalid");const roots=new Set(corpus.map(x=>x.hash));let prev="GENESIS";const lanes=new Map();
+ for(let i=0;i<rows.length;i++){const e=rows[i];if(!e||e.version!==1||e.seq!==i+1||e.prev!==prev||!["A","B","C"].includes(e.witness)||!PHASES.includes(e.phase)||!source(e.source)||!roots.has(e.corpus_tip)||!SHA.test(e.hash)||!day(e.recorded_at)||!day(e.event_on))throw Error("Temporal invalid #"+(i+1));
+ const key=e.thread+"|"+e.witness,old=lanes.get(key),stage=PHASES.indexOf(e.phase);
+ if(!old?(stage!==0||e.anchor!==null):(e.anchor!==old.seq||stage<PHASES.indexOf(old.phase)||stage>PHASES.indexOf(old.phase)+1))throw Error("Temporal diode broken #"+(i+1));
+ if(stage===0&&e.event_on>e.recorded_at||stage===1&&e.event_on!==e.recorded_at||stage===2&&e.event_on<=e.recorded_at)throw Error("Temporal date broken #"+(i+1));
+ const {hash:given,...body}=e;if(await hash(body)!==given)throw Error("Temporal SHA mismatch #"+(i+1));prev=given;lanes.set(key,e)}
+ return prev}
+async function checkDelivery(rows,temporal){if(!Array.isArray(rows))throw Error("Delivery ledger invalid");let prev="GENESIS";const offers=new Map(),received=new Set(),bySeq=new Map(temporal.map(e=>[e.seq,e]));
+ for(let i=0;i<rows.length;i++){const e=rows[i];if(!e||e.version!==1||e.seq!==i+1||e.prev!==prev||!["OFFER","RECEIPT"].includes(e.kind)||!["A","B","C"].includes(e.witness)||!day(e.recorded_at)||!SHA.test(e.hash)||!SHA.test(e.registry_sha256)||!e.github_actor||!/^[0-9]+$/.test(e.github_actor_id)||!/^DavidWise01\/[A-Za-z0-9._-]+$/.test(e.destination_repo)||e.destination_repo==="DavidWise01/toph-cortex")throw Error("Delivery malformed #"+(i+1));
+ const source=bySeq.get(e.temporal_seq);if(!source||source.hash!==e.temporal_hash||source.witness!==e.witness)throw Error("Delivery missing temporal source #"+(i+1));
+ if(e.kind==="OFFER"){if(e.offer_seq!==null||e.offer_hash!==null||e.proof!==null)throw Error("OFFER falsely claims receipt");offers.set(e.seq,e)}
+ else {const offered=offers.get(e.offer_seq),p=e.proof;if(!offered||received.has(e.offer_seq)||offered.hash!==e.offer_hash||offered.witness!==e.witness||offered.temporal_hash!==e.temporal_hash||offered.destination_repo!==e.destination_repo||!p||!sourcePath(e.destination_repo,p.path)||!GIT.test(p.blob_sha)||!SHA.test(p.content_sha256))throw Error("RECEIPT proof invalid #"+(i+1));received.add(e.offer_seq)}
+ const {hash:given,...body}=e;if(await hash(body)!==given)throw Error("Delivery SHA mismatch #"+(i+1));prev=given}
+ return {tip:prev,offers:offers.size,receipts:received.size,pending:offers.size-received.size}}
+function sourcePath(repo,path){return /^DavidWise01\/[A-Za-z0-9._-]+$/.test(repo)&&typeof path==="string"&&path.length>0&&!path.startsWith("/")&&!path.split("/").some(x=>!x||x==="."||x==="..")}
+function node(tag,t,cls){const x=document.createElement(tag);x.textContent=t;if(cls)x.className=cls;return x}
+function render(){const b=el("events");b.replaceChildren();const selected=el("kindFilter").value;const xs=[...delivery].reverse().filter(x=>!selected||x.kind===selected);if(!xs.length){b.textContent="No "+(selected||"delivery")+" events yet. No receipts are invented.";return}
+ for(const e of xs){const x=node("article","", "entry");x.append(node("strong","#"+e.seq+" · "+e.kind+" · "+e.witness));x.append(node("div","TEMPORAL #"+e.temporal_seq+" · "+e.destination_repo));x.append(node("small","GitHub actor "+e.github_actor+" / #"+e.github_actor_id,"dim"));x.append(node("small","Source SHA "+e.temporal_hash+" · Ledger SHA "+e.hash,"dim"));if(e.kind==="RECEIPT")x.append(node("div","REMOTE PROOF · "+e.proof.path+" · Git "+e.proof.blob_sha));else x.append(node("div","OFFERED only · remote ACK has not been proven"));b.append(x)}}
+async function refresh(){if(busy)return;busy=true;el("verify").disabled=true;for(const k of ["registryStatus","corpusStatus","temporalStatus","deliveryStatus"])el(k).textContent="VERIFYING";
+ try{if(!crypto?.subtle)throw Error("Secure context required");
+ const [registry,corpus,times,deliveries]=await Promise.all([readFile("witness-registry.json",true),readFile("events-v2.jsonl"),readFile("temporal-events.jsonl"),readFile("delivery-events.jsonl")]);
+ bindRegistry(registry);el("registryStatus").textContent="PASS";
+ await checkCorpus(corpus);el("corpusStatus").textContent="PASS / "+corpus.length;
+ await checkTemporal(times,corpus);el("temporalStatus").textContent=times.length?"PASS / "+times.length:"EMPTY / VALID";
+ const d=await checkDelivery(deliveries,times);el("deliveryStatus").textContent=deliveries.length?"PASS / "+deliveries.length:"EMPTY / VALID";
+ temporal=times;delivery=deliveries;el("offers").textContent=d.offers;el("receipts").textContent=d.receipts;el("pending").textContent=d.pending;el("tip").textContent=d.tip;
+ el("message").textContent="All local source chains verified. Remote ACK revalidation is separate.";render()
+ }catch(e){temporal=[];delivery=[];for(const k of ["registryStatus","corpusStatus","temporalStatus","deliveryStatus"])el(k).textContent="HALTED";el("message").textContent="VERIFICATION HALTED: "+e.message;el("events").textContent="No unverified delivery claims shown"}
+ finally{busy=false;el("verify").disabled=false}}
+el("verify").onclick=refresh;el("kindFilter").onchange=render;refresh();
+})();
+</script></body></html>
