@@ -106,5 +106,20 @@
     "private_keys_on_github": false,
     "automatic_actions": false,
     "operational_state": "not yet enrolled or signed"
+  },
+  "key_lifecycle": {
+    "reader": "https://davidwise01.github.io/persist-cortex/key-lifecycle/",
+    "source_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/key-lifecycle.jsonl",
+    "source_workflow": "https://github.com/DavidWise01/toph-cortex/actions/workflows/key-lifecycle-append.yml",
+    "hallway_block_ledger": "https://github.com/DavidWise01/0root/blob/master/memory-bridge/trust/key-decisions.jsonl",
+    "hallway_block_workflow": "https://github.com/DavidWise01/0root/actions/workflows/key-block.yml",
+    "direction": "ACTIVATE -> ROTATE or REVOKE",
+    "rotation": "dual independent old and new Ed25519 signature",
+    "revocation": "explicit GitHub-account authorized recovery; not an old-key signature",
+    "historic_keys_preserved": true,
+    "quorum": null,
+    "votes": false,
+    "automatic_execution": false,
+    "operational_state": "no enrolled real keys or signed live lifecycle events"
   }
 }
