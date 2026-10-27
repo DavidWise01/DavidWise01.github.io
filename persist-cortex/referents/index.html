@@ -8,7 +8,7 @@ header,main,footer{max-width:1290px;margin:auto;padding:20px}header{border-botto
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tile{border:1px solid var(--line);border-radius:11px;padding:13px;background:#102b40}.tile h3{margin:0}.tile strong{font-size:19px;color:var(--gold)}.event{border-bottom:1px solid var(--line);padding:12px 0;overflow-wrap:anywhere}.event strong{color:var(--gold)}.event small{display:block}#eventList{max-height:490px;overflow:auto}#message{color:var(--gold);min-height:25px}
 .ill{width:100%;height:auto;max-height:238px}.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;margin:4px}footer{border-top:1px solid var(--line)}@media(max-width:850px){main{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}header,main,footer{padding:14px}}
 </style></head><body>
-<header><div><div class="sub">ROOT0 / PERSIST CORTEX / GITHUB-WIDE CORPUS</div><h1>13 · REFERENT WATERMARK</h1><div class="sub">Provenance · disputed priority · Internet-time delay evidence</div></div>
+<header><div><div class="sub">ROOT0 / PERSIST CORTEX / GITHUB-WIDE CORPUS</div><h1>13 · .dlw REFERENT WATERMARK</h1><div class="sub">Provenance · disputed priority · Internet-time delay evidence</div></div>
 <nav><a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="../spine/">07</a><a href="../temporal/">08</a><a href="../identity-bridge/">09</a><a href="../signed-witness/">10</a><a href="../checkpoints/">11</a><a href="../key-lifecycle/">12</a><a href="https://0root.ai/">HALLWAY</a></nav></header>
 <main>
 <section class="panel wide"><h2>PAST OBSERVES · PRESENT DESERVES · FUTURE RESERVES</h2>
@@ -20,13 +20,14 @@ header,main,footer{max-width:1290px;margin:auto;padding:20px}header{border-botto
 <g text-anchor="middle" font-size="14"><text x="142" y="148" fill="#90d7f8">A · independent</text><text x="520" y="148" fill="#dab5ff">B · independent</text><text x="882" y="148" fill="#f2d28b">C · independent</text></g>
 <g fill="none" stroke-width="2"><path d="M90 160L940 160" stroke="#4d8ca9"/></g><text x="520" y="196" text-anchor="middle" fill="#a7c4d1" font-size="13">NO QUORUM · NO AGREEMENT REQUIRED · NO BACKWARD WRITE · NO PHYSICAL DILATION INFERRED</text>
 </svg>
-<p class="note">A referent preserves WHAT was cited. The watermark records that source assertion's bytes and chain position. Network timing measures transport latency and imperfect clock readings—not ownership, actual event creation time, or relativistic time dilation. Contradictory witness reports stay separate.</p>
+<p class="note">The .dlw watermark attributes the provenance system and record container to David Lee Wise. It does not attribute third-party linked articles to him. A referent preserves WHAT was cited. The watermark records that source assertion's bytes and chain position. Network timing measures transport latency and imperfect clock readings—not ownership, actual event creation time, or relativistic time dilation. Contradictory witness reports stay separate.</p>
 </section>
 <section class="panel"><h2>PUBLIC GIT WITNESS STATUS</h2>
 <div class="stat"><span>Referent SHA chain</span><span id="status" class="value">LOADING</span></div>
 <div class="stat"><span>Unique referents</span><span id="countRefs" class="value">—</span></div>
 <div class="stat"><span>Watermarked events</span><span id="countEvents" class="value">—</span></div>
 <div class="stat"><span>Actual network samples</span><span id="countSamples" class="value">—</span></div>
+<div class="stat"><span>Attribution watermark</span><span class="value">.dlw · David Lee Wise</span></div>
 <div class="stat"><span>Latest Git watermark tip</span><span id="tip" class="value">GENESIS</span></div><div class="stat"><span>Independent Hallway anchors</span><span id="anchorStatus" class="value">NOT CHECKED</span></div>
 <button id="reload">RELOAD & VERIFY GITHUB</button><div id="message" role="status" aria-live="polite"></div>
 <p class="dim">An empty ledger means nothing was claimed or measured by this new gate. No data is generated simply by viewing this page.</p>
@@ -57,12 +58,13 @@ FUTURE  -> explicit non-executing reservation
 </div>
 <p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/research/navier-stokes-scientificamerican-20261027.json">Read the Git provenance/source note</a></p>
 </section>
-<section class="panel"><h2>IMMUTABLE WATERMARK JOURNAL</h2>
+<section class="panel"><h2>.dlw / IMMUTABLE ATTRIBUTION JOURNAL</h2>
 <label for="filter">Filter URI, WHAT, HOW, WHY, witness</label><input id="filter" placeholder="e.g. Scientific American, A, disputed">
 <div id="eventList">No witnessed events yet.</div></section>
 <section class="panel"><h2>PUBLIC CORPUS / AUTHENTICATED APPEND</h2>
 <p>Only the registered GitHub witness lane can append a REFERENT REGISTER, measured TIME SAMPLE, or a corrective report. Each record receives its own deterministic watermark plus a full chain SHA.</p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/referent-append.yml">OPEN GATE 13 APPEND ACTION</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/attribution.dlw">Canonical .dlw attribution manifest</a></p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/referent_watermark.py">Canonical verifier and HEAD timing probe</a></p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/referent-events.jsonl">Canonical Git JSONL ledger</a></p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/GATE13_REFERENT_TIME.md">Watermark & clock uncertainty protocol</a></p>
@@ -71,7 +73,7 @@ FUTURE  -> explicit non-executing reservation
 </main><footer class="sub">PERSIST CORTEX / GATE 13 · WATERMARK + REFERENT + INTERNET TIME · A/B/C INDEPENDENT · NO QUORUM · OBSERVATION ONLY</footer>
 <script>
 (()=>{'use strict';
-const LEDGER_URL='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/referent-events.jsonl',PREFIX='ROOT0-WATERMARK-v1\n';
+const LEDGER_URL='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/referent-events.jsonl',PREFIX='ROOT0-WATERMARK-v1\n',DLW_PREFIX='ROOT0-DLW-ATTRIBUTION-v2\n',DLW={mark:'.dlw',claimant:'David Lee Wise',scope:'PROVENANCE_CONTAINER_ONLY',third_party_ownership_claim:false};
 const el=id=>document.getElementById(id),HEX=/^[a-f0-9]{64}$/,BASES=['OBSERVED','REPORTED','INFERRED','DISPUTED','UNKNOWN'];const ANCHOR_API='https://api.github.com/repos/DavidWise01/0root/contents/memory-bridge/referents?ref=master',ANCHOR_RAW='https://raw.githubusercontent.com/DavidWise01/0root/master/memory-bridge/referents/';let events=[],busy=false;
 function stable(x){if(Array.isArray(x))return '['+x.map(stable).join(',')+']';if(x!==null&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+stable(x[k])).join(',')+'}';return JSON.stringify(x)}
 const encode=x=>new TextEncoder().encode(stable(x)),toHex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -79,14 +81,16 @@ async function digest(bytes){return toHex(await crypto.subtle.digest('SHA-256',b
 async function hexBody(x){return digest(encode(x))}
 function stamp(s){return typeof s==='string'&&s.endsWith('Z')&&!Number.isNaN(Date.parse(s))}
 function validSample(v){return v&&Object.keys(v).sort().join(',')==='http_status,received_utc,rtt_ms,sent_utc,server_date_utc,transport_result'&&stamp(v.sent_utc)&&stamp(v.received_utc)&&Date.parse(v.received_utc)>=Date.parse(v.sent_utc)&&typeof v.rtt_ms==='number'&&v.rtt_ms>=0&&v.rtt_ms<=120000&&Number.isInteger(v.http_status)&&v.http_status>=0&&v.http_status<600&&['NETWORK_ERROR','HTTP_RESPONSE'].includes(v.transport_result)&&((v.transport_result==='NETWORK_ERROR'&&v.http_status===0)||(v.transport_result==='HTTP_RESPONSE'&&v.http_status>=100))&&(v.server_date_utc===null||stamp(v.server_date_utc))}
-async function verify(rows){let prev='GENESIS';const refs=new Map();if(!Array.isArray(rows))throw Error('No JSONL array');for(let i=0;i<rows.length;i++){const x=rows[i];if(!x||x.seq!==i+1||x.version!==1||x.prev!==prev||!['REGISTER','SAMPLE','CORRECT'].includes(x.kind)||!['A','B','C'].includes(x.witness)||!stamp(x.recorded_at)||!BASES.includes(x.basis)||!HEX.test(x.watermark)||!HEX.test(x.hash))throw Error('Record '+(i+1)+' invalid');
+async function verify(rows){let prev='GENESIS';const refs=new Map();if(!Array.isArray(rows))throw Error('No JSONL array');for(let i=0;i<rows.length;i++){const x=rows[i];if(!x||x.seq!==i+1||![1,2].includes(x.version)||x.prev!==prev||!['REGISTER','SAMPLE','CORRECT'].includes(x.kind)||!['A','B','C'].includes(x.witness)||!stamp(x.recorded_at)||!BASES.includes(x.basis)||!HEX.test(x.watermark)||!HEX.test(x.hash))throw Error('Record '+(i+1)+' invalid');
 let uri;try{uri=new URL(x.referent_uri)}catch(e){throw Error('Bad referent URI #'+x.seq)}if(uri.protocol!=='https:'||uri.hash||uri.username||uri.password)throw Error('Bad referent scheme');
 const id=await digest(new TextEncoder().encode(x.referent_uri));if(x.referent_id!==id)throw Error('Changed referent ID #'+x.seq);
 if(!['what','how','why'].every(k=>typeof x[k]==='string'&&x[k].length>=1&&x[k].length<=2000))throw Error('Missing WHAT/HOW/WHY #'+x.seq);
 if(x.kind==='REGISTER'){if(refs.has(id)||x.source_seq!==null||x.sample!==null)throw Error('Duplicate/malformed referent');refs.set(id,x)}
 else{const first=refs.get(id);if(!first||x.source_seq!==first.seq||x.referent_uri!==first.referent_uri)throw Error('Unregistered referent #'+x.seq);if(x.kind==='SAMPLE'&&!validSample(x.sample))throw Error('Invalid time sample #'+x.seq);if(x.kind==='CORRECT'&&x.sample!==null)throw Error('Corrections cannot fabricate network timings')}
 const {hash,watermark,...body}=x;const prefix=new TextEncoder().encode(PREFIX),data=encode(body),mix=new Uint8Array(prefix.length+data.length);mix.set(prefix);mix.set(data,prefix.length);
-if(await digest(mix)!==watermark)throw Error('Watermark changed #'+x.seq);
+const expected=x.version===2?'.dlw:'+await digest((()=>{const domain=new TextEncoder().encode(DLW_PREFIX),bytes=new Uint8Array(domain.length+data.length);bytes.set(domain);bytes.set(data,domain.length);return bytes})()):await digest(mix);
+if(x.version===2&&stable(x.attribution)!==stable(DLW))throw Error('Invalid .dlw claimant/scope #'+x.seq);
+if(expected!==watermark)throw Error('Watermark changed #'+x.seq);
 if(await hexBody({...body,watermark})!==hash)throw Error('SHA changed #'+x.seq);prev=hash}
 return {tip:prev,referents:refs.size}}
 function add(t,s,cls){const e=document.createElement(t);e.textContent=s;if(cls)e.className=cls;return e}
