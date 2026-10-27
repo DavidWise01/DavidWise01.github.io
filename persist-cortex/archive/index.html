@@ -1,0 +1,257 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX / 06 ARCHIVE · GitHub Wide · 0root.ai Bridge</title>
+<meta name="description" content="Gate 06: verified local six-layer archive, Merkle root, public GitHub repository index and reciprocal Hallway bridge.">
+<style>
+:root{color-scheme:dark;--bg:#140e29;--panel:#221b3f;--line:#665184;--ink:#f5efff;--dim:#cbbbe4;--mint:#9bf2cd;--cyan:#82e7ed;--amber:#f6d18c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 40% 0%,#392762,#140e29 65%);font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink)}header,main,footer{max-width:1260px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line)}h1{margin:0;color:var(--cyan);letter-spacing:.065em;font-size:clamp(24px,4.2vw,46px)}h2{font-size:17px;color:var(--cyan);margin:0 0 12px}nav{display:flex;gap:14px;flex-wrap:wrap}a{color:var(--mint)}.dim,.sub,small{color:var(--dim)}main{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{background:rgba(35,28,66,.9);border:1px solid var(--line);padding:20px;border-radius:15px;min-width:0}.wide{grid-column:1/-1}
+button{border:1px solid #6790b0;background:#293d5b;border-radius:9px;color:var(--ink);padding:10px 12px;cursor:pointer;font:inherit;margin:7px 5px 0 0}button:hover:not(:disabled){background:#375676}button:disabled{opacity:.36;cursor:not-allowed}
+input,select{width:100%;padding:10px;background:#191630;border:1px solid #7463a2;color:var(--ink);font:inherit;border-radius:9px}label{display:block;margin:12px 0 5px;color:var(--dim)}
+.stat{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.value{color:var(--mint);text-align:right;overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:310px;overflow:auto;background:#181329;border:1px solid var(--line);border-radius:10px;padding:12px}
+.note{border-left:2px solid var(--mint);padding-left:13px;color:var(--dim)}.event{padding:10px 0;border-bottom:1px solid var(--line)}.event strong{color:var(--amber)}.event small{display:block;overflow-wrap:anywhere}#events,#catalog{max-height:330px;overflow:auto}#message{color:var(--amber);min-height:28px;margin-top:10px}.repo{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #544775;padding:7px 0;overflow-wrap:anywhere}.pill{border:1px solid var(--line);border-radius:30px;padding:4px 9px;display:inline-block;margin:4px}
+@media(max-width:800px){main{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body><header><div><div class="sub">ROOT0 / PERSIST CORTEX / DIASPORA</div><h1>06 · ARCHIVE CORTEX</h1><div class="sub">Six-gate provenance · DavidWise01 repository mesh · 0root.ai Hallway</div></div><nav><a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05 / TESSY</a><a href="https://0root.ai/">0ROOT.AI HALLWAY</a><a href="https://davidwise01.github.io/formic/">DIASPORA</a></nav></header>
+<main>
+<section class="panel"><h2>ARCHIVE / LIVE REPLAY</h2>
+<div class="stat"><span>GATES 01–05</span><span id="integrity" class="value">CHECKING</span></div>
+<div class="stat"><span>COUNTS 01 / 02 / 03 / 04 / 05</span><span id="gateCounts" class="value">—</span></div>
+<div class="stat"><span>ARCHIVE ENTRIES</span><span id="snapshotCount" class="value">0</span></div>
+<div class="stat"><span>ARCHIVE TIP</span><span id="archiveTip" class="value">GENESIS</span></div>
+<p class="note">Captures the entire current five-layer browser memory at a point in time. Each archive includes five SHA-256 layer hashes, an aggregate Merkle root, a preceding archive hash and a complete local copy of the layer journals. This detects alterations but is not an independent off-device signature.</p>
+<button id="verify">VERIFY ALL CHAINS</button><button id="snapshot">CAPTURE SNAPSHOT</button><button id="export">EXPORT ARCHIVE JSON</button><div id="message" aria-live="polite" role="status"></div>
+<h2>Latest snapshot</h2><pre id="latest">No archive snapshots yet.</pre>
+</section>
+<section class="panel"><h2>RESTORE / APPEND-ONLY SAFETY</h2>
+<label for="snapshotSelect">Verified snapshot</label><select id="snapshotSelect"><option value="">No snapshot selected</option></select>
+<button id="restore">RESTORE COMPATIBLE SNAPSHOT</button>
+<p class="note">Restore is explicit. It refuses to truncate newer memories or overwrite diverged chains; an older compatible state can only be extended. A confirmation is required, and no upstream GitHub files are modified.</p>
+<button id="import">IMPORT ARCHIVE JSON</button><input id="archiveFile" type="file" accept=".json,application/json" hidden>
+<h2>Snapshot history</h2><div id="events">No snapshots yet.</div>
+</section>
+<section class="panel wide"><h2>GITHUB-WIDE / DavidWise01 PUBLIC REPOSITORY INDEX</h2>
+<p>Browse indexed repositories across the <a href="https://github.com/DavidWise01">DavidWise01 GitHub account</a>. The committed seed is a partial, public-only set of 96 repositories observed via GitHub. “Scan public GitHub” paginates the public GitHub API; results are only marked complete if pagination finishes. Private repositories, files, and secrets are not published or indexed here.</p>
+<div class="stat"><span>PUBLIC REPOSITORIES LOADED</span><span class="value" id="catalogCount">0</span></div><div class="stat"><span>INDEX SOURCE</span><span class="value" id="catalogSource">LOADING</span></div>
+<button id="scan">SCAN PUBLIC GITHUB</button><button id="stopScan">STOP SCAN</button><button id="catalogExport">EXPORT REPOSITORY INDEX</button>
+<div id="scanStatus" class="dim">Seed index ready when fetched; API scan is explicit to conserve GitHub rate limits.</div>
+<label for="filter">Find public repository</label><input id="filter" placeholder="Filter by name, e.g. OASIS, FORMIC, TOPH">
+<div id="catalog"></div><p class="dim">Index displays up to 160 matches at once. No arbitrary GitHub code execution or cross-repository write access is granted.</p>
+</section>
+<section class="panel wide"><h2>0ROOT.AI / THE HALLWAY BRIDGE</h2>
+<p>Bridge rule: one host, no mirror. The <a href="https://0root.ai/">0root.ai Hallway</a> routes to this canonical Gate 06 host, and this archive routes back to the Hallway and the Diaspora. The bridge is navigational, not an authenticated memory synchronization service.</p>
+<pre>0root.ai / Hallway (DavidWise01/0root)
+         ↕  public navigation + bridge descriptor
+davidwise01.github.io/persist-cortex/archive
+         ├─ Gate 01  Identity
+         ├─ Gate 02  Episodic
+         ├─ Gate 03  Semantic
+         ├─ Gate 04  Procedural
+         ├─ Gate 05  Working / Tessy {{i}}
+         ├─ Gate 06  Local verified archive
+         └─ DavidWise01 / indexed public repositories</pre>
+<p><a href="./bridge.json">Machine-readable bridge contract</a> · <a href="./repository-index.json">Repository seed manifest</a> · <a href="https://github.com/DavidWise01/DavidWise01.github.io/tree/main/persist-cortex/archive">Source on GitHub</a></p>
+<div><span class="pill">LIT · locally computed hash</span><span class="pill">AMBER · external GitHub public metadata</span><span class="pill">WALL · no remote private memory sync</span></div>
+</section></main>
+<footer class="sub">PERSIST CORTEX · Gate 06 / Archive · local-first snapshots, public repository discovery, and 0root.ai bridge; no Git-wide automatic commits</footer>
+<script>(()=>{'use strict';
+const OWNER='DavidWise01',ID='persist-cortex-identity-v1',EP='persist-cortex-episodes-v1',SE='persist-cortex-semantic-v1',PR='persist-cortex-procedures-v1',WK='persist-cortex-working-v1',AR='persist-cortex-archive-v1',FORMAT='persist-cortex-archive-v6',API='https://api.github.com/users/'+OWNER+'/repos';
+const KEYS=[ID,EP,SE,PR,WK],NAMES=['Identity','Episodic','Semantic','Procedural','Working'];
+const el=id=>document.getElementById(id),good=s=>typeof s==='string'&&s.length>0,hash=async v=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(v)))),b=>b.toString(16).padStart(2,'0')).join('');
+let ledger=[],storeAtOpen=null,ready=false,locked=false,busy=false,catalog=[],catalogComplete=false,catalogSource='none',scanning=false,abortController=null;
+async function checkIdentity(xs){if(!Array.isArray(xs))throw Error('Identity history not an array');let prev='GENESIS';for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==1||x.seq!==i+1||x.kind!=='IDENTITY'||x.prev!==prev||!good(x.timestamp)||!x.payload||!good(x.payload.agent)||!good(x.payload.purpose)||!good(x.payload.bounds)||!good(x.hash))throw Error('Identity event invalid #'+(i+1));const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Identity hash mismatch #'+(i+1));prev=h}}
+async function checkEpisodes(xs,ids){if(!Array.isArray(xs))throw Error('Episodic history not an array');let prev='GENESIS';const owners=new Map(ids.map(i=>[i.hash,i.payload.agent])),seen=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==2||x.seq!==i+1||x.prev!==prev||!['OBSERVATION','CORRECTION'].includes(x.kind)||!good(x.timestamp)||!good(x.identityHash)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!['A','B','C'].includes(x.witness)||!good(x.episode)||!good(x.what)||!good(x.how)||typeof x.why!=='string'||typeof x.source!=='string'||!good(x.hash))throw Error('Episode invalid #'+(i+1));if(x.kind==='OBSERVATION'&&x.corrects!==null)throw Error('Original episode correction reference');if(x.kind==='CORRECTION'&&(!Number.isInteger(x.corrects)||!seen.has(x.corrects)||seen.get(x.corrects).kind!=='OBSERVATION'||seen.get(x.corrects).episode!==x.episode))throw Error('Broken episodic correction');const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Episode hash mismatch #'+(i+1));prev=h;seen.set(x.seq,x)}}
+async function checkSemantics(xs,eps,ids){if(!Array.isArray(xs))throw Error('Semantic history not an array');let prev='GENESIS';const owner=new Map(ids.map(i=>[i.hash,i.payload.agent])),ep=new Map(eps.map(x=>[x.seq,x])),active=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==3||x.seq!==i+1||x.prev!==prev||!['ASSERT','AMEND','WITHDRAW'].includes(x.kind)||!good(x.timestamp)||!good(x.identityHash)||!owner.has(x.identityHash)||x.agent!==owner.get(x.identityHash)||!Number.isInteger(x.episodeSeq)||!ep.has(x.episodeSeq)||ep.get(x.episodeSeq).hash!==x.episodeHash||!good(x.subject)||!good(x.predicate)||!good(x.object)||!['OBSERVED','INFERRED','HYPOTHESIS'].includes(x.basis)||typeof x.detail!=='string'||typeof x.reason!=='string'||!good(x.hash))throw Error('Semantic event invalid #'+(i+1));if(x.kind==='ASSERT'&&x.target!==null)throw Error('Assertion targets old claim');if(x.kind!=='ASSERT'&&(!Number.isInteger(x.target)||!active.has(x.target)||!good(x.reason)))throw Error('Semantic revision target invalid');if(x.kind==='WITHDRAW'){const t=active.get(x.target);if(x.subject!==t.subject||x.predicate!==t.predicate||x.object!==t.object)throw Error('Withdrawal mismatch')}const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Semantic hash mismatch #'+(i+1));if(x.kind!=='ASSERT')active.delete(x.target);if(x.kind!=='WITHDRAW')active.set(x.seq,x);prev=h}return active}
+async function checkDefs(xs,sems,ids){if(!Array.isArray(xs))throw Error('Procedure definitions not an array');const refs=new Map(sems.map(x=>[x.seq,x])),owners=new Map(ids.map(i=>[i.hash,i.payload.agent]));let prev='GENESIS',active=new Map();for(let i=0;i<xs.length;i++){const x=xs[i];if(!x||x.version!==4||x.seq!==i+1||x.prev!==prev||!['DEFINE','REVISE','RETIRE'].includes(x.kind)||!good(x.timestamp)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!refs.has(x.semanticSeq)||refs.get(x.semanticSeq).hash!==x.semanticHash||refs.get(x.semanticSeq).kind==='WITHDRAW'||!good(x.name)||!good(x.intent)||typeof x.preconditions!=='string'||!good(x.expected)||!Array.isArray(x.steps)||!x.steps.length||x.steps.length>32||x.steps.some(s=>!good(s)||s.length>500)||typeof x.reason!=='string'||!good(x.hash))throw Error('Procedure invalid #'+(i+1));if(x.kind==='DEFINE'&&x.target!==null)throw Error('Definition cannot target');if(x.kind!=='DEFINE'&&(!Number.isInteger(x.target)||!active.has(x.target)||!good(x.reason)))throw Error('Procedure revision target invalid');if(x.kind==='RETIRE'){const t=active.get(x.target);if(['name','intent','preconditions','expected'].some(k=>x[k]!==t[k])||JSON.stringify(x.steps)!==JSON.stringify(t.steps))throw Error('Retirement cannot change procedure')}const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Procedure hash mismatch #'+(i+1));if(x.kind!=='DEFINE')active.delete(x.target);if(x.kind!=='RETIRE')active.set(x.seq,x);prev=h}return active}
+async function checkRuns(xs,defs,ids){if(!Array.isArray(xs))throw Error('Run events not an array');let prev='GENESIS',state=new Map();const versions=new Map(defs.filter(x=>x.kind!=='RETIRE').map(x=>[x.seq,x])),owners=new Map(ids.map(i=>[i.hash,i.payload.agent]));for(let i=0;i<xs.length;i++){
+ const x=xs[i];if(!x||x.version!==4||x.seq!==i+1||x.prev!==prev||!['START','STEP','FINISH','ABORT'].includes(x.kind)||!good(x.timestamp)||!owners.has(x.identityHash)||x.agent!==owners.get(x.identityHash)||!versions.has(x.procedureSeq)||versions.get(x.procedureSeq).hash!==x.procedureHash||!Number.isInteger(x.runId)||!Number.isInteger(x.stepIndex)||!['STARTED','OBSERVED','BLOCKED','FINISHED','ABORTED'].includes(x.result)||typeof x.what!=='string'||typeof x.how!=='string'||typeof x.why!=='string'||!good(x.hash))throw Error('Run event invalid #'+(i+1));
+ if(x.kind==='START'){if(x.runId!==x.seq||x.stepIndex!==-1||x.result!=='STARTED'||state.has(x.runId))throw Error('Invalid START');state.set(x.runId,{procedureSeq:x.procedureSeq,progress:0,open:true,last:x})}
+ else {const s=state.get(x.runId);if(!s||!s.open||s.procedureSeq!==x.procedureSeq)throw Error('Run reference invalid #'+(i+1));const def=versions.get(s.procedureSeq);
+ if(x.kind==='STEP'){if(x.stepIndex!==s.progress||s.progress>=def.steps.length||!['OBSERVED','BLOCKED'].includes(x.result)||!good(x.what)||!good(x.how))throw Error('Run step order invalid #'+(i+1));if(x.result==='OBSERVED')s.progress++}
+ if(x.kind==='FINISH'){if(x.stepIndex!==s.progress||s.progress!==def.steps.length||x.result!=='FINISHED')throw Error('Incomplete finish #'+(i+1));s.open=false}
+ if(x.kind==='ABORT'){if(x.stepIndex!==s.progress||x.result!=='ABORTED'||!good(x.what)||!good(x.how))throw Error('Invalid abort #'+(i+1));s.open=false}
+ s.last=x;
+ }
+ const {hash:h,...body}=x;if(await hash(body)!==h)throw Error('Run hash mismatch #'+(i+1));prev=h
+}
+ return new Map([...state].filter(([id,s])=>s.open))}
+
+
+function state(xs){let active=null,focus=null,last=null;for(const e of xs){if(e.kind==='GOAL'){active={id:e.seq,objective:e.payload.objective,goal:e.payload.goal};focus=null;last=null}
+if(e.kind==='FOCUS')focus={y:e.payload.y,x:e.payload.x,semanticSeq:e.payload.semanticSeq,procedureSeq:e.payload.procedureSeq,note:e.payload.note};
+if(e.kind==='INFERENCE')last=e.payload;
+if(e.kind==='CLOSE'){active=null;focus=null;last=null}}
+return{active,focus,last}}
+function validTriple(t){return Array.isArray(t)&&t.length===3&&t.every(v=>typeof v==='string'&&v.length>0&&v.length<=160)}
+function requireReceipt(r){return r&&r.engine==='tessy-i-somorphic-v1'&&['DERIVED','CONFLICT','ABSTAIN'].includes(r.decision)&&r.write==='NONE'&&r.status==='READ_ONLY'&&r.route&&Number.isInteger(r.sourceCount)&&Array.isArray(r.sourceHashes)&&r.sourceHashes.every(x=>/^[a-f0-9]{64}$/.test(x))&&Array.isArray(r.proof)&&validTriple(r.goal)}
+async function verifyWork(xs,ids,eps,se,defs){
+ if(!Array.isArray(xs))throw Error('Working journal must be an array');let prev='GENESIS';const owner=new Map(ids.map(i=>[i.hash,i.payload.agent])),sMap=new Map(se.map(e=>[e.seq,e])),dMap=new Map(defs.map(e=>[e.seq,e]));
+ let active=null,focus=null;
+ for(let i=0;i<xs.length;i++){
+  const e=xs[i];if(!e||e.version!==5||e.seq!==i+1||e.prev!==prev||!['GOAL','FOCUS','INFERENCE','CLOSE'].includes(e.kind)||!good(e.timestamp)||!owner.has(e.identityHash)||e.agent!==owner.get(e.identityHash)||!e.payload||!good(e.hash))throw Error('Working event malformed #'+(i+1));
+  const p=e.payload;
+  if(e.kind==='GOAL'){if(active||!good(p.objective)||!validTriple(p.goal)||e.goalId!==e.seq)throw Error('Invalid or overlapping goal #'+e.seq);active=e.goalId;focus=null}
+  else if(e.goalId!==active||!active)throw Error('Orphan working event #'+e.seq);
+  if(e.kind==='FOCUS'){
+   if(!Number.isInteger(p.y)||p.y<0||p.y>7||!Number.isInteger(p.x)||p.x<0||p.x>23||!Number.isInteger(p.semanticSeq)||!sMap.has(p.semanticSeq)||sMap.get(p.semanticSeq).hash!==p.semanticHash||sMap.get(p.semanticSeq).kind==='WITHDRAW'||!(p.procedureSeq===null||(Number.isInteger(p.procedureSeq)&&dMap.has(p.procedureSeq)&&dMap.get(p.procedureSeq).hash===p.procedureHash))||typeof p.note!=='string')throw Error('Invalid focus references #'+e.seq);
+   focus={y:p.y,x:p.x};
+  }
+  if(e.kind==='INFERENCE'){
+   if(!focus||!requireReceipt(p.receipt)||!good(p.requestHash)||!Array.isArray(p.premises)||p.premises.length>48||p.premises.some(z=>!z||!validTriple(z.triple)||!good(z.semanticHash)||!se.some(s=>s.hash===z.semanticHash&&s.basis==='OBSERVED'&&s.kind!=='WITHDRAW'))||!validTriple(p.receipt.goal)||p.receipt.route.i!=='V'+focus.y||p.receipt.route.d!=='ABCDEFGHIJKLMNOPQRSTUVWX'[focus.x]||!p.premises.every(z=>se.some(s=>s.hash===z.semanticHash&&s.subject===z.triple[0]&&s.predicate===z.triple[1]&&s.object===z.triple[2]))||p.receipt.sourceHashes.some(h=>!p.premises.some(z=>z.semanticHash===h)))throw Error('Inference provenance invalid #'+e.seq);
+   const goal=xs.find(x=>x.seq===active);if(JSON.stringify(p.receipt.goal)!==JSON.stringify(goal.payload.goal))throw Error('Inference goal mismatch #'+e.seq);
+   if(await hash({premises:p.premises,goal:goal.payload.goal,y:focus.y,x:focus.x})!==p.requestHash)throw Error('Inference request mismatch #'+e.seq);
+  }
+  if(e.kind==='CLOSE'){if(!good(p.reason))throw Error('Close requires a reason');active=null;focus=null}
+  const {hash:h,...body}=e;if(await hash(body)!==h)throw Error('Working SHA mismatch #'+e.seq);prev=h;
+ }
+ return state(xs)
+}
+
+function status(s){el('message').textContent=s}
+function buttonState(v){busy=v;for(const id of ['snapshot','import','restore','scan','catalogExport'])el(id).disabled=v||locked;el('verify').disabled=v;el('snapshot').disabled=v||locked||!ready;el('restore').disabled=v||locked||!ledger.length;}
+function sourcePayload(){
+ const raw=KEYS.map(k=>localStorage.getItem(k));
+ const id=raw[0]?JSON.parse(raw[0]):[],ep=raw[1]?JSON.parse(raw[1]):[],se=raw[2]?JSON.parse(raw[2]):[],pr=raw[3]?JSON.parse(raw[3]):{format:'persist-cortex-procedural-v4',definitions:[],runs:[]},wk=raw[4]?JSON.parse(raw[4]):[];
+ return {identity:id,episodes:ep,semantic:se,procedural:pr,working:wk,present:raw.map(x=>x!==null)}
+}
+async function inspect(p){
+ if(!p||!Array.isArray(p.identity)||!Array.isArray(p.episodes)||!Array.isArray(p.semantic)||!p.procedural||p.procedural.format!=='persist-cortex-procedural-v4'||!Array.isArray(p.procedural.definitions)||!Array.isArray(p.procedural.runs)||!Array.isArray(p.working)||!Array.isArray(p.present)||p.present.length!==5||p.present.some(x=>typeof x!=='boolean'))throw Error('Incomplete layer payload');
+ await checkIdentity(p.identity);await checkEpisodes(p.episodes,p.identity);
+ await checkSemantics(p.semantic,p.episodes,p.identity);
+ await checkDefs(p.procedural.definitions,p.semantic,p.identity);
+ await checkRuns(p.procedural.runs,p.procedural.definitions,p.identity);
+ await verifyWork(p.working,p.identity,p.episodes,p.semantic,p.procedural.definitions);
+ return [p.identity.length,p.episodes.length,p.semantic.length,p.procedural.definitions.length+p.procedural.runs.length,p.working.length]
+}
+async function roots(p){
+ const data=[p.identity,p.episodes,p.semantic,p.procedural,p.working];
+ const leaf=await Promise.all(data.map(v=>hash(v)));
+ let level=leaf.slice();
+ while(level.length>1){const next=[];for(let i=0;i<level.length;i+=2)next.push(await hash({left:level[i],right:level[i+1]||level[i]}));level=next}
+ return{layers:leaf,merkle:level[0]}
+}
+async function verifyLedger(xs){
+ if(!Array.isArray(xs))throw Error('Archive ledger invalid');
+ let prev='GENESIS';
+ for(let i=0;i<xs.length;i++){
+  const e=xs[i];
+  if(!e||e.version!==6||e.seq!==i+1||e.kind!=='SNAPSHOT'||e.prev!==prev||!good(e.timestamp)||!e.payload||!e.roots||!Array.isArray(e.roots.layers)||e.roots.layers.length!==5||!good(e.hash)||!Array.isArray(e.counts)||e.counts.length!==5||e.bridge!=='0root.ai -> DavidWise01.github.io/persist-cortex/archive')throw Error('Archive format invalid #'+(i+1));
+  const counts=await inspect(e.payload);
+  if(JSON.stringify(counts)!==JSON.stringify(e.counts))throw Error('Layer counts mismatch #'+e.seq);
+  const computed=await roots(e.payload);
+  if(JSON.stringify(computed)!==JSON.stringify(e.roots))throw Error('Merkle roots mismatch #'+e.seq);
+  const {hash:d,...body}=e;
+  if(await hash(body)!==d)throw Error('Archive SHA mismatch #'+e.seq);
+  prev=e.hash;
+ }
+}
+function element(tag,txt,cls){const x=document.createElement(tag);x.textContent=txt;if(cls)x.className=cls;return x}
+function showCatalog(){
+ const filter=el('filter').value.trim().toLowerCase(),rows=catalog.filter(x=>x.name.toLowerCase().includes(filter)).slice(0,160);
+ el('catalogCount').textContent=String(catalog.length);el('catalogSource').textContent=catalogSource;
+ el('catalog').replaceChildren();
+ if(!rows.length){el('catalog').textContent='No matching repositories in loaded public index.';return}
+ for(const r of rows){const line=element('div','', 'repo');const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=r.name;line.append(a,element('small',' · '+(r.default_branch||'?')+(r.archived?' · archived':''),'dim'));el('catalog').append(line)}
+}
+function render(){
+ el('snapshotCount').textContent=ledger.length;
+ el('archiveTip').textContent=ledger.at(-1)?.hash||'GENESIS';
+ el('latest').textContent=ledger.length?JSON.stringify({created:ledger.at(-1).timestamp,counts:ledger.at(-1).counts,root:ledger.at(-1).roots.merkle},null,2):'No archive snapshots yet.';
+ const x=el('snapshotSelect'),old=x.value;x.replaceChildren(new Option('Select verified snapshot',''));
+ for(const e of [...ledger].reverse())x.add(new Option('#'+e.seq+' · '+e.timestamp+' · '+e.roots.merkle.slice(0,12),String(e.seq)));
+ x.value=ledger.some(e=>String(e.seq)===old)?old:'';
+ const list=el('events');list.replaceChildren();
+ for(const e of [...ledger].reverse().slice(0,40)){const row=element('div','', 'event');row.append(element('strong','#'+e.seq+' / '+e.timestamp),element('div',e.counts.join(' | ')+' · Merkle '+e.roots.merkle.slice(0,24)),element('small',e.hash,'dim'));list.append(row)}
+}
+async function checkAll(){
+ const p=sourcePayload(),counts=await inspect(p);
+ el('gateCounts').textContent=counts.join(' / ');
+ el('integrity').textContent='PASS / ALL FIVE';
+ ready=true;
+ return{p,counts}
+}
+async function recheck(){
+ if(storeAtOpen!==localStorage.getItem(AR))throw Error('Archive modified in another tab; reload');
+ await verifyLedger(ledger);await checkAll();render();locked=false;buttonState(false);
+}
+async function commit(){
+ const {p,counts}=await checkAll();
+ await verifyLedger(ledger);
+ const rt=await roots(p),body={version:6,seq:ledger.length+1,kind:'SNAPSHOT',timestamp:new Date().toISOString(),prev:ledger.at(-1)?.hash||'GENESIS',bridge:'0root.ai -> DavidWise01.github.io/persist-cortex/archive',counts,roots:rt,payload:p};
+ const record={...body,hash:await hash(body)},next=[...ledger,record];
+ const encoded=JSON.stringify(next);if(encoded.length>3800000)throw Error('Archive exceeds browser storage safety cap. Export existing archive before new snapshots.');
+ if(localStorage.getItem(AR)!==storeAtOpen)throw Error('Archive changed in another tab');
+ await verifyLedger(next);localStorage.setItem(AR,encoded);
+ if(localStorage.getItem(AR)!==encoded)throw Error('Storage readback failed');
+ ledger=next;storeAtOpen=encoded;render();status('SNAPSHOT #'+record.seq+' SAVED LOCALLY / all five chains and Merkle root verified')
+}
+function saveBlob(filename,obj){const b=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),url=URL.createObjectURL(b),link=document.createElement('a');link.href=url;link.download=filename;link.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+async function task(fn){if(busy||locked)return;buttonState(true);try{await fn()}catch(e){status('REJECTED: '+e.message)}finally{buttonState(false)}}
+el('snapshot').onclick=()=>task(commit);
+el('verify').onclick=()=>task(async()=>{await recheck();status('VERIFIED / local Gate 01–06 chains · '+ledger.length+' snapshots')});
+el('export').onclick=()=>saveBlob('persist-cortex-archive.json',{format:FORMAT,events:ledger});
+el('import').onclick=()=>el('archiveFile').click();
+el('archiveFile').onchange=async evt=>{const file=evt.target.files?.[0];if(!file)return;await task(async()=>{
+ await recheck();const obj=JSON.parse(await file.text());if(obj.format!==FORMAT)throw Error('Unknown archive format');
+ await verifyLedger(obj.events);
+ if(obj.events.length<ledger.length||ledger.some((e,i)=>e.hash!==obj.events[i].hash))throw Error('Imports must extend existing archive (no rewrite or truncate)');
+ const encoded=JSON.stringify(obj.events);if(encoded.length>3800000)throw Error('Archive exceeds local storage limit');
+ if(localStorage.getItem(AR)!==storeAtOpen)throw Error('Archive changed in another tab');
+ localStorage.setItem(AR,encoded);ledger=obj.events;storeAtOpen=encoded;await recheck();status('IMPORTED / '+ledger.length+' verified snapshots');
+ });evt.target.value=''};
+function isPrefix(current,snap){
+ if(Array.isArray(current)&&Array.isArray(snap))return current.length<=snap.length&&current.every((x,i)=>x.hash===snap[i]?.hash);
+ if(current&&snap&&current.format==='persist-cortex-procedural-v4'&&snap.format==='persist-cortex-procedural-v4')return isPrefix(current.definitions,snap.definitions)&&isPrefix(current.runs,snap.runs);
+ return false
+}
+el('restore').onclick=()=>task(async()=>{
+ await recheck();
+ const record=ledger.find(x=>x.seq===Number(el('snapshotSelect').value));if(!record)throw Error('Select a verified snapshot');
+ const p=record.payload,raw=sourcePayload();
+ const current=[raw.identity,raw.episodes,raw.semantic,raw.procedural,raw.working],saved=[p.identity,p.episodes,p.semantic,p.procedural,p.working];
+ if(!current.every((x,i)=>isPrefix(x,saved[i])))throw Error('Restore blocked: current history has diverged or is newer than snapshot. Export and reconcile offline.');
+ if(!confirm('Restore this snapshot into browser storage? Only compatible append-only extensions are allowed. Export a backup first.'))return;
+ const enc=saved.map(x=>JSON.stringify(x));
+ // Validate all sources immediately before writing; no remote writes.
+ await inspect(p);const before=KEYS.map(k=>localStorage.getItem(k));
+ try{for(let i=0;i<KEYS.length;i++)localStorage.setItem(KEYS[i],enc[i]);await checkAll();}
+ catch(e){for(let i=0;i<KEYS.length;i++){if(before[i]!==null)localStorage.setItem(KEYS[i],before[i]);else localStorage.removeItem(KEYS[i])}throw e}
+ status('RESTORE PASS · snapshot #'+record.seq+' · original archive preserved');
+});
+el('filter').oninput=showCatalog;
+el('catalogExport').onclick=()=>saveBlob('DavidWise01-public-repository-index.json',{schema:'persist-cortex.repo-index.v1',owner:OWNER,source:catalogSource,complete:catalogComplete,discovered:catalog.length,repositories:catalog});
+el('stopScan').onclick=()=>{if(abortController)abortController.abort()};
+async function seed(){
+ try{const r=await fetch('./repository-index.json',{cache:'no-cache'});if(!r.ok)throw Error('Seed request '+r.status);const obj=await r.json();
+ if(obj.schema!=='persist-cortex.repo-index.v1'||obj.owner!==OWNER||!Array.isArray(obj.repositories))throw Error('Seed format');
+ catalog=obj.repositories.filter(x=>x.visibility==='public'&&x.full_name?.startsWith(OWNER+'/')&&x.url?.startsWith('https://github.com/'+OWNER+'/'));catalogSource='96 PUBLIC / connector seed / partial';catalogComplete=false;showCatalog();
+ }catch(e){catalogSource='seed unavailable: '+e.message;showCatalog()}
+}
+el('scan').onclick=async()=>{
+ if(scanning)return;scanning=true;buttonState(true);abortController=new AbortController();
+ try{
+  const all=[],unique=new Set();let finished=false;
+  for(let page=1;page<=50;page++){
+   const r=await fetch(API+'?per_page=100&page='+page+'&type=public&sort=full_name',{headers:{Accept:'application/vnd.github+json'},signal:abortController.signal});
+   if(!r.ok)throw Error('GitHub API '+r.status+' (rate limit or network). Kept verified previous index.');
+   const xs=await r.json();if(!Array.isArray(xs))throw Error('Non-array API response');
+   for(const x of xs)if(x.owner?.login===OWNER&&!x.private&&!unique.has(x.full_name)){
+    unique.add(x.full_name);all.push({name:x.name,full_name:x.full_name,url:x.html_url,default_branch:x.default_branch||null,archived:!!x.archived,visibility:'public'});
+   }
+   el('scanStatus').textContent='Scanning public page '+page+' / found '+all.length+' / remaining API '+(r.headers.get('x-ratelimit-remaining')||'?');
+   if(xs.length<100){finished=true;break}
+  }
+  if(!finished)throw Error('Scan hit 50-page cap; results not certified complete');
+  catalog=all.sort((a,b)=>a.name.localeCompare(b.name));catalogSource='GitHub public API / paginated / completed';catalogComplete=true;showCatalog();
+  el('scanStatus').textContent='COMPLETE · '+catalog.length+' public repositories; private repositories intentionally excluded.';
+ }catch(e){el('scanStatus').textContent='SCAN INCOMPLETE · '+e.message;catalogComplete=false}
+ finally{scanning=false;abortController=null;buttonState(false)}
+};
+window.addEventListener('storage',e=>{if([...KEYS,AR].includes(e.key)){locked=true;ready=false;el('integrity').textContent='RELOAD REQUIRED';status('Journal changed in another tab. Reload before further writes.');buttonState(false)}});
+async function boot(){
+ try{
+  if(!crypto?.subtle)throw Error('HTTPS or localhost required');
+  storeAtOpen=localStorage.getItem(AR);ledger=storeAtOpen?JSON.parse(storeAtOpen):[];
+  await recheck();status('READY · Gates 01–05 verified. Snapshot remains local until explicit export.')
+ }catch(e){locked=true;ready=false;el('integrity').textContent='HALTED';status('ARCHIVE HALTED · '+e.message)}
+ buttonState(false);seed();
+}
+boot();
+})();</script></body></html>
