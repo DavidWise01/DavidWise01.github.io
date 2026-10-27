@@ -24,5 +24,12 @@
       "AMBER",
       "WALL"
     ]
+  },
+  "corpus_spine": {
+    "reader": "https://davidwise01.github.io/persist-cortex/spine/",
+    "canonical_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/events.jsonl",
+    "append_action": "https://github.com/DavidWise01/toph-cortex/actions/workflows/corpus-memory-append.yml",
+    "mode": "public-metadata-references-only",
+    "browser_writes": false
   }
 }
