@@ -1,0 +1,28 @@
+{
+  "schema": "persist-cortex.bridge.v1",
+  "name": "ROOT0 Hallway ↔ Persist Cortex Archive",
+  "origin": "https://0root.ai/",
+  "canonical": "https://davidwise01.github.io/persist-cortex/archive/",
+  "archive_repository": "https://github.com/DavidWise01/DavidWise01.github.io/tree/main/persist-cortex/archive",
+  "hallway_repository": "https://github.com/DavidWise01/0root",
+  "repo_index": "https://davidwise01.github.io/persist-cortex/archive/repository-index.json",
+  "owner": "DavidWise01",
+  "scope": "public repo index + local browser archive",
+  "capabilities": {
+    "navigation": true,
+    "public_repository_discovery": true,
+    "export_import_by_user": true,
+    "authenticated_repository_writes": false,
+    "automatic_remote_memory_sync": false,
+    "private_repository_access": false
+  },
+  "governance": {
+    "one_host_no_mirror": true,
+    "provenance_required": true,
+    "classification": [
+      "LIT",
+      "AMBER",
+      "WALL"
+    ]
+  }
+}
