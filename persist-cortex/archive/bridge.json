@@ -121,5 +121,27 @@
     "votes": false,
     "automatic_execution": false,
     "operational_state": "no enrolled real keys or signed live lifecycle events"
+  },
+  "referent_watermark": {
+    "reader": "https://davidwise01.github.io/persist-cortex/referents/",
+    "canonical": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/referent-events.jsonl",
+    "append_workflow": "https://github.com/DavidWise01/toph-cortex/actions/workflows/referent-append.yml",
+    "external_research_note": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/research/navier-stokes-scientificamerican-20261027.json",
+    "hallway_receivers": "https://github.com/DavidWise01/0root/tree/master/memory-bridge/referents",
+    "hallway_workflow": "https://github.com/DavidWise01/0root/actions/workflows/referent-anchor.yml",
+    "schema": "root0.referent-watermark/1",
+    "watermark_domain": "ROOT0-WATERMARK-v1",
+    "witnesses": [
+      "A",
+      "B",
+      "C"
+    ],
+    "quorum": null,
+    "append_only": true,
+    "private_contents": false,
+    "latency": "observed monotonic HTTP round-trip only",
+    "physical_time_dilation_measured": false,
+    "scientific_priority_determined": false,
+    "status": "No live referent or transport sample yet; source note is separate and attributed"
   }
 }
