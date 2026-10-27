@@ -41,6 +41,11 @@ footer{border-top:1px solid var(--line)}@media(max-width:800px){main{grid-templa
 <p>To record a new public observation, open the authenticated GitHub Action in TOPH CORTEX. It verifies the public file's Git blob SHA before appending a WHAT / HOW / WHY witness and pushing the updated ledger.</p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/corpus-memory-append.yml">OPEN AUTHENTICATED APPEND ACTION ↗</a></p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/corpus_spine.py">CLI verifier / append writer source ↗</a></p>
+<h3>Find a public file SHA for the append workflow</h3>
+<label for="lookupRepo">Repository</label><input id="lookupRepo" value="DavidWise01/oasis" placeholder="DavidWise01/oasis">
+<label for="lookupPath">File path on its default branch</label><input id="lookupPath" value="README.md" placeholder="README.md">
+<button id="lookup">LOOK UP GIT BLOB SHA</button>
+<pre id="lookupResult">Public GitHub API lookup only. No credentials requested.</pre>
 <pre>python bin/corpus_spine.py verify
 python bin/corpus_spine.py status
 python bin/corpus_spine.py tip
@@ -96,6 +101,15 @@ async function refresh(){if(busy)return;busy=true;el('refresh').disabled=true;el
  }catch(e){rows=[];pointer='';el('status').textContent='HALTED';el('message').textContent='Read/verify failed: '+e.message;el('resume').textContent='No verified pointer.';el('events').textContent='Ledger unavailable; no cached PASS claimed.'}
  finally{busy=false;el('refresh').disabled=false}
 }
+el('lookup').onclick=async()=>{const repo=el('lookupRepo').value.trim(),path=el('lookupPath').value.trim(),out=el('lookupResult');
+ if(!/^DavidWise01\\/[A-Za-z0-9._-]+$/.test(repo)||!path||path.startsWith('/')||path.split('/').some(p=>!p||p==='.'||p==='..')){out.textContent='Invalid owner/path; only DavidWise01 public files accepted.';return}
+ out.textContent='Looking up public default-branch source…';
+ try{const uri='https://api.github.com/repos/'+repo+'/contents/'+path.split('/').map(encodeURIComponent).join('/');
+ const res=await fetch(uri,{headers:{Accept:'application/vnd.github+json'}});if(!res.ok)throw Error('GitHub API '+res.status);
+ const data=await res.json();if(data.type!=='file'||!/^([0-9a-f]{40})$/.test(data.sha))throw Error('Not a public regular file');
+ out.textContent='SOURCE REPO: '+repo+'\\nSOURCE PATH: '+path+'\\nSOURCE SHA: '+data.sha+'\\n\\nUse these exact values in the authenticated append action.'}
+ catch(e){out.textContent='LOOKUP FAILED: '+e.message}
+};
 el('refresh').onclick=refresh;el('filter').oninput=show;el('copy').onclick=()=>{if(pointer)navigator.clipboard.writeText(pointer).catch(e=>{el('message').textContent='Clipboard unavailable: '+e.message})};refresh();
 })();
 </script></body></html>
