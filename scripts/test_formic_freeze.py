@@ -68,6 +68,9 @@ class FormicFreezeTest(unittest.TestCase):
         self.assertTrue(all(p["verification"]["applied"] is False for p in ideas["proposals"]))
         self.assertTrue(all(not p["implementation"]["write"] for p in ideas["proposals"]))
         self.assertEqual(len({p["id"] for p in ideas["proposals"]}),2)
+        self.assertTrue(all(len(p["packet_sha256"])==64 for p in ideas["proposals"]))
+        self.assertTrue(all(p["change_packet"]["diff"]=="NOT_GENERATED" for p in ideas["proposals"]))
+        self.assertTrue(all(p["change_packet"]["approval"]=="REQUIRED" for p in ideas["proposals"]))
 
     def test_observational_engines(self):
         items=[{"name":"ud0","state":"ACTIVE","archived":False,"fork":False},
