@@ -168,5 +168,38 @@
     "mark": ".dlw",
     "lexical_guarantee": "copy retains count; distill preserves exact token when source contains it",
     "semantic_equivalence_proven": false
+  },
+  "threaded_persistent_loom": {
+    "reader": "https://davidwise01.github.io/persist-cortex/loom/",
+    "canonical_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/loom-events.jsonl",
+    "manual_writer": "https://github.com/DavidWise01/toph-cortex/actions/workflows/loom-append.yml",
+    "independent_receiver": "https://github.com/DavidWise01/0root/actions/workflows/loom-anchor.yml",
+    "receiver_history": "https://github.com/DavidWise01/0root/tree/master/memory-bridge/loom",
+    "protocol": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/GATE14_THREADED_LOOM.md",
+    "version": 14,
+    "watermark": ".dlw:<SHA-256>",
+    "constant": "cubit",
+    "witnesses": [
+      "A",
+      "B",
+      "C"
+    ],
+    "phase_order": [
+      "PAST_OBSERVES",
+      "PRESENT_DESERVES",
+      "FUTURE_RESERVES"
+    ],
+    "causal_predecessors": [
+      "prev",
+      "thread_prev",
+      "witness_prev"
+    ],
+    "cross_thread_links": "prior verified event sequence only",
+    "private_repo_access": false,
+    "automatic_remote_writes": false,
+    "automatic_agent_execution": false,
+    "no_quorum": true,
+    "voting": false,
+    "operational_status": "empty valid ledger until authenticated witness OPEN"
   }
 }
