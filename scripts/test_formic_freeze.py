@@ -63,6 +63,9 @@ class FormicFreezeTest(unittest.TestCase):
         ideas=exchange(cabinets,agents,mesh,"2026-10-26T00:00:00Z")
         self.assertEqual(ideas["idea_count"],2)
         self.assertFalse(ideas["autonomous_writes"])
+        self.assertTrue(all(p["proposal_state"]=="HOLD_UNVERIFIED" for p in ideas["proposals"]))
+        self.assertTrue(all(p["bounds"]["requires_owner_approval"] for p in ideas["proposals"]))
+        self.assertTrue(all(p["verification"]["applied"] is False for p in ideas["proposals"]))
         self.assertTrue(all(not p["implementation"]["write"] for p in ideas["proposals"]))
         self.assertEqual(len({p["id"] for p in ideas["proposals"]}),2)
 
