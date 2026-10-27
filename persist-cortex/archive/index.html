@@ -161,15 +161,16 @@ function render(){
  for(const e of [...ledger].reverse().slice(0,40)){const row=element('div','', 'event');row.append(element('strong','#'+e.seq+' / '+e.timestamp),element('div',e.counts.join(' | ')+' · Merkle '+e.roots.merkle.slice(0,24)),element('small',e.hash,'dim'));list.append(row)}
 }
 async function checkAll(){
- const p=sourcePayload(),counts=await inspect(p);
+ el('integrity').textContent='VERIFYING';
+ try{const p=sourcePayload(),counts=await inspect(p);
  el('gateCounts').textContent=counts.join(' / ');
- el('integrity').textContent='PASS / ALL FIVE';
- ready=true;
- return{p,counts}
+ el('integrity').textContent='PASS / ALL FIVE';ready=true;return{p,counts}}
+ catch(e){ready=false;locked=true;el('integrity').textContent='HALTED';throw e}
 }
 async function recheck(){
- if(storeAtOpen!==localStorage.getItem(AR))throw Error('Archive modified in another tab; reload');
- await verifyLedger(ledger);await checkAll();render();locked=false;buttonState(false);
+ try{if(storeAtOpen!==localStorage.getItem(AR))throw Error('Archive modified in another tab; reload');
+ await verifyLedger(ledger);await checkAll();render();locked=false;buttonState(false)}
+ catch(e){ready=false;locked=true;el('integrity').textContent='HALTED';throw e}
 }
 async function commit(){
  const {p,counts}=await checkAll();
