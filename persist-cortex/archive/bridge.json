@@ -78,5 +78,33 @@
     "private_key_uploads": false,
     "automatic_execution": false,
     "git_pages_read_only": true
+  },
+  "distributed_checkpoint": {
+    "reader": "https://davidwise01.github.io/persist-cortex/checkpoints/",
+    "canonical": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/checkpoints.jsonl",
+    "signing_workflow": "https://github.com/DavidWise01/toph-cortex/actions/workflows/checkpoint-append.yml",
+    "receiver_workflow": "https://github.com/DavidWise01/0root/actions/workflows/checkpoint-anchor.yml",
+    "receiver_trust_pins": "https://github.com/DavidWise01/0root/blob/master/memory-bridge/trust/checkpoint-key-pins.json",
+    "receiver_anchors": "https://github.com/DavidWise01/0root/tree/master/memory-bridge/checkpoints",
+    "streams": [
+      "CORPUS",
+      "TEMPORAL",
+      "DELIVERY",
+      "ATTESTATION"
+    ],
+    "signature": "Ed25519",
+    "signed_domain": "ROOT0-CHECKPOINT-v1",
+    "witnesses": [
+      "A",
+      "B",
+      "C"
+    ],
+    "quorum": null,
+    "votes": false,
+    "source_writes": "append-only",
+    "cross_repo_write": "manual authenticated receiver-only",
+    "private_keys_on_github": false,
+    "automatic_actions": false,
+    "operational_state": "not yet enrolled or signed"
   }
 }
