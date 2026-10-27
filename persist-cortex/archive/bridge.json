@@ -27,9 +27,25 @@
   },
   "corpus_spine": {
     "reader": "https://davidwise01.github.io/persist-cortex/spine/",
-    "canonical_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/events.jsonl",
+    "canonical_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/events-v2.jsonl",
+    "legacy_invalid_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/events.jsonl",
     "append_action": "https://github.com/DavidWise01/toph-cortex/actions/workflows/corpus-memory-append.yml",
-    "mode": "public-metadata-references-only",
+    "mode": "public metadata, source refs only",
     "browser_writes": false
+  },
+  "temporal_diode": {
+    "reader": "https://davidwise01.github.io/persist-cortex/temporal/",
+    "canonical_ledger": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/temporal-events.jsonl",
+    "append_action": "https://github.com/DavidWise01/toph-cortex/actions/workflows/temporal-diode-append.yml",
+    "direction": "PAST_OBSERVES -> PRESENT_DESERVES -> FUTURE_RESERVES",
+    "witness_lanes": [
+      "A",
+      "B",
+      "C"
+    ],
+    "quorum": null,
+    "voting": false,
+    "automatic_execution": false,
+    "remote_browser_writes": false
   }
 }
