@@ -46,6 +46,16 @@ def exchange(cabinets,agents,mesh,at):
                             "Obtain owner approval before merging"]},
                "observed_at":at}
         entry["id"]="D-"+stable_hash({"origin":name,"kind":kind})[:16]
+        packet={"proposal_id":entry["id"],"target_repository":"DavidWise01/"+name,
+                "base_branch":c.get("default_branch"),"proposed_branch":"diaspora/"+entry["id"].lower(),
+                "title":"[Diaspora] "+kind.replace("_"," ").title()+" — "+name,
+                "summary":idea,"evidence":[{"source":c.get("url"),"observed_at":at,
+                                              "public_metadata_only":True}],
+                "peer_observations":observations,"checks":["Repository-specific tests",
+                 "Confirm Pages destination if applicable","Review exact diff"],
+                "approval":"REQUIRED","diff":"NOT_GENERATED","status":"DRAFT_ONLY"}
+        entry["change_packet"]=packet
+        entry["packet_sha256"]=stable_hash(packet)
         proposals.append(entry)
     integrity=mesh.get("integrity","HOLD")
     return {"schema":"formic-diaspora-exchange-v1","observed_at":at,
