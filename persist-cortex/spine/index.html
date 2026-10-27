@@ -1,0 +1,101 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX · 07 CORPUS SPINE · ROOT0</title>
+<meta name="description" content="The ROOT0 corpus-wide Git-backed append-only memory spine, sourced from TOPH CORTEX, linked to OASIS, UD0, and 0root.ai.">
+<style>
+:root{color-scheme:dark;--bg:#060c1a;--panel:#0d1b30;--line:#254c60;--cyan:#6be5f4;--green:#8aefb7;--violet:#b499fa;--gold:#f7d389;--text:#e1f8ff;--dim:#a5bccb;--error:#ffa6a6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#203957,#060c1a 68%);color:var(--text);font:13px/1.65 ui-monospace,Consolas,monospace}header,main,footer{max-width:1240px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;border-bottom:1px solid var(--line)}h1{font-size:clamp(26px,4.4vw,49px);letter-spacing:.06em;color:var(--cyan);margin:0}nav{display:flex;gap:12px;flex-wrap:wrap}a{color:var(--green)}h2{font-size:17px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--green)}.dim,.sub,small{color:var(--dim)}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{border:1px solid var(--line);border-radius:15px;padding:20px;background:rgba(12,26,44,.91);min-width:0}.wide{grid-column:1/-1}
+.stat{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:9px 0}.value{text-align:right;color:var(--green);overflow-wrap:anywhere}
+button{color:var(--text);border:1px solid #3a8ca4;background:#143c55;padding:10px 14px;font:inherit;border-radius:8px;cursor:pointer;margin:8px 6px 0 0}button:disabled{opacity:.4;cursor:not-allowed}button:hover:not(:disabled){background:#215872}
+input{width:100%;background:#061221;color:var(--text);border:1px solid #315b72;border-radius:9px;padding:11px;font:inherit}label{display:block;color:var(--dim);margin:12px 0 6px}pre{background:#061323;border:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere;border-radius:10px;padding:15px;max-height:290px;overflow:auto}
+.note{border-left:2px solid var(--cyan);color:var(--dim);padding-left:12px}.entry{border-bottom:1px solid var(--line);padding:14px 0;overflow-wrap:anywhere}.entry strong{color:var(--gold)}.entry small{display:block}.events{max-height:550px;overflow:auto}#graph{width:100%;height:auto;max-height:350px;border:1px solid var(--line);border-radius:12px;background:radial-gradient(ellipse at center,#123449,#091527)}#message{color:var(--gold);min-height:28px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;margin:4px}
+footer{border-top:1px solid var(--line)}@media(max-width:800px){main{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head>
+<body><header><div><div class="sub">ROOT0 / DIASPORA / TOPH CORTEX / GITHUB</div><h1>07 · CORPUS SPINE</h1><div class="sub">Persistent memory across source repositories · one canonical append-only ledger</div></div>
+<nav><a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="https://0root.ai/">0ROOT.AI</a><a href="https://github.com/DavidWise01/toph-cortex">TOPH CORTEX</a></nav></header>
+<main>
+<section class="panel"><h2>CANONICAL MEMORY / VERIFICATION</h2>
+<div class="stat"><span>Ledger repository</span><span class="value">DavidWise01/toph-cortex</span></div>
+<div class="stat"><span>Git memory format</span><span class="value">root0.corpus-spine/1</span></div>
+<div class="stat"><span>CHAIN</span><span class="value" id="status">LOADING</span></div>
+<div class="stat"><span>EVENTS</span><span class="value" id="eventsCount">—</span></div>
+<div class="stat"><span>SOURCE REPOSITORIES</span><span class="value" id="repositoriesCount">—</span></div>
+<div class="stat"><span>TIP SHA-256</span><span class="value" id="tip">—</span></div>
+<div class="stat"><span>Last loaded</span><span class="value" id="loaded">—</span></div>
+<button id="refresh">RELOAD + VERIFY CANONICAL LEDGER</button><div id="message" role="status" aria-live="polite"></div>
+<p class="note">A verified chain establishes continuity of recorded references, not the truth of every description. Sources remain in their original repositories. No witness agreement, quorum, or automated semantic promotion.</p>
+<h3>Portable resumption pointer</h3><pre id="resume">Waiting for verified ledger.</pre>
+<button id="copy" disabled>COPY RESUMPTION POINTER</button>
+</section>
+<section class="panel"><h2>REPOSITORY GLOBULE / ROOT0 CORPUS</h2>
+<svg viewBox="0 0 480 350" id="graph" role="img" aria-label="Canonical TOPH memory ledger connected by read-only provenance references to the owner corpus">
+<g fill="none" stroke="#447d9c" stroke-width="2"><path d="M240 175 L240 42 M240 175L401 112 M240 175L354 291 M240 175L125 291 M240 175L79 112"/></g>
+<g stroke="#84e1ed" stroke-width="2" fill="#113c50"><circle cx="240" cy="42" r="34"/><circle cx="401" cy="112" r="34"/><circle cx="354" cy="291" r="34"/><circle cx="125" cy="291" r="34"/><circle cx="79" cy="112" r="34"/></g>
+<circle cx="240" cy="175" r="56" fill="#29224d" stroke="#b499fa" stroke-width="3"/>
+<g fill="#e7f9ff" text-anchor="middle" font-family="monospace"><text x="240" y="171" font-size="17">TOPH</text><text x="240" y="189" font-size="11">MEMORY</text><text x="240" y="46" font-size="12">OASIS</text><text x="401" y="116" font-size="12">UD0</text><text x="354" y="295" font-size="12">0ROOT</text><text x="125" y="295" font-size="11">PERSIST</text><text x="79" y="116" font-size="12">AGENTS</text></g>
+</svg>
+<p class="dim">Each spoke points to a canonical source. The full OASIS discovery reference represents 2,144 dated metadata records, not independent witness statements. New repository observations append centrally; originals remain unchanged.</p>
+</section>
+<section class="panel wide"><h2>GLOBAL MEMORY LEDGER / INDEPENDENT WITNESSES</h2><label for="filter">Filter repository, source path, observation or witness</label><input id="filter" placeholder="e.g. oasis, ud0, provenance, root0">
+<div id="events" class="events">Loading GitHub ledger…</div></section>
+<section class="panel"><h2>APPEND BOUNDARY / AUTHENTICATED GITHUB WRITER</h2>
+<p>To record a new public observation, open the authenticated GitHub Action in TOPH CORTEX. It verifies the public file's Git blob SHA before appending a WHAT / HOW / WHY witness and pushing the updated ledger.</p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/corpus-memory-append.yml">OPEN AUTHENTICATED APPEND ACTION ↗</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/corpus_spine.py">CLI verifier / append writer source ↗</a></p>
+<pre>python bin/corpus_spine.py verify
+python bin/corpus_spine.py status
+python bin/corpus_spine.py tip
+
+# An authenticated write uses the same CLI,
+# including --expect-tip and a verified public source SHA.
+# Commit and push to TOPH CORTEX; never force-push.</pre>
+<p class="note">GitHub Pages never receives an API token. The GitHub workflow requires repository Actions permission and a writable branch; automated execution is not certified until an actual workflow run succeeds. Do not put personal/private memory in public workflow inputs.</p>
+</section>
+<section class="panel"><h2>CROSS-CORPUS CONNECTIONS</h2>
+<p><a href="https://github.com/DavidWise01/oasis/blob/main/docs/mnp-3d/ROOT0_MASTER_DISCOVERY_20261018.json">OASIS master discovery (dated metadata)</a></p>
+<p><a href="https://github.com/DavidWise01/ud0/blob/main/corpus.json">UD0 canonical corpus</a></p>
+<p><a href="https://0root.ai/">0root.ai / Hallway</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/agents.json">TOPH agent registry</a></p>
+<p><a href="../archive/">Gate 06 / Local archive snapshots</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/events.jsonl">Canonical repository-backed memory ledger</a></p>
+<div><span class="pill">READ · cold replay</span><span class="pill">WRITE · authenticated append</span><span class="pill">WHY · traceable provenance</span><span class="pill">NO VOTES</span></div>
+</section>
+</main><footer class="sub">PERSIST CORTEX · Gate 07 / Corpus Spine · public metadata-only Git references · no automatic private-data synchronization · no off-repo credential sharing</footer>
+<script>
+(()=>{'use strict';
+const RAW='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/events.jsonl';
+const API='https://api.github.com/repos/DavidWise01/toph-cortex/contents/memory/corpus-spine/events.jsonl';
+const el=id=>document.getElementById(id);
+let rows=[],pointer='',busy=false;
+function canon(x){if(Array.isArray(x))return '['+x.map(canon).join(',')+']';if(x!==null&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canon(x[k])).join(',')+'}';return JSON.stringify(x)}
+async function sha(x){const bin=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(canon(x)));return [...new Uint8Array(bin)].map(v=>v.toString(16).padStart(2,'0')).join('')}
+function validSource(s){return s&&/^DavidWise01\/[A-Za-z0-9._-]+$/.test(s.repo)&&typeof s.path==='string'&&s.path.length>0&&!s.path.startsWith('/')&&!s.path.includes('..')&&/^[0-9a-f]{40}$/.test(s.blob_sha)&&s.visibility==='public'}
+async function verify(data){
+ if(!Array.isArray(data))throw Error('Ledger is not an array');
+ let prev='GENESIS';for(let i=0;i<data.length;i++){const e=data[i];if(!e||e.version!==1||e.seq!==i+1||e.prev!==prev||!['ANCHOR','OBSERVATION','CORRECTION'].includes(e.kind)||!/^\d{4}-\d{2}-\d{2}$/.test(e.recorded_at)||!validSource(e.source)||!['what','how','why','actor'].every(k=>typeof e[k]==='string'&&e[k].length>0)||!e.hash||!/^[a-f0-9]{64}$/.test(e.hash))throw Error('Event #'+(i+1)+' malformed');if(e.kind==='CORRECTION'&&(!Number.isInteger(e.supersedes)||e.supersedes<=0||e.supersedes>=e.seq))throw Error('Correction target invalid');if(e.kind!=='CORRECTION'&&e.supersedes!==null)throw Error('Non-correction target invalid');
+ const {hash,...body}=e;if(await sha(body)!==hash)throw Error('Hash mismatch at event #'+(i+1));prev=hash}
+ return prev
+}
+function add(t,s,cls){const n=document.createElement(t);n.textContent=s;if(cls)n.className=cls;return n}
+function show(){const node=el('events');node.replaceChildren();const q=el('filter').value.toLowerCase().trim();const found=rows.filter(e=>!q||[e.actor,e.kind,e.what,e.how,e.why,e.source.repo,e.source.path].some(z=>z.toLowerCase().includes(q)));
+ if(!found.length){node.textContent=q?'No matches':'No events yet.';return}
+ for(const e of [...found].reverse()){const d=add('article','', 'entry');d.append(add('strong','#'+e.seq+' / '+e.kind+' / '+e.actor));d.append(add('div',e.what));d.append(add('small','WHAT / HOW / WHY:', 'dim'));d.append(add('div','HOW · '+e.how));d.append(add('div','WHY · '+e.why));const a=document.createElement('a'),branch=e.source.repo==='DavidWise01/0root'?'master':'main';a.href='https://github.com/'+e.source.repo+'/blob/'+branch+'/'+e.source.path.split('/').map(encodeURIComponent).join('/');a.rel='noopener noreferrer';a.target='_blank';a.textContent=e.source.repo+' / '+e.source.path;d.append(a);d.append(add('small','Git blob '+e.source.blob_sha+' · record '+e.hash, 'dim'));node.append(d)}
+}
+async function readText(){
+ try{const r=await fetch(RAW,{cache:'no-store'});if(r.ok)return await r.text()}catch(e){}
+ const r=await fetch(API,{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+ if(!r.ok)throw Error('GitHub unavailable: HTTP '+r.status);
+ const x=await r.json();if(x.encoding!=='base64'||typeof x.content!=='string')throw Error('GitHub content encoding unsupported');
+ const binary=atob(x.content.replace(/\s/g,'')),bytes=Uint8Array.from(binary,ch=>ch.charCodeAt(0));return new TextDecoder().decode(bytes)
+}
+async function refresh(){if(busy)return;busy=true;el('refresh').disabled=true;el('status').textContent='VERIFYING';el('copy').disabled=true;
+ try{if(!crypto?.subtle)throw Error('SHA-256 unavailable outside HTTPS');const text=await readText();if(text&&!text.endsWith('\n'))throw Error('Truncated JSONL');
+ const parsed=text.trim()?text.trim().split('\n').map(x=>JSON.parse(x)):[];const tip=await verify(parsed);rows=parsed;
+ el('status').textContent='PASS';el('eventsCount').textContent=rows.length;el('repositoriesCount').textContent=new Set(rows.map(x=>x.source.repo)).size;el('tip').textContent=tip;el('loaded').textContent=new Date().toISOString();
+ pointer='ROOT0 CORPUS SPINE / TOPH CORTEX\nSOURCE: '+RAW+'\nRECORDS: '+rows.length+'\nTIP: '+tip+'\nINVARIANT: no vote, no quorum; evidence-linked public metadata references only.';
+ el('resume').textContent=pointer;el('copy').disabled=false;el('message').textContent='Verified SHA-256 chain, '+rows.length+' events. Git history is a separate security control.';show()
+ }catch(e){rows=[];pointer='';el('status').textContent='HALTED';el('message').textContent='Read/verify failed: '+e.message;el('resume').textContent='No verified pointer.';el('events').textContent='Ledger unavailable; no cached PASS claimed.'}
+ finally{busy=false;el('refresh').disabled=false}
+}
+el('refresh').onclick=refresh;el('filter').oninput=show;el('copy').onclick=()=>{if(pointer)navigator.clipboard.writeText(pointer).catch(e=>{el('message').textContent='Clipboard unavailable: '+e.message})};refresh();
+})();
+</script></body></html>
