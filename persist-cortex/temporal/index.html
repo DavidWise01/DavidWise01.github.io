@@ -1,0 +1,121 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX // 08 TEMPORAL DIODE</title>
+<meta name="description" content="ROOT0 Gate 08 temporal diode: append-only, one-way, past observes, present deserves, future reserves; three independent witnesses without quorum.">
+<style>
+:root{color-scheme:dark;--bg:#050917;--line:#28506a;--panel:#0c192a;--fg:#e8f8ff;--muted:#a4c0cf;--cyan:#6be5fa;--gold:#f4d48a;--mint:#8ff4be;--purple:#c6a7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 48% -12%,#193c59,#050917 68%);color:var(--fg);font:13px/1.6 ui-monospace,Consolas,monospace}header,main,footer{max-width:1300px;margin:auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line)}h1{color:var(--cyan);font-size:clamp(24px,4.3vw,48px);letter-spacing:.065em;margin:0}h2{color:var(--cyan);font-size:17px;margin:0 0 12px}h3{font-size:14px;color:var(--mint);margin:5px 0}.sub,.dim,small{color:var(--muted)}nav{display:flex;gap:13px;flex-wrap:wrap}a{color:var(--mint)}
+main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:#0a1828ed;border:1px solid var(--line);border-radius:13px;padding:18px;min-width:0}.wide{grid-column:1/-1}.stat{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:9px 0}.value{color:var(--mint);text-align:right;overflow-wrap:anywhere}button{padding:9px 13px;border:1px solid #3989a5;background:#123a50;color:var(--fg);border-radius:9px;margin:8px 6px 0 0;font:inherit;cursor:pointer}button:hover:not(:disabled){background:#1d536b}button:disabled{opacity:.4;cursor:not-allowed}input,select{color:var(--fg);background:#081321;border:1px solid #39647e;border-radius:8px;padding:9px;width:100%;font:inherit}label{display:block;color:var(--muted);margin:12px 0 4px}
+pre{background:#071323;border:1px solid var(--line);padding:14px;border-radius:9px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:340px;overflow:auto}
+.note{border-left:2px solid var(--cyan);padding-left:12px;color:var(--muted)}
+#diode{width:100%;height:auto;max-height:350px;display:block}
+.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.lane{border:1px solid var(--line);border-radius:10px;background:#0c2435;padding:12px;min-width:0}.lane h3{margin-bottom:7px}.lane .phase{font-size:11px;overflow-wrap:anywhere}.lane[data-witness=A] h3{color:#83dcff}.lane[data-witness=B] h3{color:#c6a7ff}.lane[data-witness=C] h3{color:#f4d48a}
+.entry{border-bottom:1px solid var(--line);padding:14px 0;overflow-wrap:anywhere}.entry strong{color:var(--gold)}.entry small{display:block}#events{max-height:540px;overflow:auto}#message{color:var(--gold);min-height:28px}.pill{display:inline-block;border:1px solid var(--line);border-radius:30px;padding:4px 9px;margin:4px}footer{border-top:1px solid var(--line)}
+@media(max-width:850px){main{grid-template-columns:1fr}.lanes{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / DIASPORA / PERSIST CORTEX</div><h1>08 · TEMPORAL DIODE</h1><div class="sub">APPEND ONLY · ONE WAY · THREE WITNESSES · NO QUORUM</div></div>
+<nav><a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="../spine/">07</a><a href="https://0root.ai/">0ROOT.AI</a></nav></header>
+<main>
+<section class="panel"><h2>DIODE / TEMPORAL DIRECTION</h2>
+<svg id="diode" viewBox="0 0 610 280" role="img" aria-label="Three independent witness lanes A B C pass only from past observes to present deserves to future reserves">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="8.4" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#74d9ed"/></marker></defs>
+<g fill="#11283c" stroke="#50839e" stroke-width="1.5"><rect x="84" y="20" rx="13" width="147" height="55"/><rect x="259" y="20" rx="13" width="147" height="55"/><rect x="434" y="20" rx="13" width="155" height="55"/></g>
+<g text-anchor="middle" fill="#e7faff"><text x="158" y="40" font-size="13">PAST</text><text x="158" y="59" font-size="11">observes</text><text x="332" y="40" font-size="13">PRESENT</text><text x="332" y="59" font-size="11">deserves</text><text x="510" y="40" font-size="13">FUTURE</text><text x="510" y="59" font-size="11">reserves</text></g>
+<g stroke="#609db6" fill="none" stroke-width="2" marker-end="url(#arr)"><line x1="232" y1="48" x2="257" y2="48"/><line x1="406" y1="48" x2="432" y2="48"/></g>
+<g stroke-width="2" fill="none"><line x1="72" y1="120" x2="555" y2="120" stroke="#83dcff" marker-end="url(#arr)"/><line x1="72" y1="175" x2="555" y2="175" stroke="#c6a7ff" marker-end="url(#arr)"/><line x1="72" y1="230" x2="555" y2="230" stroke="#f4d48a" marker-end="url(#arr)"/></g>
+<g fill="#10263b" stroke-width="2"><circle cx="42" cy="120" r="25" stroke="#83dcff"/><circle cx="42" cy="175" r="25" stroke="#c6a7ff"/><circle cx="42" cy="230" r="25" stroke="#f4d48a"/></g>
+<g text-anchor="middle" fill="#fff" font-size="17"><text x="42" y="125">A</text><text x="42" y="180">B</text><text x="42" y="235">C</text></g>
+<g fill="#a6c7d8" font-size="10"><text x="105" y="108">Independent</text><text x="279" y="162">No agreement required</text><text x="460" y="217">No automatic action</text></g>
+</svg>
+<p class="note">Each witness advances only in their own thread and lane. A can reserve a future state while B remains in the past and C has not reported. Silence is not opposition. Disagreement is preserved, not averaged or voted on.</p>
+</section>
+<section class="panel"><h2>CANONICAL GIT VERIFICATION</h2>
+<div class="stat"><span>Corpus spine v2</span><span id="corpusStatus" class="value">CHECKING</span></div>
+<div class="stat"><span>Temporal witness chain</span><span id="temporalStatus" class="value">CHECKING</span></div>
+<div class="stat"><span>Recorded witnesses</span><span id="count" class="value">—</span></div>
+<div class="stat"><span>Active threads</span><span id="threads" class="value">—</span></div>
+<div class="stat"><span>Temporal SHA tip</span><span id="tip" class="value">GENESIS</span></div>
+<div class="stat"><span>Corpus anchor tip</span><span id="corpusTip" class="value">—</span></div>
+<button id="refresh">RELOAD / VERIFY GIT</button>
+<div id="message" role="status" aria-live="polite"></div>
+<h3>Operational boundary</h3>
+<pre>PAST_OBSERVES    ──→ PRESENT_DESERVES ──→ FUTURE_RESERVES
+       |                    |                    |
+  event date ≤ today    event date = today  reserved date > today
+
+A : own chain
+B : own chain
+C : own chain
+
+quorum = null
+vote = NONE
+auto_execute = FALSE
+retroactive_write = FORBIDDEN</pre>
+</section>
+<section class="panel wide"><h2>WITNESSES / INDEPENDENT THREADS</h2>
+<label for="threadFilter">Select a thread</label><select id="threadFilter"><option value="">All threads / no records</option></select>
+<div class="lanes">
+<section class="lane" data-witness="A"><h3>A / WITNESS</h3><div id="laneA" class="phase">No record. Independently silent.</div></section>
+<section class="lane" data-witness="B"><h3>B / WITNESS</h3><div id="laneB" class="phase">No record. Independently silent.</div></section>
+<section class="lane" data-witness="C"><h3>C / WITNESS</h3><div id="laneC" class="phase">No record. Independently silent.</div></section>
+</div>
+<p class="dim">This is a view of records, not consensus or the truth of a future forecast. Future reservations are proposals, never scheduled operations.</p>
+</section>
+<section class="panel"><h2>HISTORY / ONE-WAY JOURNAL</h2>
+<label for="filter">Filter WHAT, HOW, WHY, thread, witness or source</label><input id="filter" placeholder="Search independent records">
+<div id="events">Loading source…</div></section>
+<section class="panel"><h2>APPEND / AUTHENTICATED BOUNDARY</h2>
+<p>Each observation is added by an explicit GitHub Action. Pick witness A, B, or C, the next legal phase, a source file and its verified SHA, and independent WHAT, HOW, WHY. The workflow enforces the current temporal and corpus chain tips before committing.</p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/temporal-diode-append.yml">OPEN TEMPORAL APPEND ACTION ↗</a></p>
+<p><a href="../spine/">Gate 07 — look up a public file SHA</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/temporal_diode.py">Temporal diode validator source</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/temporal-events.jsonl">Canonical temporal ledger on GitHub</a></p>
+<p class="note">This page cannot write GitHub and contains no credentials. A witness label does not authenticate the witness's real-world identity. All records are public source metadata and intentional descriptions; do not submit private memory or secrets.</p>
+<h3>Migration status</h3>
+<p class="dim">The original five-entry corpus-spine ledger had incorrect digests and remains unchanged in Git. Verified corpus-spine v2 starts with a provenance anchor to that legacy blob. The temporal diode reads only the valid v2 spine.</p>
+</section>
+<section class="panel wide"><h2>ROOT0 / FULL-CORPUS REFERENCE</h2><p><a href="https://0root.ai/">0root.ai Hallway</a> ↔ <a href="../archive/">Archive Cortex</a> ↔ <a href="../spine/">Verified v2 Corpus Spine</a> ↔ Temporal Diode. Canonical source documents remain in OASIS, UD0 and other original repositories. New events are links and observations, never rewritten source contents.</p>
+<span class="pill">3 witnesses · independent</span><span class="pill">no quorum</span><span class="pill">one-way / diodic</span><span class="pill">temporal</span><span class="pill">append only</span>
+</section>
+</main><footer class="sub">ROOT0 / GATE 08 / TEMPORAL DIODE · one-way Git history and independent A/B/C observations; no vote, no quorum, no future automation</footer>
+<script>
+(()=>{'use strict';
+const OWNER="DavidWise01/toph-cortex", BASE="https://raw.githubusercontent.com/"+OWNER+"/main/memory/corpus-spine/";
+const PATHS={corpus:"events-v2.jsonl",temporal:"temporal-events.jsonl"}, el=id=>document.getElementById(id);
+const PHASES=["PAST_OBSERVES","PRESENT_DESERVES","FUTURE_RESERVES"];let events=[],corpus=[],busy=false;
+function canonical(x){if(Array.isArray(x))return "["+x.map(canonical).join(",")+"]";if(x!==null&&typeof x==="object")return "{"+Object.keys(x).sort().map(k=>JSON.stringify(k)+":"+canonical(x[k])).join(",")+"}";return JSON.stringify(x)}
+async function digest(x){const raw=new TextEncoder().encode(canonical(x));const hash=await crypto.subtle.digest("SHA-256",raw);return [...new Uint8Array(hash)].map(n=>n.toString(16).padStart(2,"0")).join("")}
+const okText=(x)=>typeof x==="string"&&x.length>=1&&x.length<=2000,sourceOK=(s)=>s&&/^DavidWise01\/[A-Za-z0-9._-]+$/.test(s.repo)&&typeof s.path==="string"&&!s.path.startsWith("/")&&!s.path.includes("..")&&/^[0-9a-f]{40}$/.test(s.blob_sha)&&s.visibility==="public";
+const isoDate=(s)=>{if(typeof s!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(s))throw Error("Invalid calendar date");const d=new Date(s+"T00:00:00Z");if(!Number.isFinite(d.valueOf())||d.toISOString().slice(0,10)!==s)throw Error("Invalid calendar date");return s};
+async function verifyCorpus(rows){if(!Array.isArray(rows)||!rows.length)throw Error("Missing validated v2 genesis");let prev="GENESIS";for(let i=0;i<rows.length;i++){const r=rows[i];if(!r||r.version!==1||r.seq!==i+1||r.prev!==prev||!["ANCHOR","OBSERVATION","CORRECTION"].includes(r.kind)||!sourceOK(r.source)||!okText(r.what)||!okText(r.how)||!okText(r.why)||!/^[0-9a-f]{64}$/.test(r.hash)||!isoDate(r.recorded_at))throw Error("Corpus v2 malformed #"+(i+1));const {hash,...body}=r;if(await digest(body)!==hash)throw Error("Corpus v2 SHA mismatch #"+(i+1));prev=hash}return prev}
+async function verifyTemporal(rows,corpus){if(!Array.isArray(rows))throw Error("Temporal ledger not a list");let prev="GENESIS";const heads=new Set(corpus.map(x=>x.hash)),lanes=new Map();for(let i=0;i<rows.length;i++){const e=rows[i];if(!e||e.version!==1||e.seq!==i+1||e.prev!==prev||!PHASES.includes(e.phase)||!["A","B","C"].includes(e.witness)||typeof e.thread!=="string"||!/^[A-Za-z0-9][A-Za-z0-9_.-]{0,95}$/.test(e.thread)||!sourceOK(e.source)||!heads.has(e.corpus_tip)||!okText(e.what)||!okText(e.how)||!okText(e.why)||!/^[a-f0-9]{64}$/.test(e.hash))throw Error("Temporal event malformed #"+(i+1));
+const recorded=isoDate(e.recorded_at),target=isoDate(e.event_on),idx=PHASES.indexOf(e.phase),lane=e.thread+"|"+e.witness,last=lanes.get(lane);
+if(!last){if(idx!==0||e.anchor!==null)throw Error("Witness must start independently in PAST #"+e.seq)}
+else {if(e.anchor!==last.seq)throw Error("Witness lane predecessor mismatch #"+e.seq);const prior=PHASES.indexOf(last.phase);if(idx<prior||idx>prior+1)throw Error("Backward/skipped phase #"+e.seq)}
+if(idx===0&&target>recorded||idx===1&&target!==recorded||idx===2&&target<=recorded)throw Error("Temporal date violation #"+e.seq);
+const {hash,...body}=e;if(await digest(body)!==hash)throw Error("Temporal hash mismatch #"+e.seq);lanes.set(lane,e);prev=e.hash}
+return prev}
+function div(tag,t,klass){const n=document.createElement(tag);n.textContent=t;if(klass)n.className=klass;return n}
+function display(){
+el("count").textContent=events.length;el("threads").textContent=new Set(events.map(e=>e.thread)).size;el("tip").textContent=events.at(-1)?.hash||"GENESIS";
+const selector=el("threadFilter"),was=selector.value,threads=[...new Set(events.map(e=>e.thread))].sort();selector.replaceChildren(new Option(threads.length?"All threads":"No witness records",""));for(const t of threads)selector.add(new Option(t,t));selector.value=threads.includes(was)?was:"";
+drawLanes();drawEvents()}
+function drawLanes(){const topic=el("threadFilter").value,visible=events.filter(e=>!topic||e.thread===topic);
+for(const w of ["A","B","C"]){const lane=el("lane"+w),records=visible.filter(e=>e.witness===w),e=records.at(-1);lane.replaceChildren();
+if(!e){lane.textContent="NO RECORD / independent silence";continue}
+lane.append(div("strong",e.phase),div("div","Thread "+e.thread+" / #"+e.seq),div("div","Date "+e.event_on),div("div","WHAT: "+e.what),div("small","HOW: "+e.how),div("small","WHY: "+e.why),div("small","Records "+records.length))}
+}
+function drawEvents(){const list=el("events"),q=el("filter").value.toLowerCase().trim(),thread=el("threadFilter").value;list.replaceChildren();
+const found=events.filter(e=>(!thread||e.thread===thread)&&(!q||[e.thread,e.phase,e.witness,e.what,e.how,e.why,e.source.repo,e.source.path].some(x=>x.toLowerCase().includes(q))));
+if(!found.length){list.textContent=q?"No matching records":"No witnessed events yet.";return}
+for(const e of [...found].reverse()){const row=div("article","", "entry");row.append(div("strong","#"+e.seq+" · "+e.witness+" · "+e.phase),div("div",e.thread+" | event date "+e.event_on),div("div","WHAT · "+e.what),div("div","HOW · "+e.how),div("div","WHY · "+e.why),div("small","Anchor "+(e.anchor===null?"GENESIS":e.anchor)+" · corpus "+e.corpus_tip.slice(0,18)+"…"),div("small","SHA "+e.hash));list.append(row)}
+}
+async function read(path){const url=BASE+PATHS[path],r=await fetch(url,{cache:"no-store"});if(!r.ok)throw Error(path+" GitHub fetch HTTP "+r.status);const text=await r.text();if(text&&!text.endsWith("\n"))throw Error(path+" file truncated");return text?text.split("\n").filter(Boolean).map(JSON.parse):[]}
+async function refresh(){if(busy)return;busy=true;el("refresh").disabled=true;el("corpusStatus").textContent="VERIFYING";el("temporalStatus").textContent="VERIFYING";
+try{if(!crypto?.subtle)throw Error("Secure HTTPS context required");const [c,t]=await Promise.all([read("corpus"),read("temporal")]);
+const tip=await verifyCorpus(c);const witnessTip=await verifyTemporal(t,c);corpus=c;events=t;el("corpusStatus").textContent="PASS / "+c.length+" events";el("corpusTip").textContent=tip;el("temporalStatus").textContent=t.length?"PASS / "+t.length:"EMPTY / VALID GENESIS";el("message").textContent="Read-only verified replay · no quorum · no writes · tip "+witnessTip.slice(0,18);display();
+}catch(e){corpus=[];events=[];el("corpusStatus").textContent="HALTED";el("temporalStatus").textContent="HALTED";el("message").textContent="Integrity unavailable: "+e.message;display()}
+finally{busy=false;el("refresh").disabled=false}}
+el("refresh").onclick=refresh;el("filter").oninput=drawEvents;el("threadFilter").onchange=()=>{drawLanes();drawEvents()};refresh();
+})();
+</script></body></html>
