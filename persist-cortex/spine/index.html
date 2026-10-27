@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PERSIST CORTEX · 07 CORPUS SPINE · ROOT0</title>
-<meta name="description" content="The ROOT0 corpus-wide Git-backed append-only memory spine, sourced from TOPH CORTEX, linked to OASIS, UD0, and 0root.ai.">
+<meta name="description" content="The ROOT0 verified successor corpus-wide Git-backed append-only memory spine, sourced from TOPH CORTEX, linked to OASIS, UD0, and 0root.ai.">
 <style>
 :root{color-scheme:dark;--bg:#060c1a;--panel:#0d1b30;--line:#254c60;--cyan:#6be5f4;--green:#8aefb7;--violet:#b499fa;--gold:#f7d389;--text:#e1f8ff;--dim:#a5bccb;--error:#ffa6a6}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#203957,#060c1a 68%);color:var(--text);font:13px/1.65 ui-monospace,Consolas,monospace}header,main,footer{max-width:1240px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;border-bottom:1px solid var(--line)}h1{font-size:clamp(26px,4.4vw,49px);letter-spacing:.06em;color:var(--cyan);margin:0}nav{display:flex;gap:12px;flex-wrap:wrap}a{color:var(--green)}h2{font-size:17px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--green)}.dim,.sub,small{color:var(--dim)}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{border:1px solid var(--line);border-radius:15px;padding:20px;background:rgba(12,26,44,.91);min-width:0}.wide{grid-column:1/-1}
@@ -61,14 +61,14 @@ python bin/corpus_spine.py tip
 <p><a href="https://0root.ai/">0root.ai / Hallway</a></p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/agents.json">TOPH agent registry</a></p>
 <p><a href="../archive/">Gate 06 / Local archive snapshots</a></p>
-<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/events.jsonl">Canonical repository-backed memory ledger</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/events-v2.jsonl">Canonical repository-backed memory ledger</a></p>
 <div><span class="pill">READ · cold replay</span><span class="pill">WRITE · authenticated append</span><span class="pill">WHY · traceable provenance</span><span class="pill">NO VOTES</span></div>
 </section>
 </main><footer class="sub">PERSIST CORTEX · Gate 07 / Corpus Spine · public metadata-only Git references · no automatic private-data synchronization · no off-repo credential sharing</footer>
 <script>
 (()=>{'use strict';
-const RAW='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/events.jsonl';
-const API='https://api.github.com/repos/DavidWise01/toph-cortex/contents/memory/corpus-spine/events.jsonl';
+const RAW='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/events-v2.jsonl';
+const API='https://api.github.com/repos/DavidWise01/toph-cortex/contents/memory/corpus-spine/events-v2.jsonl';
 const el=id=>document.getElementById(id);
 let rows=[],pointer='',busy=false;
 function canon(x){if(Array.isArray(x))return '['+x.map(canon).join(',')+']';if(x!==null&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canon(x[k])).join(',')+'}';return JSON.stringify(x)}
