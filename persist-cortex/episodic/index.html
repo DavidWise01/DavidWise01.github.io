@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX // 02 EPISODIC</title>
+<meta name="description" content="Persist Cortex Gate 02: independent episodic witnesses, WHAT/HOW/WHY, SHA-256 chain, provenance and correction-only history.">
+<style>
+:root{color-scheme:dark;--bg:#040915;--panel:#0b1b2b;--line:#23465c;--cyan:#67e8f9;--green:#86efac;--gold:#facc72;--dim:#9eb5c6;--text:#e1f7ff;--red:#ff9999}
+*{box-sizing:border-box}body{margin:0;color:var(--text);font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;background:radial-gradient(ellipse at 50% -10%,#173551 0,#040915 65%)}
+header,main,footer{max-width:1200px;margin:auto;padding:22px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+h1{color:var(--cyan);letter-spacing:.08em;font-size:clamp(25px,4.5vw,45px);margin:0}h2{font-size:16px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--green);margin:0 0 9px}
+a{color:var(--green)}nav{display:flex;gap:16px;flex-wrap:wrap}.dim,.sub,small{color:var(--dim)}
+main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:#0a1727e8;border:1px solid var(--line);padding:20px;border-radius:12px;min-width:0}.wide{grid-column:1/-1}
+label{display:block;color:var(--dim);margin:12px 0 5px}input,select,textarea{display:block;width:100%;border:1px solid #346078;background:#06101d;border-radius:7px;padding:10px;color:var(--text);font:inherit}textarea{min-height:88px;resize:vertical}button{color:var(--text);background:#113b52;border:1px solid #328ba5;border-radius:8px;padding:10px 13px;cursor:pointer;font:inherit;margin:8px 6px 0 0}button:hover{background:#1b526e}button:disabled{opacity:.38;cursor:not-allowed}
+.pill{display:inline-block;border:1px solid #346078;border-radius:999px;padding:2px 8px;margin:5px 5px 0 0}
+.stat{display:flex;justify-content:space-between;align-items:baseline;gap:18px;border-bottom:1px solid var(--line);padding:10px 0}.value{color:var(--green);text-align:right;overflow-wrap:anywhere}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#040d17;border:1px solid var(--line);border-radius:8px;padding:13px;max-height:350px;overflow:auto}
+.list{max-height:530px;overflow:auto}.event{border-bottom:1px solid var(--line);padding:14px 0}.event-title{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--gold)}.event-body{white-space:pre-wrap;overflow-wrap:anywhere}.event small{display:block;font-size:11px;overflow-wrap:anywhere}.alert{color:var(--gold)}.danger{color:var(--red)}.ok{color:var(--green)}#message{min-height:22px}
+footer{border-top:1px solid var(--line)}svg{width:100%;height:auto;max-height:270px}
+@media(max-width:800px){main{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / DIASPORA / PERSIST CORTEX</div><h1>02 · EPISODIC MEMORY</h1><div class="sub">Independent witnesses · provenance · append → verify → replay</div></div>
+<nav><a href="../">01 / IDENTITY</a><a href="https://davidwise01.github.io/formic/">DIASPORA / FORMIC</a><a href="https://davidwise01.github.io/">ROOT0</a></nav></header>
+<main>
+<section class="panel"><h2>CORTEX / THREE WITNESSES</h2>
+<svg viewBox="0 0 500 260" role="img" aria-label="Independent A B C witness nodes report to memory spine, with no quorum or voting">
+<g fill="none" stroke="#2e657e" stroke-width="1.5"><path d="M120 70L250 147L380 70M120 70L120 175L250 210L380 175L380 70M250 147L250 210"/><circle cx="250" cy="147" r="67" stroke-dasharray="5 7"/></g>
+<g fill="#0a283a" stroke="#65d8ed" stroke-width="2"><circle cx="120" cy="70" r="39"/><circle cx="380" cy="70" r="39"/><circle cx="250" cy="210" r="39"/><circle cx="250" cy="147" r="29" stroke="#b49bff"/></g>
+<g fill="#e4fdff" text-anchor="middle" font-family="monospace"><text x="120" y="75" font-size="20">A</text><text x="380" y="75" font-size="20">B</text><text x="250" y="215" font-size="20">C</text><text x="250" y="151" font-size="15">i</text><text x="120" y="127" font-size="11">WHAT</text><text x="380" y="127" font-size="11">HOW</text><text x="250" y="257" font-size="11">WHY</text></g>
+</svg>
+<p class="dim">A, B, and C independently witness an episode. Each can report WHAT, HOW, and WHY. The diagram labels are visual prompts, not exclusive roles. No majority vote or forced agreement.</p>
+<div class="stat"><span>IDENTITY</span><span class="value" id="identityStatus">READING…</span></div>
+<div class="stat"><span>AGENT</span><span class="value" id="agentId">—</span></div>
+<div class="stat"><span>EVENTS</span><span class="value" id="count">0</span></div>
+<div class="stat"><span>CHAIN / INTEGRITY</span><span class="value" id="integrity">—</span></div>
+<div class="stat"><span>LATEST HASH</span><span class="value" id="latest">GENESIS</span></div>
+</section>
+<section class="panel"><h2>OBSERVATION / NEW MEMORY</h2>
+<p class="dim">Capture an observation from one witness. Leave WHY as “unknown” when no interpretation is justified.</p>
+<label for="episode">Episode identifier (groups independent witnesses)</label>
+<input id="episode" maxlength="100" placeholder="e.g. diaspora-node-startup-001">
+<label for="witness">Witness</label><select id="witness"><option value="A">A / independent witness</option><option value="B">B / independent witness</option><option value="C">C / independent witness</option></select>
+<label for="kind">Record type</label><select id="kind"><option value="OBSERVATION">OBSERVATION / original</option><option value="CORRECTION">CORRECTION / linked addition</option></select>
+<div id="correctionBlock" hidden><label for="target">Original event being corrected</label><select id="target"><option value="">Select original event</option></select></div>
+<label for="what">WHAT happened (observation)</label><textarea id="what" maxlength="6000" placeholder="What was actually observed?"></textarea>
+<label for="how">HOW observed (method / evidence)</label><textarea id="how" maxlength="6000" placeholder="What method or evidence supports it?"></textarea>
+<label for="why">WHY (interpretation, optional)</label><textarea id="why" maxlength="6000" placeholder="Unknown until evidence supports an explanation"></textarea>
+<label for="source">Source / provenance (optional)</label><input id="source" maxlength="400" placeholder="URL, sensor, file, human report or local witness">
+<button id="append">APPEND MEMORY</button><button id="verify">VERIFY + REPLAY</button>
+<div id="message" class="alert" role="status" aria-live="polite"></div>
+</section>
+<section class="panel"><h2>EVENT LEDGER / REPLAY</h2><label for="filter">Filter episode or witness</label><input id="filter" placeholder="Search events">
+<div class="list" id="events">No episodes yet.</div></section>
+<section class="panel"><h2>PROVENANCE / BACKUP</h2><h3>Latest event envelope</h3><pre id="envelope">No events yet.</pre>
+<button id="export">EXPORT JSON</button><button id="import">IMPORT & VERIFY</button><input type="file" id="file" accept=".json,application/json" hidden>
+<p class="dim">Gate 02 stores data in browser localStorage on this origin. It is not a durable server ledger and does not synchronize to GitHub or other Diaspora agents. Export your memory to preserve it outside this browser.</p>
+<h3>Gate sequence</h3><div><span class="pill">01 IDENTITY ✓</span><span class="pill">02 EPISODIC ACTIVE</span><span class="pill">03 SEMANTIC NEXT</span></div></section>
+<section class="panel wide"><h2>DIASPORA GATEWAY / READ-ONLY LINK</h2>
+<p>The identity reference is loaded from Gate 01 on the same origin. Episode events bind to the identity event hash recorded at capture time. The Diaspora link navigates to the mesh; no remote agent communication or hidden writes occur in Gate 02.</p>
+<a href="https://davidwise01.github.io/formic/">OPEN DIASPORA / FORMIC ↗</a> &nbsp; | &nbsp; <a href="../">RETURN TO IDENTITY ↗</a>
+</section>
+</main><footer class="sub">ROOT0 · PERSIST CORTEX · GATE 02 · No external scripts · Local hash chaining detects accidental alteration, not malicious rewrite of all local storage</footer>
+<script>
+(()=>{'use strict';
+const IDKEY='persist-cortex-identity-v1', KEY='persist-cortex-episodes-v1', f=x=>document.getElementById(x);
+let episodes=[],identity=[],latestIdentity=null,ready=false,working=false;
+function message(s){f('message').textContent=s}
+const sha=async obj=>{const bytes=new TextEncoder().encode(JSON.stringify(obj));const digest=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('')};
+async function verifyIdentity(list){
+ if(!Array.isArray(list))throw Error('Invalid identity journal');let prev='GENESIS';
+ for(let i=0;i<list.length;i++){const e=list[i];if(!e||e.version!==1||e.seq!==i+1||e.kind!=='IDENTITY'||e.prev!==prev||!e.payload||typeof e.payload.agent!=='string'||typeof e.payload.purpose!=='string'||typeof e.payload.bounds!=='string'||typeof e.hash!=='string')throw Error('Identity event invalid at '+(i+1));
+ const {hash,...body}=e;if(await sha(body)!==hash)throw Error('Identity digest mismatch #'+(i+1));prev=hash}
+ return true
+}
+function validString(s){return typeof s==='string'&&s.length>0}
+async function verifyEpisodes(list,identities){
+ if(!Array.isArray(list))throw Error('Invalid episode journal');
+ const trusted=new Map(identities.map(x=>[x.hash,x.payload.agent])),seen=new Map();let prev='GENESIS';
+ for(let i=0;i<list.length;i++){
+  const e=list[i];
+  if(!e||e.version!==2||e.seq!==i+1||e.prev!==prev||!['OBSERVATION','CORRECTION'].includes(e.kind)||!validString(e.timestamp)||!validString(e.identityHash)||!validString(e.agent)||!trusted.has(e.identityHash)||trusted.get(e.identityHash)!==e.agent||!['A','B','C'].includes(e.witness)||!validString(e.episode)||!validString(e.what)||!validString(e.how)||typeof e.why!=='string'||typeof e.source!=='string'||typeof e.hash!=='string')throw Error('Malformed episode #'+(i+1));
+  if(e.kind==='OBSERVATION'&&e.corrects!==null)throw Error('Original cannot correct another event');
+  if(e.kind==='CORRECTION'&&(!Number.isInteger(e.corrects)||!seen.has(e.corrects)||seen.get(e.corrects).kind!=='OBSERVATION'||seen.get(e.corrects).episode!==e.episode))throw Error('Correction needs earlier original from same episode');
+  const {hash,...body}=e;if(await sha(body)!==hash)throw Error('Episode digest mismatch #'+(i+1));
+  prev=hash;seen.set(e.seq,e);
+ }
+ return true
+}
+function appendNode(p,text,cls){const d=document.createElement(p);if(cls)d.className=cls;d.textContent=text;return d}
+function render(){
+ f('count').textContent=episodes.length;
+ f('latest').textContent=episodes.at(-1)?.hash||'GENESIS';
+ f('envelope').textContent=episodes.length?JSON.stringify(episodes.at(-1),null,2):'No events yet.';
+ const target=f('target');const old=target.value;target.replaceChildren(new Option('Select original event',''));
+ for(const e of episodes.filter(e=>e.kind==='OBSERVATION'))target.add(new Option('#'+e.seq+' · '+e.episode+' · '+e.witness,e.seq));
+ target.value=episodes.some(e=>String(e.seq)===old&&e.kind==='OBSERVATION')?old:'';
+ showEvents();
+}
+function showEvents(){
+ const list=f('events');list.replaceChildren();const term=f('filter').value.toLowerCase().trim();
+ const subset=[...episodes].reverse().filter(e=>!term||[e.episode,e.witness,e.what,e.source,String(e.seq)].some(x=>x.toLowerCase().includes(term)));
+ if(!subset.length){list.textContent=term?'No matching events.':'No episodes yet.';return}
+ for(const e of subset){
+  const d=appendNode('article','', 'event');
+  const header=appendNode('div','#'+e.seq+' / '+e.kind+' / '+e.witness,'event-title');
+  d.append(header,appendNode('small',e.episode+' · '+e.timestamp,'dim'));
+  if(e.kind==='CORRECTION')d.append(appendNode('small','CORRECTS ORIGINAL #'+e.corrects,'alert'));
+  d.append(appendNode('div','WHAT · '+e.what,'event-body'));
+  d.append(appendNode('div','HOW · '+e.how,'event-body'));
+  d.append(appendNode('div','WHY · '+(e.why||'unknown'),'event-body'));
+  if(e.source)d.append(appendNode('small','SOURCE · '+e.source,'dim'));
+  d.append(appendNode('small','SHA-256 · '+e.hash,'dim'));list.append(d);
+ }
+}
+function busy(v){working=v;f('append').disabled=v||!ready;f('import').disabled=v||!ready;f('verify').disabled=v}
+async function loadIdentity(){
+ const raw=localStorage.getItem(IDKEY);identity=raw?JSON.parse(raw):[];
+ await verifyIdentity(identity);latestIdentity=identity.at(-1)||null;
+ f('identityStatus').textContent=latestIdentity?'BOUND / VERIFIED':'UNBOUND / SET GATE 01';
+ f('agentId').textContent=latestIdentity?.payload.agent||'No identity yet';
+ return !!latestIdentity;
+}
+async function recheck(){
+ const bound=await loadIdentity();if(!bound){ready=false;f('integrity').textContent='WAITING FOR IDENTITY';render();return false}
+ await verifyEpisodes(episodes,identity);ready=true;
+ f('integrity').textContent='PASS / '+episodes.length+' EVENTS';render();return true
+}
+async function start(){
+ try{if(!crypto?.subtle)throw Error('SHA-256 requires HTTPS or localhost');episodes=JSON.parse(localStorage.getItem(KEY)||'[]');await recheck();if(!ready)message('Open Gate 01, append an identity, then return here.');}
+ catch(e){ready=false;f('integrity').textContent='HALTED / '+e.message;message(e.message)}
+ busy(false)
+}
+f('kind').onchange=()=>{const correction=f('kind').value==='CORRECTION';f('correctionBlock').hidden=!correction};
+f('filter').oninput=showEvents;
+f('append').onclick=async()=>{
+ if(working)return;busy(true);
+ try{
+  if(!await recheck())throw Error('Verified identity required');
+  const kind=f('kind').value,what=f('what').value.trim(),how=f('how').value.trim(),why=f('why').value.trim(),source=f('source').value.trim();
+  let episode=f('episode').value.trim(),corrects=null;
+  if(kind==='CORRECTION'){
+   corrects=Number(f('target').value);
+   const target=episodes.find(e=>e.seq===corrects&&e.kind==='OBSERVATION');
+   if(!target)throw Error('Select an earlier original event to correct');
+   if(episode&&episode!==target.episode)throw Error('Correction must use the original episode ID');
+   episode=target.episode;
+  }
+  if(!episode||!what||!how)throw Error('Episode, WHAT and HOW are required');
+  if(!['A','B','C'].includes(f('witness').value))throw Error('Unknown witness');
+  const body={version:2,seq:episodes.length+1,kind,timestamp:new Date().toISOString(),prev:episodes.at(-1)?.hash||'GENESIS',identityHash:latestIdentity.hash,agent:latestIdentity.payload.agent,witness:f('witness').value,episode,what,how,why,source,corrects};
+  const event={...body,hash:await sha(body)},updated=[...episodes,event];
+  await verifyEpisodes(updated,identity);
+  // Recheck backing storage to avoid blindly writing over another tab.
+  if(localStorage.getItem(KEY)!==JSON.stringify(episodes)&&!(episodes.length===0&&!localStorage.getItem(KEY)))throw Error('Storage changed in another tab: reload first');
+  localStorage.setItem(KEY,JSON.stringify(updated));
+  if(localStorage.getItem(KEY)!==JSON.stringify(updated))throw Error('Storage readback mismatch');
+  episodes=updated;await recheck();
+  f('what').value='';f('how').value='';f('why').value='';f('source').value='';
+  message('APPENDED / '+kind+' #'+event.seq+' / verified local event chain');
+ }catch(e){message('NOT APPENDED: '+e.message)}finally{busy(false)}
+};
+f('verify').onclick=async()=>{busy(true);try{await recheck();message('REPLAY COMPLETE · '+episodes.length+' independent events · chain verified')}catch(e){ready=false;f('integrity').textContent='HALTED';message('VERIFY FAILED: '+e.message)}finally{busy(false)}};
+f('export').onclick=()=>{
+ const data={format:'persist-cortex-episodic-v2',exportedAt:new Date().toISOString(),identityAnchor:latestIdentity?.hash||null,events:episodes};
+ const a=document.createElement('a');const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.href=url;a.download='persist-cortex-episodes.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+};
+f('import').onclick=()=>f('file').click();
+f('file').onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;busy(true);
+ try{
+  if(!await recheck())throw Error('Identity must exist before import');
+  const incoming=JSON.parse(await file.text());
+  if(incoming.format!=='persist-cortex-episodic-v2')throw Error('Unsupported import format');
+  await verifyEpisodes(incoming.events,identity);
+  if(incoming.events.length<episodes.length||episodes.some((old,i)=>old.hash!==incoming.events[i].hash))throw Error('Cannot truncate or rewrite existing events');
+  const current=localStorage.getItem(KEY);
+  if(current!==JSON.stringify(episodes)&&!(episodes.length===0&&!current))throw Error('Storage changed in another tab');
+  localStorage.setItem(KEY,JSON.stringify(incoming.events));episodes=incoming.events;
+  await recheck();message('IMPORTED · '+episodes.length+' verified events');
+ }catch(err){message('IMPORT REJECTED: '+err.message)}finally{e.target.value='';busy(false)}
+};
+window.addEventListener('storage',e=>{if(e.key===IDKEY||e.key===KEY){ready=false;f('integrity').textContent='RELOAD REQUIRED';message('Journal changed in another tab. Reload to re-verify.');busy(false)}});
+start();
+})();
+</script>
+</body></html>
