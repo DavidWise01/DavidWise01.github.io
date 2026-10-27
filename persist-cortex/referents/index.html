@@ -27,7 +27,7 @@ header,main,footer{max-width:1290px;margin:auto;padding:20px}header{border-botto
 <div class="stat"><span>Unique referents</span><span id="countRefs" class="value">—</span></div>
 <div class="stat"><span>Watermarked events</span><span id="countEvents" class="value">—</span></div>
 <div class="stat"><span>Actual network samples</span><span id="countSamples" class="value">—</span></div>
-<div class="stat"><span>Latest Git watermark tip</span><span id="tip" class="value">GENESIS</span></div>
+<div class="stat"><span>Latest Git watermark tip</span><span id="tip" class="value">GENESIS</span></div><div class="stat"><span>Independent Hallway anchors</span><span id="anchorStatus" class="value">NOT CHECKED</span></div>
 <button id="reload">RELOAD & VERIFY GITHUB</button><div id="message" role="status" aria-live="polite"></div>
 <p class="dim">An empty ledger means nothing was claimed or measured by this new gate. No data is generated simply by viewing this page.</p>
 </section>
@@ -72,7 +72,7 @@ FUTURE  -> explicit non-executing reservation
 <script>
 (()=>{'use strict';
 const LEDGER_URL='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/referent-events.jsonl',PREFIX='ROOT0-WATERMARK-v1\n';
-const el=id=>document.getElementById(id),HEX=/^[a-f0-9]{64}$/,BASES=['OBSERVED','REPORTED','INFERRED','DISPUTED','UNKNOWN'];let events=[],busy=false;
+const el=id=>document.getElementById(id),HEX=/^[a-f0-9]{64}$/,BASES=['OBSERVED','REPORTED','INFERRED','DISPUTED','UNKNOWN'];const ANCHOR_API='https://api.github.com/repos/DavidWise01/0root/contents/memory-bridge/referents?ref=master',ANCHOR_RAW='https://raw.githubusercontent.com/DavidWise01/0root/master/memory-bridge/referents/';let events=[],busy=false;
 function stable(x){if(Array.isArray(x))return '['+x.map(stable).join(',')+']';if(x!==null&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+stable(x[k])).join(',')+'}';return JSON.stringify(x)}
 const encode=x=>new TextEncoder().encode(stable(x)),toHex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 async function digest(bytes){return toHex(await crypto.subtle.digest('SHA-256',bytes))}
@@ -92,7 +92,26 @@ return {tip:prev,referents:refs.size}}
 function add(t,s,cls){const e=document.createElement(t);e.textContent=s;if(cls)e.className=cls;return e}
 function render(){const list=el('eventList'),q=el('filter').value.toLowerCase().trim();list.replaceChildren();const found=events.filter(x=>!q||[x.referent_uri,x.witness,x.what,x.how,x.why,x.basis].some(s=>s.toLowerCase().includes(q)));if(!found.length){list.textContent=q?'No matching provenance events':'No watermarked witness events yet.';return}
 for(const x of [...found].reverse()){const d=add('article','', 'event');d.append(add('strong','#'+x.seq+' · '+x.kind+' · '+x.witness+' / '+x.basis));const a=document.createElement('a');a.href=x.referent_uri;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.referent_uri;d.append(a);d.append(add('div','WHAT · '+x.what));d.append(add('div','HOW · '+x.how));d.append(add('div','WHY · '+x.why));if(x.sample){d.append(add('small','RTT '+x.sample.rtt_ms+'ms · HTTP '+x.sample.http_status+' · SERVER DATE '+(x.sample.server_date_utc||'unavailable')))}d.append(add('small','WATERMARK '+x.watermark));d.append(add('small','CHAIN '+x.hash));list.append(d)}}
-async function reload(){if(busy)return;busy=true;el('reload').disabled=true;el('status').textContent='VERIFYING';try{if(!crypto?.subtle)throw Error('Secure SHA-256 context needed');const r=await fetch(LEDGER_URL,{cache:'no-store'});if(!r.ok)throw Error('GitHub fetch HTTP '+r.status);const text=await r.text();if(text&&!text.endsWith('\n'))throw Error('Partial JSONL');const rows=text?text.split('\n').filter(Boolean).map(JSON.parse):[];const state=await verify(rows);events=rows;el('status').textContent=rows.length?'PASS / VERIFIED':'EMPTY / VALID';el('countRefs').textContent=state.referents;el('countEvents').textContent=rows.length;el('countSamples').textContent=rows.filter(x=>x.kind==='SAMPLE').length;el('tip').textContent=state.tip;el('message').textContent='Verified Git source hash chain and deterministic event watermarks. No claim of physical time dilation.';render()}catch(e){events=[];el('status').textContent='HALTED';el('message').textContent='INTEGRITY HALTED: '+e.message;el('eventList').textContent='No unverified events displayed.'}finally{el('reload').disabled=false}}
+async function checkHallway(rows){
+ const response=await fetch(ANCHOR_API,{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+ if(response.status===404)return {count:0,mismatch:0};
+ if(!response.ok)throw Error('Hallway anchor index HTTP '+response.status);
+ const files=await response.json();
+ if(!Array.isArray(files)||files.length>=1000)throw Error('Hallway listing incomplete');
+ const available=new Map(rows.map(e=>[e.hash,e]));let count=0,mismatch=0;
+ for(const info of files){
+   if(info.type!=='file'||!info.name.endsWith('.json'))continue;
+   const hash=info.name.slice(0,-5);if(!HEX.test(hash))throw Error('Invalid receiver filename');
+   const res=await fetch(ANCHOR_RAW+info.name,{cache:'no-store'});
+   if(!res.ok)throw Error('Hallway receipt read failed');
+   const a=await res.json(),record=a.event;
+   if(a.schema!=='root0.referent-anchor/1'||a.receiver!=='DavidWise01/0root'||!record||record.hash!==hash)throw Error('Invalid Hallway independent record');
+   if(stable(available.get(hash))!==stable(record))mismatch++;
+   count++;
+ }
+ return {count,mismatch}
+}
+async function reload(){if(busy)return;busy=true;el('reload').disabled=true;el('status').textContent='VERIFYING';try{if(!crypto?.subtle)throw Error('Secure SHA-256 context needed');const r=await fetch(LEDGER_URL,{cache:'no-store'});if(!r.ok)throw Error('GitHub fetch HTTP '+r.status);const text=await r.text();if(text&&!text.endsWith('\n'))throw Error('Partial JSONL');const rows=text?text.split('\n').filter(Boolean).map(JSON.parse):[];const state=await verify(rows);events=rows;el('status').textContent=rows.length?'PASS / VERIFIED':'EMPTY / VALID';el('countRefs').textContent=state.referents;el('countEvents').textContent=rows.length;el('countSamples').textContent=rows.filter(x=>x.kind==='SAMPLE').length;el('tip').textContent=state.tip;try{const external=await checkHallway(rows);el('anchorStatus').textContent=external.mismatch?'HISTORY MISMATCH / '+external.mismatch:external.count+' VERIFIED REFERENCES';}catch(anchorError){el('anchorStatus').textContent='CHECK UNAVAILABLE';}el('message').textContent='Source watermark verified. Independent receiver history is a separate trust boundary.';render()}catch(e){events=[];el('status').textContent='HALTED';el('anchorStatus').textContent='NOT TRUSTED';el('message').textContent='INTEGRITY HALTED: '+e.message;el('eventList').textContent='No unverified events displayed.'}finally{el('reload').disabled=false}}
 el('reload').onclick=reload;el('filter').oninput=render;reload();
 })();
 </script></body></html>
