@@ -2,26 +2,10 @@
   "schema": "persist-cortex.repo-index.v1",
   "owner": "DavidWise01",
   "collected": "2026-10-27",
-  "scope": "GitHub connector-visible repositories; partial seed, not claimed account-wide",
+  "scope": "PUBLIC repositories visible to GitHub connector; intentionally excludes private repository names; partial seed",
   "complete": false,
-  "count": 100,
+  "count": 96,
   "repositories": [
-    {
-      "name": "AI-Audit-Tools",
-      "full_name": "DavidWise01/AI-Audit-Tools",
-      "url": "https://github.com/DavidWise01/AI-Audit-Tools",
-      "default_branch": "main",
-      "archived": false,
-      "visibility": "private"
-    },
-    {
-      "name": "Toph_Kernel",
-      "full_name": "DavidWise01/Toph_Kernel",
-      "url": "https://github.com/DavidWise01/Toph_Kernel",
-      "default_branch": "main",
-      "archived": true,
-      "visibility": "private"
-    },
     {
       "name": "The-Garden",
       "full_name": "DavidWise01/The-Garden",
@@ -37,14 +21,6 @@
       "default_branch": "main",
       "archived": false,
       "visibility": "public"
-    },
-    {
-      "name": "root0",
-      "full_name": "DavidWise01/root0",
-      "url": "https://github.com/DavidWise01/root0",
-      "default_branch": "main",
-      "archived": false,
-      "visibility": "private"
     },
     {
       "name": "pocket-universe",
@@ -93,14 +69,6 @@
       "default_branch": "main",
       "archived": false,
       "visibility": "public"
-    },
-    {
-      "name": "C-",
-      "full_name": "DavidWise01/C-",
-      "url": "https://github.com/DavidWise01/C-",
-      "default_branch": "main",
-      "archived": false,
-      "visibility": "private"
     },
     {
       "name": "honey-badger",
