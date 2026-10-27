@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX // 03 SEMANTIC</title>
+<meta name="description" content="Persistent Cortex Gate 03: evidence-linked semantic knowledge graph, independent claims, append-only revisions.">
+<style>
+:root{color-scheme:dark;--bg:#040913;--surface:#0c192b;--line:#29516c;--fg:#e2f9ff;--cyan:#70e4f5;--mint:#8cf3b6;--gold:#f4cb77;--muted:#a2bbcb;--red:#ff9b9b}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 45% -10%,#1b3858 0,#040913 66%);color:var(--fg);font:13px/1.65 ui-monospace,Consolas,monospace}
+header,main,footer{max-width:1220px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--line)}h1{font-size:clamp(26px,4.8vw,46px);color:var(--cyan);letter-spacing:.08em;margin:0}h2{font-size:16px;color:var(--cyan);margin:0 0 14px}h3{font-size:14px;color:var(--mint);margin:0 0 8px}
+nav{display:flex;gap:15px;align-items:center;flex-wrap:wrap}a{color:var(--mint)}.dim,.sub,small{color:var(--muted)}main{display:grid;grid-template-columns:1fr 1fr;gap:17px}.card{border:1px solid var(--line);background:#091827e8;border-radius:12px;padding:20px;min-width:0}.wide{grid-column:1/-1}
+label{display:block;margin:11px 0 5px;color:var(--muted)}input,textarea,select{color:var(--fg);background:#060e1b;border:1px solid #346079;border-radius:8px;padding:10px;font:inherit;width:100%}textarea{min-height:75px;resize:vertical}button{background:#12394e;border:1px solid #38819d;color:var(--fg);padding:10px 13px;border-radius:8px;margin:8px 6px 0 0;font:inherit;cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}button:hover:not(:disabled){background:#1b4d66}
+.stat{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0;gap:10px}.value{color:var(--mint);overflow-wrap:anywhere;text-align:right}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 8px;margin:4px}
+#graph{width:100%;height:390px;display:block;background:radial-gradient(circle at center,#0f3040,#070f1b);border:1px solid var(--line);border-radius:10px}
+#events{max-height:500px;overflow:auto}.entry{padding:13px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.entry strong{color:var(--gold)}.entry small{display:block}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#050c17;border:1px solid var(--line);border-radius:8px;padding:12px;max-height:290px;overflow:auto}
+.note{border-left:2px solid var(--cyan);padding-left:12px;color:var(--muted)}#message{color:var(--gold);min-height:25px;margin-top:10px}.alert{color:var(--red)}footer{border-top:1px solid var(--line)}
+@media(max-width:800px){main{grid-template-columns:1fr}header,main,footer{padding:14px}#graph{height:320px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / DIASPORA / PERSIST CORTEX</div><h1>03 · SEMANTIC MEMORY</h1><div class="sub">Witness → evidence → relationship → knowledge · no forced consensus</div></div>
+<nav><a href="../">01 / IDENTITY</a><a href="../episodic/">02 / EPISODIC</a><a href="https://davidwise01.github.io/formic/">DIASPORA / FORMIC</a><a href="https://davidwise01.github.io/">ROOT0</a></nav>
+</header><main>
+<section class="card"><h2>CORTEX / SOURCE INTEGRITY</h2>
+<div class="stat"><span>IDENTITY</span><span class="value" id="idStat">LOADING</span></div>
+<div class="stat"><span>EPISODIC</span><span class="value" id="epStat">LOADING</span></div>
+<div class="stat"><span>SEMANTIC CHAIN</span><span class="value" id="integrity">LOADING</span></div>
+<div class="stat"><span>SEMANTIC EVENTS</span><span class="value" id="count">0</span></div>
+<div class="stat"><span>ACTIVE RELATIONSHIPS</span><span class="value" id="relations">0</span></div>
+<div class="stat"><span>CONCEPT NODES</span><span class="value" id="nodes">0</span></div>
+<div class="stat"><span>PARALLEL CLAIM SETS</span><span class="value" id="parallel">0</span></div>
+<div class="stat"><span>LATEST SHA-256</span><span class="value" id="latest">GENESIS</span></div>
+<p class="note">Every claim is linked to an episode and its hash. Multiple incompatible-looking claims remain separately visible. Parallel claims are flagged for human review, not resolved by votes.</p>
+<button id="replay">VERIFY ALL + REPLAY</button></section>
+<section class="card"><h2>KNOWLEDGE / APPEND RELATION</h2>
+<label for="kind">Event</label><select id="kind"><option value="ASSERT">ASSERT / new relationship</option><option value="AMEND">AMEND / replace active relationship</option><option value="WITHDRAW">WITHDRAW / retire active relationship</option></select>
+<div id="revisionBlock" hidden><label for="target">Active claim to revise</label><select id="target"><option value="">Choose a claim</option></select><label for="reason">Why revise this claim?</label><textarea id="reason" maxlength="4000" placeholder="Document the cause, no silent overwrite"></textarea></div>
+<label for="episode">Evidence episode · witness and SHA-256</label><select id="episode"><option value="">Select an episodic record</option></select>
+<label for="subject">Subject / concept</label><input id="subject" maxlength="200" placeholder="e.g. cortex-01">
+<label for="predicate">Relationship / operator</label><input id="predicate" maxlength="150" placeholder="e.g. observed / depends-on / linked-to">
+<label for="object">Object / concept</label><input id="object" maxlength="200" placeholder="e.g. diaspora-mesh">
+<label for="basis">Epistemic basis</label><select id="basis"><option value="OBSERVED">OBSERVED</option><option value="INFERRED">INFERRED</option><option value="HYPOTHESIS">HYPOTHESIS</option></select>
+<label for="detail">Interpretation / rationale (optional)</label><textarea id="detail" maxlength="4000" placeholder="What supports this particular relationship?"></textarea>
+<button id="append">APPEND SEMANTIC EVENT</button><div id="message" aria-live="polite" role="status"></div>
+</section>
+<section class="card wide"><h2>KNOWLEDGE LATTICE / ACTIVE GRAPH</h2>
+<svg id="graph" viewBox="0 0 900 390" role="img" aria-label="Graph of active semantic relationships"><text x="450" y="195" fill="#9cbccc" text-anchor="middle">No relationships yet</text></svg>
+<div class="sub">Lines show active subject → predicate → object links. Visualization is limited to the first 36 active edges for clarity; the ledger retains all entries.</div>
+</section>
+<section class="card"><h2>MEMORY LEDGER / INDEPENDENT CLAIMS</h2><label for="filter">Search subject, relation, object, episode or witness</label><input id="filter" placeholder="Filter semantic history"><div id="events">No claims yet.</div></section>
+<section class="card"><h2>ARCHIVE / REPLAY</h2><h3>Latest immutable envelope</h3><pre id="envelope">No events yet.</pre>
+<button id="export">EXPORT SEMANTIC JSON</button><button id="import">IMPORT & VERIFY</button><input type="file" id="file" accept=".json,application/json" hidden>
+<p class="note">Local browser memory is not Git-synced. Import validates the current identity, the referenced episodes, and existing semantic history before accepting a compatible extension. SHA-256 chains do not protect against an attacker who can rewrite the entire local store.</p>
+<div><span class="pill">01 IDENTITY</span><span class="pill">02 EPISODIC</span><span class="pill">03 SEMANTIC</span><span class="pill">04 PROCEDURAL — NEXT</span></div>
+</section>
+<section class="card wide"><h2>DIASPORA / CONNECTOR BOUNDARY</h2><p>Gate 03 constructs a local, evidence-linked graph. Shared-memory replication, agent signatures, authentication, and upstream publishing remain outside this gate. No automatic remote writes.</p>
+<a href="https://davidwise01.github.io/formic/">OPEN DIASPORA / FORMIC ↗</a> &nbsp; | &nbsp; <a href="../episodic/">RETURN TO WITNESSES ↗</a>
+</section></main><footer class="sub">PERSIST CORTEX · Gate 03 · append only at application level · no third-party scripts</footer>
+<script>
+(()=>{'use strict';
+const I='persist-cortex-identity-v1', E='persist-cortex-episodes-v1', S='persist-cortex-semantic-v1', el=id=>document.getElementById(id);
+let identities=[],episodes=[],memories=[],currentIdentity=null,ready=false,working=false,locked=false;
+function msg(s){el('message').textContent=s}
+function str(x){return typeof x==='string'&&x.length>0}
+const digest=async d=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(d)))),n=>n.toString(16).padStart(2,'0')).join('');
+async function verifyIdentity(arr){
+ if(!Array.isArray(arr))throw Error('Malformed identity history');
+ let prev='GENESIS';
+ for(let i=0;i<arr.length;i++){const e=arr[i];if(!e||e.version!==1||e.seq!==i+1||e.kind!=='IDENTITY'||e.prev!==prev||!str(e.timestamp)||!e.payload||!str(e.payload.agent)||!str(e.payload.purpose)||!str(e.payload.bounds)||!str(e.hash))throw Error('Identity event #'+(i+1)+' invalid');const {hash,...body}=e;if(hash!==await digest(body))throw Error('Identity SHA mismatch #'+(i+1));prev=hash}
+}
+async function verifyEpisodes(arr,ids){
+ if(!Array.isArray(arr))throw Error('Malformed episodic history');
+ const trust=new Map(ids.map(x=>[x.hash,x.payload.agent])),known=new Map();let prev='GENESIS';
+ for(let i=0;i<arr.length;i++){const e=arr[i];if(!e||e.version!==2||e.seq!==i+1||e.prev!==prev||!['OBSERVATION','CORRECTION'].includes(e.kind)||!str(e.timestamp)||!str(e.identityHash)||!trust.has(e.identityHash)||trust.get(e.identityHash)!==e.agent||!['A','B','C'].includes(e.witness)||!str(e.episode)||!str(e.what)||!str(e.how)||typeof e.why!=='string'||typeof e.source!=='string'||!str(e.hash))throw Error('Episode #'+(i+1)+' invalid');
+ if(e.kind==='OBSERVATION'&&e.corrects!==null)throw Error('Original episode has correction target');
+ if(e.kind==='CORRECTION'&&(!Number.isInteger(e.corrects)||!known.has(e.corrects)||known.get(e.corrects).kind!=='OBSERVATION'||known.get(e.corrects).episode!==e.episode))throw Error('Broken episodic correction');
+ const {hash,...body}=e;if(hash!==await digest(body))throw Error('Episode SHA mismatch #'+(i+1));known.set(e.seq,e);prev=hash}
+}
+function project(arr){const active=new Map();for(const e of arr){if(e.kind!=='ASSERT')active.delete(e.target);if(e.kind!=='WITHDRAW')active.set(e.seq,e)}return active}
+async function verifySemantics(arr,eps,ids){
+ if(!Array.isArray(arr))throw Error('Malformed semantic history');
+ let prev='GENESIS';const epMap=new Map(eps.map(e=>[e.seq,e])),trust=new Map(ids.map(i=>[i.hash,i.payload.agent])),active=new Map();
+ for(let i=0;i<arr.length;i++){
+  const e=arr[i];if(!e||e.version!==3||e.seq!==i+1||e.prev!==prev||!['ASSERT','AMEND','WITHDRAW'].includes(e.kind)||!str(e.timestamp)||!str(e.identityHash)||!trust.has(e.identityHash)||e.agent!==trust.get(e.identityHash)||!Number.isInteger(e.episodeSeq)||!epMap.has(e.episodeSeq)||epMap.get(e.episodeSeq).hash!==e.episodeHash||!str(e.subject)||!str(e.predicate)||!str(e.object)||!['OBSERVED','INFERRED','HYPOTHESIS'].includes(e.basis)||typeof e.detail!=='string'||typeof e.reason!=='string'||!str(e.hash))throw Error('Semantic event #'+(i+1)+' invalid');
+  if(e.kind==='ASSERT'&&e.target!==null)throw Error('Assertion cannot target old claim');
+  if(e.kind!=='ASSERT'&&(!Number.isInteger(e.target)||!active.has(e.target)||!str(e.reason)))throw Error('Revision must target an active relationship with a reason');
+  if(e.kind==='WITHDRAW'&&(e.subject!==active.get(e.target).subject||e.predicate!==active.get(e.target).predicate||e.object!==active.get(e.target).object))throw Error('Withdrawal must preserve source triple');
+  const {hash,...body}=e;if(hash!==await digest(body))throw Error('Semantic SHA mismatch #'+(i+1));
+  if(e.kind!=='ASSERT')active.delete(e.target);
+  if(e.kind!=='WITHDRAW')active.set(e.seq,e);
+  prev=hash;
+ }
+ return active
+}
+function node(tag,text,cls){const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n}
+function setBusy(v){working=v;el('append').disabled=v||!ready||locked;el('import').disabled=v||!ready||locked;el('replay').disabled=v||locked}
+function fillSelects(active){
+ const episode=el('episode'),was=episode.value;episode.replaceChildren(new Option('Choose verified episode',''));
+ for(const e of episodes)episode.add(new Option('#'+e.seq+' / '+e.witness+' / '+e.episode+' / '+e.hash.slice(0,12),String(e.seq)));
+ episode.value=episodes.some(e=>String(e.seq)===was)?was:'';
+ const target=el('target'),old=target.value;target.replaceChildren(new Option('Choose active relationship',''));
+ for(const e of active.values())target.add(new Option('#'+e.seq+' / '+e.subject+' '+e.predicate+' '+e.object,String(e.seq)));
+ target.value=active.has(Number(old))?old:'';
+}
+function makeGraph(active){
+ const svg=el('graph');while(svg.firstChild)svg.removeChild(svg.firstChild);
+ const NS='http://www.w3.org/2000/svg',add=(tag,attrs,text)=>{const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));if(text!==undefined)n.textContent=text;svg.appendChild(n);return n};
+ const edges=[...active.values()].slice(0,36);
+ if(!edges.length){add('text',{x:450,y:195,'text-anchor':'middle',fill:'#abc9d9'},'No active semantic relationships');return}
+ const labels=[...new Set(edges.flatMap(e=>[e.subject,e.object]))].slice(0,54),coords=new Map();
+ labels.forEach((name,i)=>{const a=2*Math.PI*i/labels.length-Math.PI/2,r=labels.length<=4?120:Math.min(148,80+labels.length*3);coords.set(name,{x:450+Math.cos(a)*r*2.1,y:192+Math.sin(a)*r})});
+ for(const e of edges){const a=coords.get(e.subject),b=coords.get(e.object);if(!a||!b)continue;add('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:e.basis==='HYPOTHESIS'?'#b997ff':'#39869a','stroke-width':1.6,'stroke-opacity':.68});const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;add('text',{x:mx,y:my-6,'font-size':10,'text-anchor':'middle',fill:'#f4cb77'},e.predicate.slice(0,22))}
+ for(const [name,p] of coords){add('circle',{cx:p.x,cy:p.y,r:19,fill:'#12384a',stroke:'#75d8e9','stroke-width':1.5});add('text',{x:p.x,y:p.y+35,'font-size':11,'text-anchor':'middle',fill:'#e2f9ff'},name.length>24?name.slice(0,22)+'…':name)}
+}
+function render(active){
+ el('count').textContent=memories.length;el('relations').textContent=active.size;el('latest').textContent=memories.at(-1)?.hash||'GENESIS';
+ const nodes=new Set(),parallel=new Map();for(const e of active.values()){nodes.add(e.subject);nodes.add(e.object);const k=JSON.stringify([e.subject,e.predicate]);if(!parallel.has(k))parallel.set(k,new Set());parallel.get(k).add(e.object)}
+ el('nodes').textContent=nodes.size;el('parallel').textContent=[...parallel.values()].filter(set=>set.size>1).length;
+ el('envelope').textContent=memories.length?JSON.stringify(memories.at(-1),null,2):'No events yet';fillSelects(active);makeGraph(active);renderEvents();
+}
+function renderEvents(){
+ const box=el('events');box.replaceChildren();const q=el('filter').value.toLowerCase().trim(),epMap=new Map(episodes.map(e=>[e.seq,e]));
+ const matches=[...memories].reverse().filter(e=>{const ep=epMap.get(e.episodeSeq);return !q||[e.subject,e.predicate,e.object,e.kind,String(e.episodeSeq),ep?.witness||'',ep?.episode||''].some(x=>x.toLowerCase().includes(q))});
+ if(!matches.length){box.textContent=q?'No matches':'No relationships recorded';return}
+ for(const e of matches){
+  const d=node('article','', 'entry');d.append(node('strong','#'+e.seq+' · '+e.kind+' · '+e.basis));d.append(node('div',e.subject+'  — '+e.predicate+' →  '+e.object));
+  d.append(node('small','WITNESS '+(epMap.get(e.episodeSeq)?.witness||'?')+' · EPISODE #'+e.episodeSeq+' · '+e.timestamp,'dim'));
+  if(e.target!==null)d.append(node('small','REVISES #'+e.target+' · '+e.reason,'dim'));
+  if(e.detail)d.append(node('small','RATIONALE · '+e.detail,'dim'));
+  d.append(node('small','EVIDENCE '+e.episodeHash+' / SHA '+e.hash,'dim'));box.append(d)
+ }
+}
+async function reload(){
+ const i=JSON.parse(localStorage.getItem(I)||'[]'),e=JSON.parse(localStorage.getItem(E)||'[]');
+ await verifyIdentity(i);await verifyEpisodes(e,i);await verifySemantics(memories,e,i);
+ identities=i;episodes=e;currentIdentity=i.at(-1)||null;
+ el('idStat').textContent=currentIdentity?'PASS / '+currentIdentity.payload.agent:'NOT SET';
+ el('epStat').textContent=e.length?'PASS / '+e.length+' EPISODES':'NONE / GATE 02';
+ ready=!!currentIdentity&&e.length>0;locked=false;
+ el('integrity').textContent='PASS / '+memories.length+' EVENTS';
+ render(project(memories));return true
+}
+function halted(err){ready=false;locked=true;el('integrity').textContent='HALTED';msg(err.message);setBusy(false)}
+async function start(){
+ try{if(!crypto?.subtle)throw Error('Secure context required for SHA-256');memories=JSON.parse(localStorage.getItem(S)||'[]');await reload();if(!ready)msg('Complete Gates 01 and 02 first; then create a semantic relationship.')}
+ catch(e){halted(e)}
+ setBusy(false)
+}
+function updateKind(){const kind=el('kind').value;el('revisionBlock').hidden=kind==='ASSERT';const withdrawal=kind==='WITHDRAW';for(const id of ['subject','predicate','object'])el(id).readOnly=withdrawal}
+el('kind').onchange=updateKind;
+el('target').onchange=()=>{const claim=project(memories).get(Number(el('target').value));if(!claim)return;for(const id of ['subject','predicate','object'])el(id).value=claim[id]};
+el('filter').oninput=renderEvents;
+el('append').onclick=async()=>{
+ if(working||locked)return;setBusy(true);
+ try{
+  await reload();if(!ready)throw Error('Verified identity and episodic record required');
+  const kind=el('kind').value,ep=episodes.find(e=>e.seq===Number(el('episode').value));if(!ep)throw Error('Select a verified episode');
+  const active=project(memories),target=kind==='ASSERT'?null:Number(el('target').value),origin=kind==='ASSERT'?null:active.get(target);
+  if(kind!=='ASSERT'&&!origin)throw Error('Revision target must be active');
+  const subject=(kind==='WITHDRAW'?origin.subject:el('subject').value.trim()),predicate=(kind==='WITHDRAW'?origin.predicate:el('predicate').value.trim()),object=(kind==='WITHDRAW'?origin.object:el('object').value.trim()),reason=kind==='ASSERT'?'':el('reason').value.trim();
+  if(!subject||!predicate||!object)throw Error('Subject, relation and object are required');
+  if(kind!=='ASSERT'&&!reason)throw Error('Revision reason is required');
+  const body={version:3,seq:memories.length+1,kind,timestamp:new Date().toISOString(),prev:memories.at(-1)?.hash||'GENESIS',identityHash:currentIdentity.hash,agent:currentIdentity.payload.agent,episodeSeq:ep.seq,episodeHash:ep.hash,subject,predicate,object,basis:el('basis').value,detail:el('detail').value.trim(),target,reason};
+  const event={...body,hash:await digest(body)},next=[...memories,event];await verifySemantics(next,episodes,identities);
+  const now=localStorage.getItem(S);if(now!==JSON.stringify(memories)&&!(memories.length===0&&!now))throw Error('Journal changed in another tab; reload before writing');
+  localStorage.setItem(S,JSON.stringify(next));if(localStorage.getItem(S)!==JSON.stringify(next))throw Error('Storage write did not verify');
+  memories=next;await reload();msg('APPENDED · '+kind+' #'+event.seq+' · witness '+ep.witness+' · provenance verified');
+  if(kind!=='WITHDRAW'){el('subject').value='';el('predicate').value='';el('object').value=''}el('detail').value='';el('reason').value='';
+ }catch(e){msg('NOT APPENDED: '+e.message)}finally{setBusy(false)}
+};
+el('replay').onclick=async()=>{setBusy(true);try{await reload();msg('REPLAY PASS · '+memories.length+' events · every source reference verified')}catch(e){halted(e)}finally{setBusy(false)}};
+el('export').onclick=()=>{const payload={format:'persist-cortex-semantic-v3',exportedAt:new Date().toISOString(),events:memories};const b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='persist-cortex-semantic.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)};
+el('import').onclick=()=>el('file').click();
+el('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;setBusy(true);
+ try{await reload();const obj=JSON.parse(await f.text());if(obj.format!=='persist-cortex-semantic-v3')throw Error('Unsupported archive format');await verifySemantics(obj.events,episodes,identities);
+ if(obj.events.length<memories.length||memories.some((m,i)=>m.hash!==obj.events[i].hash))throw Error('Import cannot replace existing history');
+ const now=localStorage.getItem(S);if(now!==JSON.stringify(memories)&&!(memories.length===0&&!now))throw Error('Storage changed in another tab');
+ localStorage.setItem(S,JSON.stringify(obj.events));memories=obj.events;await reload();msg('IMPORT PASS · '+memories.length+' events verified');
+ }catch(err){msg('IMPORT REJECTED: '+err.message)}finally{e.target.value='';setBusy(false)}
+};
+window.addEventListener('storage',e=>{if([I,E,S].includes(e.key)){locked=true;ready=false;el('integrity').textContent='RELOAD REQUIRED';msg('Memory changed in another tab. Reload to revalidate all chains.');setBusy(false)}});
+start();
+})();
+</script></body></html>
