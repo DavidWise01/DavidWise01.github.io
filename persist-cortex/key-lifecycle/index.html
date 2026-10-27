@@ -1,0 +1,101 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX — 12 KEY LIFECYCLE DIODE</title>
+<meta name="description" content="Append-only, independently verified Ed25519 key activation, dual-signed rotation and receiver-side revocation. A/B/C witnesses, no quorum.">
+<style>
+:root{color-scheme:dark;--bg:#060e1b;--panel:#0f2133;--line:#335c74;--fg:#e7f8ff;--mint:#94f5be;--cyan:#76e9fa;--gold:#f6d389;--purple:#c2adff;--muted:#aac0d1;--red:#ffaa9b}*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#244063,#060e1b 68%);font:13px/1.65 ui-monospace,Consolas,monospace;color:var(--fg)}
+header,main,footer{max-width:1250px;margin:0 auto;padding:20px}header{border-bottom:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}h1{color:var(--cyan);letter-spacing:.05em;font-size:clamp(24px,4vw,46px);margin:0}nav{display:flex;gap:13px;flex-wrap:wrap}h2{font-size:17px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--mint);margin:8px 0}a{color:var(--mint)}.sub,.dim,small{color:var(--muted)}
+main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{min-width:0;background:#0c1d30ed;border:1px solid var(--line);padding:20px;border-radius:13px}.wide{grid-column:1/-1}.stat{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);padding:9px 0}.value{text-align:right;color:var(--mint);overflow-wrap:anywhere}.note{border-left:2px solid var(--cyan);padding-left:12px;color:var(--muted)}
+button{background:#154259;border:1px solid #4692aa;padding:10px 14px;border-radius:9px;color:var(--fg);cursor:pointer;font:inherit;margin:8px 6px 0 0}button:disabled{opacity:.4}pre{background:#071424;border:1px solid var(--line);border-radius:9px;padding:13px;max-height:380px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.lane{border:1px solid var(--line);border-radius:9px;padding:14px;overflow-wrap:anywhere}.lane strong{display:block;color:var(--mint);font-size:20px}.event{padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.event strong{color:var(--gold)}.event small{display:block}.history{max-height:400px;overflow:auto}#message{color:var(--gold);min-height:26px}footer{border-top:1px solid var(--line)}@media(max-width:850px){main{grid-template-columns:1fr}.lanes{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / PERSIST CORTEX / CRYPTOGRAPHIC MEMORY</div><h1>12 · KEY LIFECYCLE DIODE</h1><div class="sub">ACTIVATE → ROTATE / REVOKE · independent witnesses · immutable history</div></div><nav>
+<a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="../spine/">07</a><a href="../temporal/">08</a><a href="../identity-bridge/">09</a><a href="../signed-witness/">10</a><a href="../checkpoints/">11</a><a href="https://0root.ai/">HALLWAY</a>
+</nav></header>
+<main>
+<section class="panel wide"><h2>THE NEXT SECURITY BOUNDARY</h2>
+<pre>                         PAST                      PRESENT                        FUTURE
+                         observes                   deserves                       reserves
+                            |                          |                              |
+WITNESS A                  [A0] ───────────────→ [A1] ─────────────────────────→ [A2]
+WITNESS B                  [B0] ───────────────→ [B1] ─────────────────────────→ [B2]
+WITNESS C                  [C0] ───────────────→ [C1] ─────────────────────────→ [C2]
+
+KEY LIFECYCLE       ACTIVATE(key1) → ROTATE(key1→key2) → ... / REVOKE(keyN)
+                                                        |
+                                              previous signatures preserved
+
+RECEIVER 0ROOT     PIN(key1) → BLOCK(key1)           (independent Git append)
+                                                        |
+                                   Old signatures still replay. New receipts denied.
+
+                          ONE WAY.  APPEND ONLY.  THREE INDEPENDENT WITNESSES.
+                                        NO VOTE.  NO QUORUM.</pre>
+<p class="note">Rotation needs detached signatures from BOTH the old and incoming Ed25519 keys, plus an authenticated GitHub actor. Emergency revocation is explicitly labeled an account-authorized recovery decision, not a forged signature from the lost key. Key history is append-only and old signatures remain historically verifiable.</p></section>
+<section class="panel"><h2>TOPH · SOURCE KEY-LIFECYCLE VERIFICATION</h2>
+<div class="stat"><span>Public key registry</span><span id="keyStatus" class="value">LOADING</span></div><div class="stat"><span>Key lifecycle SHA chain</span><span id="lifeStatus" class="value">LOADING</span></div><div class="stat"><span>Historical events</span><span id="lifeCount" class="value">0</span></div><div class="stat"><span>Current lifecycle tip</span><span id="lifeTip" class="value">GENESIS</span></div><div class="stat"><span>Active independent witness keys</span><span id="activeCount" class="value">0</span></div>
+<h3>Witness lanes</h3><div class="lanes"><div class="lane"><strong>A</strong><div id="laneA">UNASSIGNED KEY</div></div><div class="lane"><strong>B</strong><div id="laneB">UNASSIGNED KEY</div></div><div class="lane"><strong>C</strong><div id="laneC">UNASSIGNED KEY</div></div></div>
+<button id="verify">VERIFY GITHUB HISTORIES</button><div id="message" role="status" aria-live="polite"></div>
+</section>
+<section class="panel"><h2>0ROOT.AI · INDEPENDENT RECEIVER POLICY</h2>
+<div class="stat"><span>Separate pinned public keys</span><span id="pinStatus" class="value">LOADING</span></div>
+<div class="stat"><span>Permanent key BLOCK journal</span><span id="blockStatus" class="value">LOADING</span></div>
+<div class="stat"><span>Keys blocked for future receipts</span><span id="blockCount" class="value">0</span></div>
+<div class="stat"><span>Independent history tip</span><span id="blockTip" class="value">GENESIS</span></div>
+<p class="note">Independent BLOCK decisions in the Hallway do not rewrite TOPH or historical 0root checkpoint receipts. Until a receiver key is separately pinned, it cannot admit signed checkpoints. Revocation is not a vote or a retrospective deletion.</p>
+<h3>Verification boundary</h3><pre>TOPH: new checkpoint must use an ACTIVE key.
+0ROOT: new anchor must use a PINNED key
+       and must NOT be independently BLOCKED.
+
+Existing anchors continue to verify with retained
+historical pins, including rotated/revoked keys.
+
+A/B/C report independently. No quorum.</pre>
+</section>
+<section class="panel"><h2>KEY EVENT HISTORY</h2><div id="lifecycleEvents" class="history">No key changes recorded.</div></section>
+<section class="panel"><h2>INDEPENDENT BLOCK HISTORY</h2><div id="blockEvents" class="history">No blocked keys recorded.</div></section>
+<section class="panel wide"><h2>MANUAL, AUTHENTICATED OPERATIONS</h2>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/GATE12_KEY_LIFECYCLE.md">Read Gate 12 operating and incident recovery protocol</a> · <a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/key-lifecycle-append.yml">TOPH key lifecycle append workflow</a> · <a href="https://github.com/DavidWise01/0root/actions/workflows/key-block.yml">Hallway independently blocked key workflow</a>.</p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/key-lifecycle.jsonl">TOPH immutable key history</a> · <a href="https://github.com/DavidWise01/0root/blob/master/memory-bridge/trust/key-decisions.jsonl">Hallway independent key BLOCK history</a> · <a href="../checkpoints/">Gate 11 distributed checkpoint receipts</a>.</p>
+<p class="note">All operations require explicit authenticated GitHub Actions dispatch. These public HTML files never receive a private signing key, GitHub token, or private memory. Source commits are not proof that the manual workflows have run successfully.</p>
+</section>
+</main><footer class="sub">PERSIST CORTEX / 12 · append-only key rotation and irreversible receiver block · no agreement, no quorum, no automatic execution</footer>
+<script>
+(()=>{'use strict';
+const S='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/',R='https://raw.githubusercontent.com/DavidWise01/0root/master/memory-bridge/trust/';
+const el=id=>document.getElementById(id),HEX=/^[a-f0-9]{64}$/;let pending=false;
+const stable=x=>Array.isArray(x)?'['+x.map(stable).join(',')+']':x&&typeof x==='object'?'{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+stable(x[k])).join(',')+'}':JSON.stringify(x);
+const utf=x=>new TextEncoder().encode(stable(x)),hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
+async function sha(x){return hex(await crypto.subtle.digest('SHA-256',utf(x)))}
+function bytes64(s,length){if(typeof s!=='string')throw Error('Expected canonical base64');const raw=atob(s),buf=Uint8Array.from(raw,c=>c.charCodeAt(0));if(buf.length!==length||btoa(raw)!==s)throw Error('Malformed key/signature');return buf}
+async function get(url,json=false){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('GitHub HTTP '+r.status+' / '+url);const t=await r.text();if(json)return JSON.parse(t);if(t&&!t.endsWith('\n'))throw Error('Incomplete JSONL');return t?t.split('\n').filter(Boolean).map(JSON.parse):[]}
+function date(s){return typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s+'T00:00:00Z'))}
+async function checkKeys(reg,witness){if(reg.schema!=='root0.witness-keys/1'||!Array.isArray(reg.keys))throw Error('Wrong source registry');const found=new Map();for(const k of reg.keys){const b=witness.lanes[k.witness],pub=bytes64(k.public_key_b64,32),id=hex(await crypto.subtle.digest('SHA-256',pub));if(!b||b.state!=='BOUND'||String(b.github_actor_id)!==String(k.github_actor_id)||id!==k.key_id||found.has(id))throw Error('Unregistered or duplicated Ed25519 source key');found.set(id,k)}return found}
+async function checkPins(reg){if(reg.schema!=='root0.checkpoint-trust-pins/1'||reg.receiver!=='DavidWise01/0root'||!Array.isArray(reg.pins))throw Error('Hallway trust registry invalid');const found=new Map();for(const k of reg.pins){const p=bytes64(k.public_key_b64,32),id=hex(await crypto.subtle.digest('SHA-256',p));if(k.key_id!==id||found.has(id))throw Error('Duplicate/invalid Hallway pin');found.set(id,k)}return found}
+async function signature(key,b64,body){if(!key)throw Error('Unenrolled key');const pub=await crypto.subtle.importKey('raw',bytes64(key.public_key_b64,32),{name:'Ed25519'},false,['verify']);if(!await crypto.subtle.verify({name:'Ed25519'},pub,bytes64(b64,64),utf(body)))throw Error('Invalid Ed25519 lifecycle proof')}
+function eventLine(list,node,title,meta){const r=document.createElement('article');r.className='event';const b=document.createElement('strong');b.textContent=title;const d=document.createElement('div');d.textContent=meta;const code=document.createElement('small');code.textContent=node.hash||'GENESIS';r.append(b,d,code);list.append(r)}
+async function sourceHistory(rows,keys){let prev='GENESIS',active=new Map(),used=new Set(),history=new Set();const list=el('lifecycleEvents');list.replaceChildren();
+for(let i=0;i<rows.length;i++){const e=rows[i],old=active.get(e.witness),key=keys.get(e.key_id);if(!e||e.version!==1||e.seq!==i+1||e.prev!==prev||!['ACTIVATE','ROTATE','REVOKE'].includes(e.kind)||!key||key.witness!==e.witness||String(key.github_actor_id)!==String(e.github_actor_id)||!date(e.recorded_at)||!HEX.test(e.hash))throw Error('Lifecycle #'+(i+1)+' malformed');
+const p=(role)=>({domain:'ROOT0-KEY-LIFECYCLE-v1',kind:e.kind,witness:e.witness,key_id:e.key_id,previous_key_id:e.previous_key_id,github_actor_id:e.github_actor_id,reason:e.reason,recorded_at:e.recorded_at,seq:e.seq,prev:e.prev,role});
+if(e.kind==='ACTIVATE'){if(old||e.previous_key_id!==null||e.old_signature_b64!==null||used.has(e.key_id))throw Error('Illegal activation #'+e.seq);await signature(key,e.new_signature_b64,p('NEW'));active.set(e.witness,e.key_id);used.add(e.key_id)}
+else if(e.kind==='ROTATE'){const before=keys.get(e.previous_key_id);if(!old||old!==e.previous_key_id||!before||before.witness!==e.witness||used.has(e.key_id))throw Error('Illegal rotation #'+e.seq);await signature(before,e.old_signature_b64,p('OLD'));await signature(key,e.new_signature_b64,p('NEW'));active.set(e.witness,e.key_id);used.add(e.key_id)}
+else{if(old!==e.key_id||e.previous_key_id!==null||e.old_signature_b64!==null||e.new_signature_b64!==null||typeof e.reason!=='string'||!e.reason.startsWith('ACCOUNT_RECOVERY_NOT_KEY_SIGNED: '))throw Error('Illegal account-only revocation #'+e.seq);active.delete(e.witness)}
+const {hash,...body}=e;if(await sha(body)!==hash)throw Error('Lifecycle SHA mismatch #'+e.seq);prev=hash;
+eventLine(list,e,'#'+e.seq+' / '+e.kind+' / '+e.witness,'KEY '+e.key_id.slice(0,20)+' · '+e.reason);
+}if(!rows.length)list.textContent='No key events. No signatures invented.';
+for(const lane of ['A','B','C'])el('lane'+lane).textContent=active.get(lane)?.slice(0,24)||'NO ACTIVE KEY';
+el('keyStatus').textContent=keys.size+' PUBLIC KEYS';el('lifeStatus').textContent=rows.length?'PASS / SIGNATURES':'EMPTY / VALID';el('lifeCount').textContent=String(rows.length);el('lifeTip').textContent=prev;el('activeCount').textContent=active.size;return active}
+async function receiverHistory(rows,pins){let prev='GENESIS',disabled=new Set();const list=el('blockEvents');list.replaceChildren();
+for(let i=0;i<rows.length;i++){const e=rows[i],pin=pins.get(e.key_id);if(!e||e.version!==1||e.seq!==i+1||e.prev!==prev||e.kind!=='BLOCK'||!pin||pin.witness!==e.witness||String(pin.github_actor_id)!==e.github_actor_id||disabled.has(e.key_id)||!date(e.recorded_at)||!HEX.test(e.hash))throw Error('Hallway block #'+(i+1)+' malformed');
+const {hash,...body}=e;if(await sha(body)!==hash)throw Error('Hallway block SHA mismatch #'+e.seq);disabled.add(e.key_id);prev=hash;eventLine(list,e,'#'+e.seq+' / BLOCK / '+e.witness,e.reason)}
+if(!rows.length)list.textContent='No independently blocked keys.';
+el('pinStatus').textContent=pins.size?'PINNED / '+pins.size:'NONE / FAIL CLOSED';el('blockStatus').textContent=rows.length?'PASS / '+rows.length:'EMPTY / VALID';el('blockCount').textContent=String(disabled.size);el('blockTip').textContent=prev;
+}
+async function check(){if(pending)return;pending=true;el('verify').disabled=true;for(const k of ['keyStatus','lifeStatus','pinStatus','blockStatus'])el(k).textContent='VERIFYING';
+try{if(!crypto?.subtle)throw Error('HTTPS and WebCrypto required');const [w,k,life,pins,b]=await Promise.all([get(S+'witness-registry.json',true),get(S+'witness-public-keys.json',true),get(S+'key-lifecycle.jsonl'),get(R+'checkpoint-key-pins.json',true),get(R+'key-decisions.jsonl')]);
+if(w.schema!=='root0.witness-registry/1')throw Error('Wrong witness actor registry');const source=await checkKeys(k,w),trust=await checkPins(pins);await sourceHistory(life,source);await receiverHistory(b,trust);
+el('message').textContent='Replay verified / no quorum / historical signed proofs retained.';
+}catch(e){el('message').textContent='HALTED: '+e.message;for(const id of ['lifeStatus','blockStatus'])el(id).textContent='HALTED';el('lifecycleEvents').textContent='Unverified events suppressed';el('blockEvents').textContent='Unverified events suppressed'}
+finally{pending=false;el('verify').disabled=false}}
+el('verify').onclick=check;check();
+})();
+</script></body></html>
