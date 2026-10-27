@@ -51,9 +51,9 @@ function showIdeas(){
   const card=document.createElement('article');card.className='cabinet';
   const head=document.createElement('strong');head.textContent=idea.origin+' · '+idea.kind;card.append(head);
   const msg=document.createElement('p');msg.textContent=idea.idea;card.append(msg);
-  const note=document.createElement('small');note.textContent=idea.proposal_state+' · '+idea.observations.length+' independent peer observations · no automatic repository write';card.append(note);
+  const note=document.createElement('small');note.textContent=idea.proposal_state+' · '+idea.observations.length+' independent peer observations · tests '+(idea.verification?.test_result||'NOT_RUN')+' · applied '+(idea.verification?.applied?'YES':'NO');card.append(note);
   const steps=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Implementation steps';steps.append(summary);
-  const list=document.createElement('ol');for(const step of idea.implementation.steps){const li=document.createElement('li');li.textContent=step;list.append(li)}steps.append(list);card.append(steps);
+  const list=document.createElement('ol');for(const step of idea.implementation.steps){const li=document.createElement('li');li.textContent=step;list.append(li)}steps.append(list);card.append(steps);const bounds=document.createElement('p');bounds.className='muted';bounds.textContent='Bound: origin sphere only · evidence required · tests required · owner approval required · peers do not vote';card.append(bounds);
   root.append(card);
  }
 }
