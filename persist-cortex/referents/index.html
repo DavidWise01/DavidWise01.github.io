@@ -1,0 +1,98 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PERSIST CORTEX | 13 / REFERENT WATERMARK & INTERNET TIME</title>
+<meta name="description" content="ROOT0 Gate 13: cryptographic referent watermark, independent provenance witnesses and Internet-time network delay observation. No quorum.">
+<style>
+:root{color-scheme:dark;--bg:#07101f;--panel:#0d2032;--line:#355c71;--sky:#88e5f9;--mint:#91efbf;--gold:#f2d28b;--pink:#e3a6f8;--ink:#e4f4fd;--dim:#a8c1cf}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 45% -5%,#20385e,#07101f 68%);font:13px/1.65 ui-monospace,Consolas,monospace}
+header,main,footer{max-width:1290px;margin:auto;padding:20px}header{border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center}h1{font-size:clamp(24px,4.2vw,48px);letter-spacing:.045em;color:var(--sky);margin:0}h2{font-size:17px;color:var(--sky);margin:0 0 12px}h3{font-size:14px;color:var(--mint);margin:8px 0}.dim,small,.sub{color:var(--dim)}nav{display:flex;gap:12px;flex-wrap:wrap}a{color:var(--mint)}main{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{min-width:0;border:1px solid var(--line);border-radius:13px;padding:20px;background:#0e2031ed}.wide{grid-column:1/-1}.stat{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}.value{color:var(--mint);text-align:right;overflow-wrap:anywhere}.note{border-left:2px solid var(--sky);padding-left:12px;color:var(--dim)}pre{background:#071628;border:1px solid var(--line);border-radius:9px;padding:14px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}button{background:#14445e;color:var(--ink);border:1px solid #4c95ad;padding:10px 14px;border-radius:9px;font:inherit;cursor:pointer;margin:7px 5px 0 0}button:disabled{opacity:.45}input{background:#071628;border:1px solid var(--line);border-radius:8px;color:var(--ink);font:inherit;padding:9px;width:100%}label{display:block;color:var(--dim);margin:8px 0 4px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tile{border:1px solid var(--line);border-radius:11px;padding:13px;background:#102b40}.tile h3{margin:0}.tile strong{font-size:19px;color:var(--gold)}.event{border-bottom:1px solid var(--line);padding:12px 0;overflow-wrap:anywhere}.event strong{color:var(--gold)}.event small{display:block}#eventList{max-height:490px;overflow:auto}#message{color:var(--gold);min-height:25px}
+.ill{width:100%;height:auto;max-height:238px}.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;margin:4px}footer{border-top:1px solid var(--line)}@media(max-width:850px){main{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}header,main,footer{padding:14px}}
+</style></head><body>
+<header><div><div class="sub">ROOT0 / PERSIST CORTEX / GITHUB-WIDE CORPUS</div><h1>13 · REFERENT WATERMARK</h1><div class="sub">Provenance · disputed priority · Internet-time delay evidence</div></div>
+<nav><a href="../">01</a><a href="../episodic/">02</a><a href="../semantic/">03</a><a href="../procedural/">04</a><a href="../working/">05</a><a href="../archive/">06</a><a href="../spine/">07</a><a href="../temporal/">08</a><a href="../identity-bridge/">09</a><a href="../signed-witness/">10</a><a href="../checkpoints/">11</a><a href="../key-lifecycle/">12</a><a href="https://0root.ai/">HALLWAY</a></nav></header>
+<main>
+<section class="panel wide"><h2>PAST OBSERVES · PRESENT DESERVES · FUTURE RESERVES</h2>
+<svg class="ill" viewBox="0 0 1040 230" role="img" aria-label="Three independent witnesses observe sources, hash referents, and append source watermarks; future reservations remain non-executing">
+<g fill="#15344b" stroke="#5990a8" stroke-width="2"><rect x="7" y="38" width="187" height="65" rx="12"/><rect x="248" y="38" width="190" height="65" rx="12"/><rect x="494" y="38" width="190" height="65" rx="12"/><rect x="739" y="38" width="292" height="65" rx="12"/></g>
+<g text-anchor="middle" fill="#e8faff"><text x="100" y="62" font-size="15">REFERENT</text><text x="100" y="84" font-size="12">URI + source claim</text><text x="343" y="62" font-size="15">WATERMARK</text><text x="343" y="84" font-size="12">SHA256 + prev</text><text x="589" y="62" font-size="15">INTERNET TIME</text><text x="589" y="84" font-size="12">send · RTT · receive</text><text x="885" y="62" font-size="15">APPEND-ONLY CORPUS</text><text x="885" y="84" font-size="12">Git source + future reserve</text></g>
+<g fill="none" stroke="#91efbf" stroke-width="2"><path d="M194 70L247 70 M438 70L493 70 M684 70L738 70"/></g>
+<g fill="#91efbf"><path d="M238 64L249 70L238 76Z M485 64L496 70L485 76Z M730 64L741 70L730 76Z"/></g>
+<g text-anchor="middle" font-size="14"><text x="142" y="148" fill="#90d7f8">A · independent</text><text x="520" y="148" fill="#dab5ff">B · independent</text><text x="882" y="148" fill="#f2d28b">C · independent</text></g>
+<g fill="none" stroke-width="2"><path d="M90 160L940 160" stroke="#4d8ca9"/></g><text x="520" y="196" text-anchor="middle" fill="#a7c4d1" font-size="13">NO QUORUM · NO AGREEMENT REQUIRED · NO BACKWARD WRITE · NO PHYSICAL DILATION INFERRED</text>
+</svg>
+<p class="note">A referent preserves WHAT was cited. The watermark records that source assertion's bytes and chain position. Network timing measures transport latency and imperfect clock readings—not ownership, actual event creation time, or relativistic time dilation. Contradictory witness reports stay separate.</p>
+</section>
+<section class="panel"><h2>PUBLIC GIT WITNESS STATUS</h2>
+<div class="stat"><span>Referent SHA chain</span><span id="status" class="value">LOADING</span></div>
+<div class="stat"><span>Unique referents</span><span id="countRefs" class="value">—</span></div>
+<div class="stat"><span>Watermarked events</span><span id="countEvents" class="value">—</span></div>
+<div class="stat"><span>Actual network samples</span><span id="countSamples" class="value">—</span></div>
+<div class="stat"><span>Latest Git watermark tip</span><span id="tip" class="value">GENESIS</span></div>
+<button id="reload">RELOAD & VERIFY GITHUB</button><div id="message" role="status" aria-live="polite"></div>
+<p class="dim">An empty ledger means nothing was claimed or measured by this new gate. No data is generated simply by viewing this page.</p>
+</section>
+<section class="panel"><h2>INTERNET TIME / MEASUREMENT SEMANTICS</h2>
+<pre>LOCAL SEND UTC  : wall clock assertion
+LOCAL RECEIVE   : wall clock assertion
+RTT (ms)        : measured monotonic interval
+HTTP DATE       : remote server clock assertion
+
+UNCERTAINTY = network path + queueing + clock skew
+SERVER DATE ≠ proof of origin, priority, or absolute time
+RTT ≠ physical or relativistic time dilation
+
+PAST    -> source observation
+PRESENT -> measured fetch/readback
+FUTURE  -> explicit non-executing reservation
+</pre>
+<p class="note">Only the authenticated Git writer can perform a real HEAD probe. Redirects are not followed. A 403, a timeout, or a missing Date header is preserved as limited evidence, never promoted to successful content verification.</p>
+</section>
+<section class="panel wide"><h2>EXTERNAL REFERENT / PUBLIC RESEARCH NOTE</h2>
+<h3>Navier–Stokes · Scientific American · October 2026</h3>
+<p><a href="https://www.scientificamerican.com/article/openai-just-scooped-human-researchers-on-a-million-dollar-quantum-math-problem/">User-supplied Scientific American URL</a> · <a href="https://tech.yahoo.com/ai/chatgpt/articles/inside-story-behind-openai-million-161200492.html">Syndicated Scientific American report, October 22</a> · <a href="https://openai.com/index/navier-stokes-solution/">OpenAI's original statement</a>.</p>
+<div class="grid3">
+<div class="tile"><h3>OBSERVED / REPORTED</h3><p>Public reports describe OpenAI's September 8 claim of a mathematical Navier–Stokes proof and formal verification.</p></div>
+<div class="tile"><h3>DISPUTED / ATTRIBUTED</h3><p>Research-priority allegations and responses are preserved as separate claims, not adjudicated by a hash or a witness count.</p></div>
+<div class="tile"><h3>PROVENANCE LIMIT</h3><p>The exact supplied article URL has not had its full bytes independently content-hashed here. A citation alone proves neither authorship nor copied work.</p></div>
+</div>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/research/navier-stokes-scientificamerican-20261027.json">Read the Git provenance/source note</a></p>
+</section>
+<section class="panel"><h2>IMMUTABLE WATERMARK JOURNAL</h2>
+<label for="filter">Filter URI, WHAT, HOW, WHY, witness</label><input id="filter" placeholder="e.g. Scientific American, A, disputed">
+<div id="eventList">No witnessed events yet.</div></section>
+<section class="panel"><h2>PUBLIC CORPUS / AUTHENTICATED APPEND</h2>
+<p>Only the registered GitHub witness lane can append a REFERENT REGISTER, measured TIME SAMPLE, or a corrective report. Each record receives its own deterministic watermark plus a full chain SHA.</p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/referent-append.yml">OPEN GATE 13 APPEND ACTION</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/referent_watermark.py">Canonical verifier and HEAD timing probe</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/referent-events.jsonl">Canonical Git JSONL ledger</a></p>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/GATE13_REFERENT_TIME.md">Watermark & clock uncertainty protocol</a></p>
+<p class="note">No remote private memory, access tokens or private witness signing keys are copied into the page. Git repository owners can still change history; use Gate 11 external signed checkpoints for stronger independent preservation.</p>
+</section>
+</main><footer class="sub">PERSIST CORTEX / GATE 13 · WATERMARK + REFERENT + INTERNET TIME · A/B/C INDEPENDENT · NO QUORUM · OBSERVATION ONLY</footer>
+<script>
+(()=>{'use strict';
+const URL='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/corpus-spine/referent-events.jsonl',PREFIX='ROOT0-WATERMARK-v1\n';
+const el=id=>document.getElementById(id),HEX=/^[a-f0-9]{64}$/,BASES=['OBSERVED','REPORTED','INFERRED','DISPUTED','UNKNOWN'];let events=[],busy=false;
+function stable(x){if(Array.isArray(x))return '['+x.map(stable).join(',')+']';if(x!==null&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+stable(x[k])).join(',')+'}';return JSON.stringify(x)}
+const encode=x=>new TextEncoder().encode(stable(x)),toHex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+async function digest(bytes){return toHex(await crypto.subtle.digest('SHA-256',bytes))}
+async function hexBody(x){return digest(encode(x))}
+function stamp(s){return typeof s==='string'&&s.endsWith('Z')&&!Number.isNaN(Date.parse(s))}
+function validSample(v){return v&&Object.keys(v).sort().join(',')==='http_status,received_utc,rtt_ms,sent_utc,server_date_utc,transport_result'&&stamp(v.sent_utc)&&stamp(v.received_utc)&&Date.parse(v.received_utc)>=Date.parse(v.sent_utc)&&typeof v.rtt_ms==='number'&&v.rtt_ms>=0&&v.rtt_ms<=120000&&Number.isInteger(v.http_status)&&v.http_status>=0&&v.http_status<600&&['NETWORK_ERROR','HTTP_RESPONSE'].includes(v.transport_result)&&((v.transport_result==='NETWORK_ERROR'&&v.http_status===0)||(v.transport_result==='HTTP_RESPONSE'&&v.http_status>=100))&&(v.server_date_utc===null||stamp(v.server_date_utc))}
+async function verify(rows){let prev='GENESIS';const refs=new Map();if(!Array.isArray(rows))throw Error('No JSONL array');for(let i=0;i<rows.length;i++){const x=rows[i];if(!x||x.seq!==i+1||x.version!==1||x.prev!==prev||!['REGISTER','SAMPLE','CORRECT'].includes(x.kind)||!['A','B','C'].includes(x.witness)||!stamp(x.recorded_at)||!BASES.includes(x.basis)||!HEX.test(x.watermark)||!HEX.test(x.hash))throw Error('Record '+(i+1)+' invalid');
+let uri;try{uri=new URL(x.referent_uri)}catch(e){throw Error('Bad referent URI #'+x.seq)}if(uri.protocol!=='https:'||uri.hash||uri.username||uri.password)throw Error('Bad referent scheme');
+const id=await digest(new TextEncoder().encode(x.referent_uri));if(x.referent_id!==id)throw Error('Changed referent ID #'+x.seq);
+if(!['what','how','why'].every(k=>typeof x[k]==='string'&&x[k].length>=1&&x[k].length<=2000))throw Error('Missing WHAT/HOW/WHY #'+x.seq);
+if(x.kind==='REGISTER'){if(refs.has(id)||x.source_seq!==null||x.sample!==null)throw Error('Duplicate/malformed referent');refs.set(id,x)}
+else{const first=refs.get(id);if(!first||x.source_seq!==first.seq||x.referent_uri!==first.referent_uri)throw Error('Unregistered referent #'+x.seq);if(x.kind==='SAMPLE'&&!validSample(x.sample))throw Error('Invalid time sample #'+x.seq);if(x.kind==='CORRECT'&&x.sample!==null)throw Error('Corrections cannot fabricate network timings')}
+const {hash,watermark,...body}=x;const prefix=new TextEncoder().encode(PREFIX),data=encode(body),mix=new Uint8Array(prefix.length+data.length);mix.set(prefix);mix.set(data,prefix.length);
+if(await digest(mix)!==watermark)throw Error('Watermark changed #'+x.seq);
+if(await hexBody({...body,watermark})!==hash)throw Error('SHA changed #'+x.seq);prev=hash}
+return {tip:prev,referents:refs.size}}
+function add(t,s,cls){const e=document.createElement(t);e.textContent=s;if(cls)e.className=cls;return e}
+function render(){const list=el('eventList'),q=el('filter').value.toLowerCase().trim();list.replaceChildren();const found=events.filter(x=>!q||[x.referent_uri,x.witness,x.what,x.how,x.why,x.basis].some(s=>s.toLowerCase().includes(q)));if(!found.length){list.textContent=q?'No matching provenance events':'No watermarked witness events yet.';return}
+for(const x of [...found].reverse()){const d=add('article','', 'event');d.append(add('strong','#'+x.seq+' · '+x.kind+' · '+x.witness+' / '+x.basis));const a=document.createElement('a');a.href=x.referent_uri;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.referent_uri;d.append(a);d.append(add('div','WHAT · '+x.what));d.append(add('div','HOW · '+x.how));d.append(add('div','WHY · '+x.why));if(x.sample){d.append(add('small','RTT '+x.sample.rtt_ms+'ms · HTTP '+x.sample.http_status+' · SERVER DATE '+(x.sample.server_date_utc||'unavailable')))}d.append(add('small','WATERMARK '+x.watermark));d.append(add('small','CHAIN '+x.hash));list.append(d)}}
+async function reload(){if(busy)return;busy=true;el('reload').disabled=true;el('status').textContent='VERIFYING';try{if(!crypto?.subtle)throw Error('Secure SHA-256 context needed');const r=await fetch(URL,{cache:'no-store'});if(!r.ok)throw Error('GitHub fetch HTTP '+r.status);const text=await r.text();if(text&&!text.endsWith('\n'))throw Error('Partial JSONL');const rows=text?text.split('\n').filter(Boolean).map(JSON.parse):[];const state=await verify(rows);events=rows;el('status').textContent=rows.length?'PASS / VERIFIED':'EMPTY / VALID';el('countRefs').textContent=state.referents;el('countEvents').textContent=rows.length;el('countSamples').textContent=rows.filter(x=>x.kind==='SAMPLE').length;el('tip').textContent=state.tip;el('message').textContent='Verified Git source hash chain and deterministic event watermarks. No claim of physical time dilation.';render()}catch(e){events=[];el('status').textContent='HALTED';el('message').textContent='INTEGRITY HALTED: '+e.message;el('eventList').textContent='No unverified events displayed.'}finally{el('reload').disabled=false}}
+el('reload').onclick=reload;el('filter').oninput=render;reload();
+})();
+</script></body></html>
