@@ -201,5 +201,26 @@
     "no_quorum": true,
     "voting": false,
     "operational_status": "empty valid ledger until authenticated witness OPEN"
+  },
+  "independent_loom_prefix_audit": {
+    "version": 16,
+    "protocol": "https://github.com/DavidWise01/0root/blob/master/memory-bridge/GATE16_PREFIX_AUDIT.md",
+    "reader": "https://davidwise01.github.io/persist-cortex/loom/",
+    "canonical": "https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/loom-events.jsonl",
+    "receiver_action": "https://github.com/DavidWise01/0root/actions/workflows/loom-anchor.yml",
+    "receiver_verifier": "https://github.com/DavidWise01/0root/blob/master/memory-bridge/loom_anchor.py",
+    "first_eligible_observed_event": {
+      "seq": 1,
+      "thread": "tessy-1",
+      "hash": "9368d3921ec95ad4c1ba02ce79f4bdde89516a1449d69a8f81dfbc1fa3e53780"
+    },
+    "receipt_required": true,
+    "automatic_receiving": false,
+    "rollback_action": "halt_without_deletion_or_backwrite",
+    "quorum": null,
+    "voting": false,
+    "mark": ".dlw",
+    "constant": "cubit",
+    "status": "read-only state; inspect canonical source and receiver Git history live"
   }
 }
