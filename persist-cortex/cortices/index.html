@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROOT0 · STOCHIEON · Cortex Promotions</title>
+<meta name="description" content="Source-pinned non-destructive promotion registry for 14 cortex modules across TOPH, OaSIs, ud0 and Atlas.">
+<style>
+:root{color-scheme:dark;--bg:#07121d;--panel:#0c2234;--line:#36566c;--text:#e9f8ff;--muted:#9db9cb;--cyan:#8fe4f7;--mint:#9cf4c7;--amber:#f6d39b;--lav:#ceb8ff;--red:#ffaea4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1c3855,var(--bg) 65%);color:var(--text);font:13px/1.6 ui-monospace,Consolas,monospace}
+header,main,footer{max-width:1280px;margin:0 auto;padding:20px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(25px,5vw,45px);color:var(--cyan);margin:3px 0;letter-spacing:.04em}h2{font-size:17px;color:var(--cyan);margin:0 0 12px}h3{font-size:14px;color:var(--mint);margin:0}
+nav{display:flex;gap:14px;flex-wrap:wrap}a{color:var(--mint)}.muted,small{color:var(--muted)}main{display:grid;grid-template-columns:1fr 1fr;gap:15px}.panel{min-width:0;background:#0b2032e9;border:1px solid var(--line);border-radius:12px;padding:18px}.wide{grid-column:1/-1}
+.statbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{border:1px solid var(--line);padding:13px;border-radius:11px}.stat strong{display:block;font-size:24px;color:var(--cyan)}.note{border-left:2px solid var(--cyan);padding-left:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.cortex{padding:14px;border-radius:10px;border:1px solid var(--line);background:#10293c;overflow-wrap:anywhere}.cortex h3{margin:0 0 7px}.tag{display:inline-block;border:1px solid #50758c;border-radius:99px;padding:2px 7px;margin:3px 3px 3px 0;font-size:11px;color:var(--amber)}.cortex p{margin:6px 0}
+input,select,button{font:inherit;color:var(--text);background:#092034;border:1px solid #5c8eab;border-radius:8px;padding:10px}input,select{width:100%}button{cursor:pointer;background:#174560}button:disabled{opacity:.5}.controls{display:grid;grid-template-columns:1fr 220px auto;gap:10px;align-items:end}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--line);background:#081729;padding:15px;border-radius:10px}#status{color:var(--amber)}.source{font-size:11px;color:var(--muted)}footer{border-top:1px solid var(--line)}
+@media(max-width:800px){main{grid-template-columns:1fr}.statbar,.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.controls{grid-template-columns:1fr}header,main,footer{padding:14px}}
+@media(max-width:500px){.statbar,.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><div><div class="muted">STOCHIEON / ROOT0 / GATE 18</div><h1>PROMOTED CORTEXES</h1><div class="muted">Source-pinned · immutable provenance · no synthetic activation</div></div>
+<nav><a href="../">CORTEX</a><a href="../loom/">THREADS</a><a href="../referents/">.dlw</a><a href="https://0root.ai/">0root.ai</a><a href="https://github.com/DavidWise01/toph-cortex">TOPH</a></nav></header>
+<main>
+<section class="panel wide"><h2>VERIFIED PROMOTION REGISTRY</h2><div class="statbar">
+<div class="stat"><strong id="total">—</strong><small>promoted cortex entries</small></div>
+<div class="stat"><strong id="families">—</strong><small>distinct families</small></div>
+<div class="stat"><strong id="code">—</strong><small>executable source files</small></div>
+<div class="stat"><strong id="proof">—</strong><small>supporting Lean source files</small></div>
+</div><p class="note">Promotion means discoverable, source-pinned inclusion in the STOCHIEON kernel. Original files are not copied, overwritten or automatically run. Symbolic models remain symbolic. The duplicate Rust mirror in agent-0root is deduplicated.</p>
+<p id="status" role="status" aria-live="polite">Verifying TOPH and independent Hallway registry pin…</p>
+<button id="reload">RELOAD & VERIFY REPOSITORIES</button>
+</section>
+<section class="panel wide"><h2>4 FAMILIES / 14 REGISTRY ENTRIES</h2>
+<div class="controls"><div><label for="search">Search cortex, role or repository</label><input id="search" placeholder="e.g. i13, Level 3, Toph"></div>
+<div><label for="family">Family</label><select id="family"><option value="">All families</option><option value="toph">TOPH overseer</option><option value="oasis-four-cortex">OaSIs VM ladder</option><option value="ud0-i13">ud0 i13 Rust</option><option value="atlas-hyper-cortex">Atlas hyper-cortex</option></select></div><button id="reset">CLEAR FILTER</button></div>
+<div id="cards" class="grid" style="margin-top:14px"></div></section>
+<section class="panel"><h2>IDENTITY & ATTESTATION</h2>
+<pre>.dlw        = provenance watermark
+cubit       = constant; exact lowercase
+{{i}}       = preserved VM-ladder carrier
+
+A, B, C     = independent witnesses
+quorum      = none
+promotion   = source reference, not execution
+Git blob    = pinned immutable source identity
+mirror      = same blob ≠ a second cortex
+Lean source = linked, NOT claimed compiled</pre></section>
+<section class="panel"><h2>ADDITIONAL FORMAL SOURCES</h2><div id="formal">Loading six related Lean source files…</div></section>
+<section class="panel wide"><h2>GIT HUB</h2>
+<p><a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/stochieon/cortex-promotions-v1.json">Canonical cortex promotions (TOPH)</a> · <a href="https://github.com/DavidWise01/0root/blob/master/memory-bridge/cortex-promotions-v1.json">Independent Hallway source pin</a> · <a href="https://github.com/DavidWise01/toph-cortex/blob/main/bin/cortex_registry.py">Validator</a> · <a href="https://github.com/DavidWise01/toph-cortex/blob/main/tests/test_cortex_registry.py">Regression suite</a></p>
+<p class="muted">A verified reference is not a cryptographic witness signature, physical VM, online agent or proof of every GitHub repository being scanned. Legacy .dlw packages remain in Atlas; their provenance history is not rewritten.</p></section>
+</main><footer class="muted">STOCHIEON / GATE 18 · 14 CORTEX ENTRIES · K/E/T/X ENVELOPE · 0 LIVENESS CLAIMS · no quorum</footer>
+<script>
+(()=>{'use strict';
+const REG='https://raw.githubusercontent.com/DavidWise01/toph-cortex/main/memory/stochieon/cortex-promotions-v1.json';
+const PIN='https://raw.githubusercontent.com/DavidWise01/0root/master/memory-bridge/cortex-promotions-v1.json';
+const el=id=>document.getElementById(id),HEX40=/^[a-f0-9]{40}$/;let nodes=[],formal=[],busy=false;
+function txt(tag,s){const a=document.createElement(tag);a.textContent=s;return a}
+function href(path,label){const a=document.createElement('a');a.href=path;a.textContent=label;a.target='_blank';a.rel='noopener noreferrer';return a}
+function check(d,p){
+if(!d||d.schema!=='root0.stochieon.cortex-promotions/1'||d.mark!=='.dlw'||d.immutable_constant!=='cubit')throw Error('Wrong attribution/constant');
+if(!d.promotion_policy||d.promotion_policy.no_quorum!==true||d.promotion_policy.claims_liveness!==false||d.promotion_policy.executable_redeployments!==0)throw Error('Unsafe promotion flags');
+if(!Array.isArray(d.promoted)||d.promoted.length!==14||!Array.isArray(d.supporting_formal_sources)||d.supporting_formal_sources.length!==6)throw Error('Unexpected source registry count');
+const seen=new Set();for(const n of d.promoted){if(seen.has(n.id)||!HEX40.test(n.source?.blob_sha)||!n.source.uri.startsWith('https://github.com/DavidWise01/')||!['PROMOTED_REFERENCE','PROMOTED_SYMBOLIC'].includes(n.promotion)||!['SOURCE_VERIFIED_NOT_EXECUTED_THIS_TURN','SYMBOLIC_NOT_PHYSICAL_VM','MANIFEST_VERIFIED_NO_LIVE_VM_ATTESTATION'].includes(n.operational_status))throw Error('Source reference mismatch');seen.add(n.id)}
+if(!p||p.schema!=='root0.stochieon.cortex-hallway-reference/1'||p.constant!=='cubit'||p.watermark!=='.dlw'||p.quorum!==null||p.promoted_nodes!==14||!HEX40.test(p.registry?.git_blob_sha))throw Error('Hallway pin absent or invalid');}
+async function pinHash(bytes){const head=new TextEncoder().encode('blob '+bytes.length+'\0'),body=new Uint8Array(head.length+bytes.length);body.set(head);body.set(bytes,head.length);return [...new Uint8Array(await crypto.subtle.digest('SHA-1',body))].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function draw(){const host=el('cards'),q=el('search').value.trim().toLowerCase(),f=el('family').value;host.replaceChildren();let found=nodes.filter(n=>(!f||n.family===f)&&(!q||[n.name,n.role,n.family,n.source.repo].some(x=>x.toLowerCase().includes(q))));if(!found.length){host.append(txt('p','No matching cortex entries'));return}
+for(const n of found){const c=document.createElement('article');c.className='cortex';c.append(txt('h3',n.name));const l=txt('span',n.family+' · '+n.tier+' · '+n.class);l.className='tag';c.append(l);c.append(txt('p',n.role));const op=txt('small',n.operational_status.replaceAll('_',' '));c.append(op);c.append(txt('div',''));c.append(href(n.source.uri,'SOURCE · '+n.source.repo+'/'+n.source.path));const sha=txt('div','Git blob: '+n.source.blob_sha);sha.className='source';c.append(sha);if(n.mirrors?.length){const m=txt('p','Mirrored: '+n.mirrors.map(x=>x.repo).join(', ')+' (same source SHA)');m.className='muted';c.append(m)}if(n.carrier)c.append(txt('div','VM carrier '+n.carrier));if(n.declared_vm_count)c.append(txt('div','Declared symbolic VM count: '+n.declared_vm_count));host.append(c)}}
+function drawFormal(){const host=el('formal');host.replaceChildren();for(const entry of formal){const p=document.createElement('p');p.append(href(entry.source.uri,entry.source.path.split('/').at(-1)));host.append(p)}}
+async function load(){if(busy)return;busy=true;el('reload').disabled=true;el('status').textContent='VERIFYING…';try{if(!crypto?.subtle)throw Error('WebCrypto unavailable');
+const [reg,pin]=await Promise.all([fetch(REG,{cache:'no-store'}),fetch(PIN,{cache:'no-store'})]);if(!reg.ok||!pin.ok)throw Error('Git source or independent Hallway pin unreachable');
+const raw=new Uint8Array(await reg.arrayBuffer());if(raw.length>500000)throw Error('Registry unexpectedly large');
+const d=JSON.parse(new TextDecoder().decode(raw)),p=await pin.json();check(d,p);
+const actual=await pinHash(raw);if(actual!==p.registry.git_blob_sha)throw Error('Registry Git blob differs from independent Hallway pin');
+nodes=d.promoted;formal=d.supporting_formal_sources;
+el('total').textContent=d.summary.promoted_cortex_nodes;el('families').textContent=d.summary.distinct_source_families;el('code').textContent=d.summary.distinct_executable_sources;el('proof').textContent=d.summary.supporting_lean_source_files;
+el('status').textContent='PASS · STOCHIEON registry + Hallway source pin verified · '+actual;draw();drawFormal();
+}catch(e){nodes=[];formal=[];el('status').textContent='HALTED / '+e.message;el('cards').textContent='No unverified promotions displayed.';el('formal').textContent='Unverified formal sources hidden.'}
+finally{busy=false;el('reload').disabled=false}}
+el('search').oninput=draw;el('family').onchange=draw;el('reset').onclick=()=>{el('search').value='';el('family').value='';draw()};el('reload').onclick=load;load();
+})();
+</script></body></html>
