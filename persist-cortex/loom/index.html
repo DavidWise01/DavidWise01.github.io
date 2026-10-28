@@ -51,6 +51,15 @@ cubit                     (unchangeable constant)
 <label for="search">Search WHAT / HOW / WHY / exact text</label><input id="search" placeholder="cubit · tessy · diaspora">
 <div id="eventList">No records yet.</div>
 </section>
+<section class="panel wide">
+<h2>GATE 16 · INDEPENDENT HALLWAY RECEIPT</h2>
+<p class="note">This page verifies the canonical TOPH event before suggesting a Hallway receipt. It never submits a workflow, invents a signature, or copies private memory. The Hallway receiver independently replays the source and halts if any earlier anchored event was rewritten or removed.</p>
+<div class="stat"><span>Next unanchored source event</span><span class="value" id="nextAnchorState">Checking verified Git history</span></div>
+<pre id="nextAnchorInputs">No verified candidate yet.</pre>
+<button id="copyAnchor" type="button" disabled>COPY RECEIVER INPUTS</button>
+<a href="https://github.com/DavidWise01/0root/actions/workflows/loom-anchor.yml">OPEN MANUAL HALLWAY RECEIVER</a>
+<p class="dim">The receiving Action requires owner authentication and writes create-only Git files in `0root`. An observed receipt is not an Ed25519 witness signature or a quorum. <a href="https://github.com/DavidWise01/0root/blob/master/memory-bridge/GATE16_PREFIX_AUDIT.md">Gate 16 independent source-prefix audit protocol</a>.</p>
+</section>
 <section class="panel"><h2>PUBLIC CORPUS / HALLWAY BRIDGE</h2>
 <p class="note">Gate 15 causal head lock: the next WEAVE on <code>tessy-1</code> must include <code>refs: 1</code> (the current witnessed thread head). If that head changes, refresh the input instead of silently retargeting. <a href="https://github.com/DavidWise01/toph-cortex/blob/main/memory/corpus-spine/GATE15_CAUSAL_HEAD.md">Read exact head-lock protocol</a>.</p>
 <p><a href="https://github.com/DavidWise01/toph-cortex/actions/workflows/loom-append.yml">Append authenticated threaded event</a> · <a href="https://github.com/DavidWise01/0root/actions/workflows/loom-anchor.yml">Independently anchor an event in 0root</a>.</p>
@@ -69,7 +78,7 @@ const el=id=>document.getElementById(id),canon=x=>Array.isArray(x)?'['+x.map(can
 const enc=x=>new TextEncoder().encode(canon(x)),hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
 async function shaBytes(v){return hex(await crypto.subtle.digest('SHA-256',v))}
 async function sha(x){return shaBytes(enc(x))}
-let verified=[],busy=false,groupMap=new Map();
+let verified=[],busy=false,groupMap=new Map(),nextAnchorCandidate=null;
 function utc(s){return typeof s==='string'&&s.endsWith('Z')&&!Number.isNaN(Date.parse(s))}
 function tokenCount(s){return (s.match(/(?<![A-Za-z0-9_])cubit(?![A-Za-z0-9_])/g)||[]).length}
 function cubitCheck(source,out,mode){const a=tokenCount(source),b=tokenCount(out);
@@ -115,17 +124,41 @@ if(!xs.length){out.textContent='No matching, witnessed Git events.';return}
 for(const e of [...xs].reverse()){let block=node('article','', 'item');block.append(node('strong','#'+e.seq+' · '+e.thread+' · '+e.kind+' / '+e.witness));block.append(node('div',e.phase+' · '+e.event_on));block.append(node('div','WHAT · '+e.what));block.append(node('div','HOW · '+e.how));block.append(node('div','WHY · '+e.why));if(e.text)block.append(node('div','TEXT · '+e.text));if(e.refs.length)block.append(node('small','CAUSAL REFS · '+e.refs.join(', ')));if(e.source){const a=document.createElement('a');a.textContent=e.source.repo+'/'+e.source.path;a.href='https://api.github.com/repos/'+e.source.repo+'/git/blobs/'+e.source.blob_sha;a.target='_blank';a.rel='noopener noreferrer';block.append(a)}block.append(node('small','WATERMARK · '+e.watermark));block.append(node('small','SHA · '+e.hash));out.append(block)}}
 function prepareFilters(rows){let x=el('threadFilter'),old=x.value;x.replaceChildren();let empty=document.createElement('option');empty.value='';empty.textContent='All threads';x.append(empty);
 for(const thread of [...new Set(rows.map(r=>r.thread))].sort()){const option=document.createElement('option');option.value=thread;option.textContent=thread;x.append(option)}x.value=[...x.options].some(o=>o.value===old)?old:''}
-async function hallway(rows){const r=await fetch(API,{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});if(r.status===404)return {count:0,mismatch:0};if(!r.ok)throw Error('Hallway index HTTP '+r.status);
-const files=await r.json();if(!Array.isArray(files)||files.length>=1000)throw Error('Hallway listing incomplete');const known=new Map(rows.map(e=>[e.hash,e]));let count=0,mismatch=0;for(const f of files){if(f.type!=='file'||!f.name.endsWith('.json'))continue;const h=f.name.slice(0,-5);if(!HEX.test(h))throw Error('Invalid Hallway receipt name');const z=await fetch(HALL+f.name,{cache:'no-store'});if(!z.ok)throw Error('Hallway receipt HTTP '+z.status);const a=await z.json();if(a.schema!=='root0.loom-anchor/14'||a.receiver!=='DavidWise01/0root'||a.event?.hash!==h)throw Error('Invalid independent receipt');count++;if(canon(known.get(h))!==canon(a.event))mismatch++}return {count,mismatch}}
+async function hallway(rows){const r=await fetch(API,{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});if(r.status===404)return {count:0,mismatch:0,anchored:[]};if(!r.ok)throw Error('Hallway index HTTP '+r.status);
+const files=await r.json();if(!Array.isArray(files)||files.length>=1000)throw Error('Hallway listing incomplete');const known=new Map(rows.map(e=>[e.hash,e]));let count=0,mismatch=0,anchored=new Set();for(const f of files){if(f.type!=='file'||!f.name.endsWith('.json'))continue;const h=f.name.slice(0,-5);if(!HEX.test(h))throw Error('Invalid Hallway receipt name');const z=await fetch(HALL+f.name,{cache:'no-store'});if(!z.ok)throw Error('Hallway receipt HTTP '+z.status);const a=await z.json();if(a.schema!=='root0.loom-anchor/14'||a.receiver!=='DavidWise01/0root'||a.event?.hash!==h)throw Error('Invalid independent receipt');count++;anchored.add(h);if(canon(known.get(h))!==canon(a.event))mismatch++}return {count,mismatch,anchored:[...anchored]}}
+function prepareAnchor(rows,anchored){
+ const taken=new Set(anchored);nextAnchorCandidate=null;
+ const next=rows.find(x=>!taken.has(x.hash));
+ if(!next){el('nextAnchorState').textContent=rows.length?'ALL VERIFIED EVENTS ANCHORED':'NO SOURCE EVENTS';
+  el('nextAnchorInputs').textContent='Nothing requires receipt creation.';el('copyAnchor').disabled=true;return}
+ nextAnchorCandidate={loom_seq:String(next.seq),event_hash:next.hash,thread:next.thread,
+   witness:next.witness,source_watermark:next.watermark,mode:'MANUAL_AUTHENTICATED_RECEIPT',
+   constant:'cubit',votes:false,quorum:null};
+ el('nextAnchorState').textContent='EVENT #'+next.seq+' / '+next.thread+' / PENDING HALLWAY RECEIPT';
+ el('nextAnchorInputs').textContent=JSON.stringify(nextAnchorCandidate,null,2);
+ el('copyAnchor').disabled=false;
+}
+function haltAnchor(reason){
+ nextAnchorCandidate=null;el('copyAnchor').disabled=true;el('nextAnchorState').textContent='HALTED / NOT VERIFIED';
+ el('nextAnchorInputs').textContent=reason;
+}
+async function copyAnchor(){
+ if(!nextAnchorCandidate)return;
+ const values='loom_seq: '+nextAnchorCandidate.loom_seq+'\n'+'event_hash: '+nextAnchorCandidate.event_hash;
+ try{if(!navigator.clipboard?.writeText)throw Error('Clipboard not available');
+     await navigator.clipboard.writeText(values);
+     el('nextAnchorState').textContent='RECEIVER INPUTS COPIED / STILL NOT SUBMITTED';
+ }catch(e){el('nextAnchorState').textContent='Clipboard unavailable — copy fields from the JSON';}
+}
 async function refresh(){if(busy)return;busy=true;el('reload').disabled=true;for(const k of ['corpusStatus','loomStatus','anchorStatus'])el(k).textContent='VERIFYING';
 try{if(!crypto?.subtle)throw Error('HTTPS WebCrypto SHA-256 required');const [corpus,rows]=await Promise.all([getRows('events-v2.jsonl'),getRows('loom-events.jsonl')]);const heads=await checkCorpus(corpus);el('corpusStatus').textContent='PASS / '+corpus.length;
 const replay=await checkLoom(rows,heads);verified=rows;el('loomStatus').textContent=rows.length?'PASS / '+rows.length:'EMPTY / VALID';el('threadCount').textContent=replay.threads.size;el('eventCount').textContent=rows.length;el('loomTip').textContent=replay.tip;
 for(const w of ['A','B','C']){const n=rows.filter(e=>e.witness===w);el('lane'+w).textContent=n.length?n.length+' witnessed event(s) · last '+n.at(-1).phase:'No witnessed events'}
 prepareFilters(rows);graph(rows);render();
-try{const a=await hallway(rows);el('anchorCount').textContent=a.count;el('anchorStatus').textContent=a.mismatch?'HISTORY MISMATCH / '+a.mismatch:a.count?'PASS / '+a.count:'NONE / VALID'}catch(e){el('anchorStatus').textContent='NOT VERIFIED / unavailable'}
+try{const a=await hallway(rows);el('anchorCount').textContent=a.count;el('anchorStatus').textContent=a.mismatch?'HISTORY MISMATCH / '+a.mismatch:a.count?'PASS / '+a.count:'NONE / VALID';if(a.mismatch)haltAnchor("Historical source divergence; no receipt can be prepared safely.");else prepareAnchor(rows,a.anchored)}catch(e){el('anchorStatus').textContent='NOT VERIFIED / unavailable';haltAnchor("Hallway history unavailable. Do not assume any event is unanchored.")}
 el('graphNote').textContent=rows.length?'Verified, live public Git event graph; solid edges are thread lineage and dashed violet edges are causal links.':'Illustrative endpoints only. No running workers or fabricated memory events.';
 el('message').textContent='Source chains replayed; no vote or automatic Git write required to observe.'}
-catch(e){verified=[];for(const k of ['corpusStatus','loomStatus','anchorStatus'])el(k).textContent='HALTED';el('message').textContent='INTEGRITY HALTED · '+e.message;el('eventList').textContent='Unverified records suppressed';graph([])}finally{busy=false;el('reload').disabled=false}}
-el('reload').onclick=refresh;el('threadFilter').onchange=render;el('witnessFilter').onchange=render;el('search').oninput=render;refresh();
+catch(e){haltAnchor("Canonical TOPH verification failed.");verified=[];for(const k of ['corpusStatus','loomStatus','anchorStatus'])el(k).textContent='HALTED';el('message').textContent='INTEGRITY HALTED · '+e.message;el('eventList').textContent='Unverified records suppressed';graph([])}finally{busy=false;el('reload').disabled=false}}
+el('copyAnchor').onclick=copyAnchor;el('reload').onclick=refresh;el('threadFilter').onchange=render;el('witnessFilter').onchange=render;el('search').oninput=render;refresh();
 })();
 </script></body></html>
