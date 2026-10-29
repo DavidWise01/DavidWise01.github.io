@@ -9,6 +9,7 @@ from formic_phase import phase
 from formic_agents import bind_agents
 from formic_diaspora import build_diaspora
 from formic_exchange import exchange
+from formic_verify_packet import check, digest
 
 class FormicFreezeTest(unittest.TestCase):
     def test_feedback_hysteresis(self):
@@ -71,6 +72,12 @@ class FormicFreezeTest(unittest.TestCase):
         self.assertTrue(all(len(p["packet_sha256"])==64 for p in ideas["proposals"]))
         self.assertTrue(all(p["change_packet"]["diff"]=="NOT_GENERATED" for p in ideas["proposals"]))
         self.assertTrue(all(p["change_packet"]["approval"]=="REQUIRED" for p in ideas["proposals"]))
+        for proposal in ideas["proposals"]:
+            packet=dict(proposal["change_packet"],packet_sha256=proposal["packet_sha256"])
+            self.assertEqual(check(packet),[])
+            packet["approval"]="NOT_REQUIRED"
+            self.assertIn("checksum_mismatch",check(packet))
+            self.assertIn("approval_boundary_missing",check(packet))
 
     def test_observational_engines(self):
         items=[{"name":"ud0","state":"ACTIVE","archived":False,"fork":False},
