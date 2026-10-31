@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invariant 112 - Adversarial Phase</title><style>body{margin:0;padding:22px;background:#071624;color:#e9faff;font:15px system-ui}main{max-width:1100px;margin:auto}.frame{background:#11283b;border:1px solid #36566d;border-radius:12px;padding:18px}canvas{width:100%;background:#05121e;border-radius:8px}pre{overflow:auto;background:#071523;padding:14px;font:13px/1.5 monospace}button{padding:9px 12px;background:#16617b;color:#fff;border:0;border-radius:7px;cursor:pointer}p{color:#b8cdd8}</style></head><body><main><small>CUBI . | JACOBI | JOSOPHENE</small><h1>Invariant 112 — Adversarial Phase Search</h1><p>384 executed toy-model RK4 runs; 8 spacings × 16 initial phases × 3 impulse sign patterns. Interactive finite-sample worst-hold plot; not a universal bound.</p><div class="frame"><canvas id="cv" width="1000" height="430"></canvas><p id="detail">Click a bar to inspect results.</p><button id="export">Export data</button><pre>. | . | . | . | . | . | . | .
+. |  ADVERSARIAL PHASE 112      |
+. |  16 PHASES X 3 PATTERNS     |
+. |  8 SPACINGS = 384 TESTS     |
+. |            |                |
+. |   A | LEDGER : PASS         |
+. |   B | TORQUE : PASS         |
+. |   C | HOLD   : 48/48 @14    |
+. |            |                |
+. |  JACOBI :: |-|-|-|          |
+. |  JOSOPHENE :: j/`-`\\j      |
+. |  JULIET :: -+i² OUTSIDE     |
+. |            {{i}}             |
+. |  THE WORST CASE WAS SOUGHT. |
+. |  THE OBSERVERS RECORDED IT. |
+. |  NO QUORUM.                 |
+. | . | . | . | . | . | . | . |</pre></div></main><script>(()=>{'use strict';const D=[[12,6.2,14,48],[12.5,6.7,38,48],[13,7.2,24,48],[13.5,7.72,24,48],[14,8.22,48,48],[14.5,8.72,48,48],[15,9.22,48,48],[16,10.24,48,48]],c=document.getElementById('cv'),x=c.getContext('2d'),detail=document.getElementById('detail');function draw(){x.fillStyle='#05121e';x.fillRect(0,0,1000,430);x.fillStyle='#e7f8ff';x.font='19px sans-serif';x.fillText('Worst sustained hold (target 8)',25,32);x.strokeStyle='#e4bd7f';x.setLineDash([6,5]);x.beginPath();x.moveTo(60,340-8*24);x.lineTo(960,340-8*24);x.stroke();x.setLineDash([]);D.forEach((a,i)=>{let xx=70+i*110,h=a[1]*24;x.fillStyle=a[1]>=8?'#6cdec5':'#b9868b';x.fillRect(xx,340-h,57,h);x.fillStyle='#e7f8ff';x.font='13px monospace';x.fillText(String(a[1].toFixed(2)),xx,335-h);x.fillText(String(a[0]),xx,370)});}draw();c.addEventListener('click',e=>{let b=c.getBoundingClientRect(),ix=Math.max(0,Math.min(7,Math.floor((((e.clientX-b.left)/b.width)*c.width-70)/110)));let a=D[ix];detail.textContent='Spacing '+a[0]+' | worst hold '+a[1]+' | 8-unit holds '+a[2]+'/'+a[3]+' | A ledger max 0.0030594 PASS | B torque peak 0.2827391 / cap 0.4 PASS';});document.getElementById('export').onclick=()=>{let blob=new Blob([JSON.stringify({invariant:112,summary:D,parameters:{energyTarget:.5,gamma:.2,gain:.8,cap:.4,impulse:.28,dt:.02,horizon:120,phases:16,signPatterns:3},runs:384,maxLedgerError:.003059411076,maxTorque:.28273905769},null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='invariant112_summary.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),800)}})();</script></body></html>
