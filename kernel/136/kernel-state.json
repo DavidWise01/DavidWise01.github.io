@@ -1,0 +1,26 @@
+{
+  "kernel": 136,
+  "status": "active",
+  "predecessor": 135,
+  "origin": "000",
+  "legs": [
+    "OUT",
+    "LEFT",
+    "RIGHT",
+    "UP",
+    "DOWN",
+    "HOME"
+  ],
+  "budget": "24! symbolic each",
+  "display_microsteps_per_leg": 24,
+  "audit": [
+    "path_length",
+    "total_turn",
+    "displacement",
+    "drift"
+  ],
+  "guided_closure": "by construction",
+  "open_loop": "constant downward acceleration and no waypoint reset",
+  "history": "preserved",
+  "physics_validation": false
+}
