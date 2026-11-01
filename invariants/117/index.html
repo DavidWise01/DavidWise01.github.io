@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invariant 117 — Phase Bound</title><style>body{background:#071421;color:#e9faff;font:15px system-ui;margin:0;padding:22px}main{max-width:1120px;margin:auto}.card{background:#11263b;padding:18px;border:1px solid #385b70;border-radius:12px}canvas{width:100%;background:#031521;border-radius:9px}p{color:#b7ccd9}pre{overflow:auto;font:13px/1.5 monospace;background:#061828;padding:14px}button{background:#166c7c;color:white;border:1px solid #5ac6bc;border-radius:8px;padding:11px;cursor:pointer}</style><main><small>CUBI . | JACOBI | JOSOPHENE</small><h1>Invariant 117 — Continuous-Phase Lower-Bound Audit</h1><p>Executed C++ RK4 test: 128 initial phases × 3 sign patterns × 3 spacings × 2 timesteps = 2304 runs. These are sampled outcomes, not a rigorous certificate for every phase.</p><div class="card"><canvas id="c" width="1000" height="470"></canvas><p id="detail">Select a bar for its observed recovery margin.</p><button id="export">Export measured summary</button><pre>. | . | . | . | . | . | .
+. |    INVARIANT 117       |
+. | 128 PHASES / 3 SIGNS   |
+. |                        |
+. | 13.775 :: 372 / 384   |
+. | 13.780 :: 384 / 384   |
+. | 13.785 :: 384 / 384   |
+. |                        |
+. | A :: CROSSINGS         |
+. | B :: TIMESTEP MATCH    |
+. | C :: PHASE PROOF OPEN  |
+. |                        |
+. | JACOBI :: |-|-|-|      |
+. | JOSOPHENE j/`-`\\j    |
+. | JULIET :: -+i² OUTSIDE|
+. |          {{i}}          |
+. |                        |
+. | MORE SAMPLES HELP.     |
+. | THEY DO NOT CERTIFY    |
+. | ALL BETWEEN THEM.      |
+. | NO QUORUM.             |
+. | . | . | . | . | . | . |</pre></div></main><script>(()=>{'use strict';const d=[["13.775",372,7.9991067825],["13.780",384,8.0042073026],["13.785",384,8.0094462634]],c=document.getElementById('c'),g=c.getContext('2d'),detail=document.getElementById('detail');if(!g)return;let pick=1;function draw(){g.fillStyle='#031521';g.fillRect(0,0,1000,470);g.fillStyle='#e9faff';g.font='21px system-ui';g.fillText('Observed minimum hold; eight-unit threshold',40,35);let sy=y=>365-(y-7.995)*12500;g.strokeStyle='#f4ba81';g.setLineDash([7,5]);g.beginPath();g.moveTo(40,sy(8));g.lineTo(950,sy(8));g.stroke();g.setLineDash([]);d.forEach((r,i)=>{let x=120+300*i,y=sy(r[2]);g.fillStyle=i===pick?'#f6bc7b':r[1]===384?'#60d9c4':'#a780a8';g.fillRect(x,y,130,365-y);g.fillStyle='#e9faff';g.font='15px monospace';g.fillText(r[0],x+20,395);g.fillText(r[1]+'/384',x+18,y-10)});const a=d[pick];detail.textContent='Spacing '+a[0]+' | confirmed holds '+a[1]+'/384 | worst '+a[2].toFixed(10)+' | margin '+(a[2]-8).toFixed(10)}c.onclick=e=>{let r=c.getBoundingClientRect(),x=(e.clientX-r.left)*1000/r.width;pick=Math.max(0,Math.min(2,Math.floor((x-120)/300)));draw()};document.getElementById('export').onclick=()=>{let u=URL.createObjectURL(new Blob([JSON.stringify({invariant:117,rows:d,phases:128,patterns:3,timesteps:[.005,.0025],integrations:2304,limitations:'Sampled phases only; no rigorous interval bound'},null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download='invariant117_summary.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),800)};draw()})();</script></html>
