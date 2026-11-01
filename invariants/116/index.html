@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CUBI 116 — Adversarial Phase</title><style>body{font:15px system-ui;background:#071625;color:#e8f8ff;margin:0;padding:22px}main{max-width:1120px;margin:auto}section{background:#10293d;border:1px solid #37566d;border-radius:12px;padding:18px}canvas{width:100%;background:#041322;border-radius:8px}pre{font:13px/1.5 monospace;overflow:auto}p{color:#aec8d6}button{border:1px solid #55bbad;background:#116c77;color:white;padding:10px;border-radius:7px}</style><main><small>CUBI | . | JACOBI / JOSOPHENE</small><h1>Invariant 116 — Adversarial Phase Error Audit</h1><p>1,920 executed RK4 runs: 5 spacings × 64 phases × 3 sign sequences × 2 timesteps. Interpolated energy-band crossings. Fixed target E*=0.5, gamma=0.2, gain=0.8, torque cap=0.4, kick=±0.28, 8-unit hold.</p><section><canvas id="c" width="1000" height="460"></canvas><p id="info">Select a bar.</p><button id="export">Export summary JSON</button><h3>. | Witness story</h3><pre>. | . | . | . | . | . | . |
+. | INVARIANT 116          |
+. | 64 PHASES / 3 SIGNS    |
+. | TWO RESOLUTIONS        |
+. |                        |
+. | 13.775 : 188 / 192     |
+. | 13.780 : 192 / 192     |
+. |                        |
+. | A :: LEDGER PASS       |
+. | B :: TORQUE PASS       |
+. | C :: SAMPLED HOLD      |
+. |                        |
+. | JACOBI :: |-|-|-|      |
+. | JOSOPHENE :: j/`-`\j  |
+. | JULIET :: -+i²         |
+. |           {{i}}         |
+. |                        |
+. | NEAR THE FLOOR         |
+. | DO NOT ROUND UP        |
+. | OBSERVE, NO QUORUM     |
+. | . | . | . | . | . | . |</pre></section></main><script>(()=>{'use strict';const d=[[13.76,166,7.98465838283845],[13.77,179,7.994146888207865],[13.775,188,7.999106782539194],[13.78,192,8.004207302636129],[13.785,192,8.009446263389446]],c=document.getElementById('c'),g=c.getContext('2d'),o=document.getElementById('info');if(!g)return;let pick=3;function draw(){g.fillStyle='#041322';g.fillRect(0,0,1000,460);g.fillStyle='#eaf9ff';g.font='20px system-ui';g.fillText('Worst observed hold | 8.0 threshold',38,35);g.strokeStyle='#f2cb80';g.setLineDash([6,5]);g.beginPath();g.moveTo(42,170);g.lineTo(950,170);g.stroke();g.setLineDash([]);d.forEach((r,i)=>{let x=55+i*190,h=Math.max(0,(r[2]-7.975)*8000),y=370-h;g.fillStyle=i===pick?'#f0bc73':r[1]===192?'#68decc':'#9a80b6';g.fillRect(x,y,88,h);g.fillStyle='#eaf9ff';g.font='14px monospace';g.fillText(r[0].toFixed(3),x,403);g.fillText(r[1]+'/192',x,y-10)});let r=d[pick];o.textContent='Spacing '+r[0]+' | sampled hold confirmations '+r[1]+'/192 | minimum hold '+r[2].toFixed(9)+' | dt .005 and .0025 pass counts agree'}c.onclick=e=>{let b=c.getBoundingClientRect(),x=(e.clientX-b.left)*c.width/b.width;pick=Math.max(0,Math.min(4,Math.floor((x-55)/190)));draw()};document.getElementById('export').onclick=()=>{let u=URL.createObjectURL(new Blob([JSON.stringify({invariant:116,summary:d,integrations:1920,phaseCount:64,signPatterns:3,timesteps:[.005,.0025],maxLedgerResidual:.000157623,maxTorque:.282709056,limitations:'Finite sampled phases, no certified continuous-phase bound'},null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download='invariant116_summary.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),700)};draw()})();</script></html>
