@@ -1,0 +1,48 @@
+{
+  "kernel": 134,
+  "status": "active",
+  "predecessor": 133,
+  "type": "exploratory_computational_art",
+  "historical_files": "unchanged",
+  "registry": {
+    "total": 366,
+    "bands": [
+      {
+        "from": 1,
+        "to": 122,
+        "color": "orange"
+      },
+      {
+        "from": 123,
+        "to": 245,
+        "color": "green"
+      },
+      {
+        "from": 246,
+        "to": 366,
+        "color": "teal"
+      }
+    ],
+    "vector_angles": [
+      0,
+      120,
+      240
+    ]
+  },
+  "toroid_division": [
+    24,
+    12,
+    4,
+    3,
+    3,
+    1,
+    1
+  ],
+  "transport_modes": [
+    "free_flow",
+    "24_ray_guided"
+  ],
+  "lattice_coupling_default": 0.7,
+  "injection": "one_pixel_per_tick",
+  "scientific_certification": "not_claimed"
+}
