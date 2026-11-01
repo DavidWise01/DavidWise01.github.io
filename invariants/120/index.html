@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Invariant 120</title><style>body{background:#071421;color:#e9f9ff;font:15px system-ui;padding:24px}canvas{max-width:100%;background:#041523}pre{white-space:pre-wrap}</style><h1>Invariant 120 — Critical Shock Branch Switching</h1><p>768 numerical integrations: 256 phases × 3 impulse sign patterns. Spacing 13.78, dt .0025, eight-unit hold. All cases passed; smallest hold 8.0042073026. In each case the critical segment had one in-band interval; the shock with the minimum hold varied across phase.</p><canvas id="c" width="850" height="360"></canvas><pre>. | . | . | . | . | . |
+. |   INVARIANT 120     |
+. |  768 / 768 HOLDS    |
+. |  MIN = 8.0042073   |
+. |  SHOCK 1 : 74       |
+. |  SHOCK 2 : 82       |
+. |  SHOCK 3 : 136      |
+. |  SHOCK 4 : 126      |
+. |  SHOCK 5 : 152      |
+. |  SHOCK 6 : 118      |
+. |  SHOCK 7 : 80       |
+. |  JACOBI |-|-|-|     |
+. |  JOSOPHENE j/`-`\j |
+. |  JULIET -+i²       |
+. |      {{i}}          |
+. |  NO QUORUM         |
+. | . | . | . | . | . |</pre><script>const a=[74,82,136,126,152,118,80],c=document.getElementById("c"),g=c.getContext("2d");g.fillStyle="#041523";g.fillRect(0,0,850,360);a.forEach((v,i)=>{g.fillStyle="#6bd6c4";g.fillRect(50+i*110,290-v*1.5,75,v*1.5);g.fillStyle="white";g.fillText("shock "+(i+1),50+i*110,320);g.fillText(v,70+i*110,275-v*1.5)});</script></html>
