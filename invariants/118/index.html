@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Invariant 118 | Continuous Phase Certification</title><style>body{background:#071523;color:#effbff;font:15px system-ui;margin:0;padding:24px}main{max-width:1100px;margin:auto}.panels{display:grid;grid-template-columns:1.7fr 1fr;gap:16px}.panel{padding:18px;border:1px solid #34556a;background:#11273a;border-radius:12px}canvas{width:100%;background:#041423;border-radius:10px}p{color:#b9cedb}pre{white-space:pre;overflow:auto;font:13px/1.45 monospace;background:#071b2a;padding:15px}button{background:#146675;color:white;padding:10px;border:1px solid #72cabc;border-radius:7px;cursor:pointer}@media(max-width:800px){.panels{grid-template-columns:1fr}}</style></head><body><main><small> CUBI | INVARIANT 118 | JACOBI - JOSOPHENE </small><h1>Continuous Phase Certification Audit</h1><p>Executed 2,304 RK4 integrations; results are finite-sample evidence. An interval certificate requires rigorous phase-sensitivity and numerical event-error bounds.</p><div class="panels"><div class="panel"><canvas width="900" height="450" id="plot"></canvas><p id="info">Select a bar.</p><button id="export">Export JSON</button><pre>. | . | . | . | . | . | .
+. |    INVARIANT 118       |
+. |   256 PHASE POSITIONS  |
+. |         |              |
+. |   13.775 748/768       |
+. |   13.780 768/768       |
+. |   13.785 768/768       |
+. |         |              |
+. |   A : SAMPLES PASS     |
+. |   B : PHASE BOUND OPEN |
+. |   C : ERROR BOUND OPEN |
+. |         |              |
+. | JACOBI :: |-|-|-|      |
+. | JOSOPHENE :: j/`-`\\j  |
+. | JULIET :: -+i²         |
+. |         {{i}}           |
+. |   THE GRID DID PASS.   |
+. |   THE GAPS STILL EXIST.|
+. |   NO QUORUM. OBSERVE.  |
+. | . | . | . | . | . | . |</pre></div><aside class="panel"><h2>Independent witnesses</h2><p>A — 768/768 sampled passes at spacing 13.780.</p><p>B — Required global phase slope bound: <b>0.34285</b> units/radian, assuming zero numerical error. Not established.</p><p>C — RK4 and event-crossing errors lack rigorous enclosure. Not certified.</p><h2>Analytic obligation</h2><p>H(phi) ≥ Hsample,min − L·π/256 − εnumerical.</p><p>Margin at spacing 13.780: <b>0.0042073</b>. Half-grid phase radius: <b>0.01227185 rad</b>.</p><p>Finite sample, no theorem; the longest continuous hold may switch between interval branches. Avoid treating the slope condition as proven.</p></aside></div></main><script>(()=>{'use strict';const rows=[[13.775, 748, 768, 7.9991067825], [13.78, 768, 768, 8.0042073026], [13.785, 768, 768, 8.0092676422]],c=document.getElementById('plot'),g=c.getContext('2d'),info=document.getElementById('info');let k=1;function draw(){g.fillStyle='#041423';g.fillRect(0,0,900,450);g.fillStyle='#eaf8ff';g.font='20px system-ui';g.fillText('Worst sampled hold; target 8.000',24,35);g.strokeStyle='#e4be8b';g.setLineDash([6,4]);g.beginPath();g.moveTo(50,280);g.lineTo(845,280);g.stroke();g.setLineDash([]);rows.forEach((r,i)=>{let x=90+i*270,h=Math.max(0,(r[3]-7.995)*13000);g.fillStyle=i===k?'#f1be7e':r[3]>=8?'#6cddca':'#ac7593';g.fillRect(x,345-h,135,h);g.fillStyle='#f0fbff';g.font='16px monospace';g.fillText(r[0].toFixed(3),x,377);g.fillText(r[1]+'/'+r[2],x,405)});let r=rows[k];info.textContent='Spacing '+r[0]+' | passes '+r[1]+'/'+r[2]+' | worst hold '+r[3].toFixed(10)}c.onclick=e=>{let b=c.getBoundingClientRect(),x=(e.clientX-b.left)*c.width/b.width;k=Math.max(0,Math.min(2,Math.floor((x-90)/270)));draw()};document.getElementById('export').onclick=()=>{let b=new Blob([JSON.stringify({invariant:118,rows,certified:false},null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='invariant118_summary.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),600)};draw()})();</script></body></html>
